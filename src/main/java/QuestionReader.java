@@ -31,13 +31,7 @@ public class QuestionReader extends CollectionReader_ImplBase {
     String filePath = "/BioASQ-SampleData1B.json";
     
     inputs = Lists.newArrayList();
-  /*  InputStream stream = getClass().getResourceAsStream(filePath);
-    try {
-      System.out.println("stream " + stream.read());
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }*/
+
     Object value = filePath;
     if (String.class.isAssignableFrom(value.getClass())) {
       inputs = TestSet
@@ -74,9 +68,6 @@ public class QuestionReader extends CollectionReader_ImplBase {
     TestQuestion question = inputs.remove(0);
     jcas.setDocumentText(question.getBody());
     JsonCollectionReaderHelper.addQuestionToIndex(question, "source", jcas);
-    System.out.println(question.getBody());
-    System.out.println(question);
-    System.out.println("------------------");
   }
 
   @Override
