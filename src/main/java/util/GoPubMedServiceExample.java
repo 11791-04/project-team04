@@ -1,6 +1,7 @@
 package util;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.http.client.ClientProtocolException;
@@ -9,6 +10,7 @@ import edu.cmu.lti.oaqa.bio.bioasq.services.GoPubMedService;
 import edu.cmu.lti.oaqa.bio.bioasq.services.LinkedLifeDataServiceResponse;
 import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse;
 import edu.cmu.lti.oaqa.bio.bioasq.services.PubMedSearchServiceResponse;
+import edu.cmu.lti.oaqa.type.retrieval.Document;
 
 public class GoPubMedServiceExample {
 
@@ -63,7 +65,14 @@ public class GoPubMedServiceExample {
     }
     text = text.replace('?', ' ');
     System.out.println(text);
+
     PubMedSearchServiceResponse.Result pubmedResult = service.findPubMedCitations(text, 0);
+    List<PubMedSearchServiceResponse.Document> list =  pubmedResult.getDocuments();
+    
+    for(PubMedSearchServiceResponse.Document d: list) {
+      System.out.println(d.getPmid());
+    }
+    
     System.out.println(pubmedResult.getSize());
   }
 }
