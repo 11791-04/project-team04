@@ -144,6 +144,13 @@ public class BasicConsumer extends CasConsumer_ImplBase {
     System.out.println(conceptMetric.getCurrentMAP());
     System.out.println("RESULTS triples");
     System.out.println(tripleMetric.getCurrentMAP());
+    
+    System.out.println("RESULTS doc");
+    System.out.println(documentMetric.getCurrentGMAP(0.01));
+    System.out.println("RESULTS concept");
+    System.out.println(conceptMetric.getCurrentGMAP(0.01));
+    System.out.println("RESULTS triples");
+    System.out.println(tripleMetric.getCurrentGMAP(0.01));
   }
 
 }
