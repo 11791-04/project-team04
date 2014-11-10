@@ -1,4 +1,3 @@
-DEIIS-project-archetype
-=======================
+![alt tag](https://raw.githubusercontent.com/11791-04/project-team04/master/RetrievalTypeSystem.jpg)
+![alt tag](https://raw.githubusercontent.com/11791-04/project-team04/master/KbTypeSystem.jpg)
 
-Archetype for 11791 final project
