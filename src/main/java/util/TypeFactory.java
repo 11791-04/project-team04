@@ -346,6 +346,12 @@ public class TypeFactory {
             TypeConstants.DOC_ID_UNKNOWN);
   }
 
+  public static Document createGoldStandardDocument(JCas jcas, String uri) {
+    Document doc = createDocument(jcas, uri);
+    doc.setSearchId(TypeConstants.SEARCH_ID_GOLD_STANDARD);
+    return doc;
+  }
+
   public static Passage createPassage(JCas jcas, String uri, double score, String text, int rank,
           String queryString, String searchId, Collection<CandidateAnswerVariant> candidateAnswers,
           String title, String docId, int offsetInBeginSection, int offsetInEndSection,
@@ -409,6 +415,12 @@ public class TypeFactory {
     return createConceptSearchResult(jcas, concept, uri, TypeConstants.SCORE_UNKNOWN,
             TypeConstants.TEXT_UNKNOWN, TypeConstants.QUERY_STRING_UNKNOWN);
   }
+  
+  public static ConceptSearchResult createGoldStandardConceptSearchResult(JCas jcas, Concept concept, String uri) {
+    ConceptSearchResult csr = createConceptSearchResult(jcas, concept, uri);
+    csr.setSearchId(TypeConstants.SEARCH_ID_GOLD_STANDARD);
+    return csr;
+  }
 
   public static TripleSearchResult createTripleSearchResult(JCas jcas, Triple triple, String uri,
           double score, String text, int rank, String queryString, String searchId,
@@ -436,6 +448,12 @@ public class TypeFactory {
     return createTripleSearchResult(jcas, triple, TypeConstants.URI_UNKNOWN,
             TypeConstants.SCORE_UNKNOWN, TypeConstants.TEXT_UNKNOWN, TypeConstants.RANK_UNKNOWN,
             TypeConstants.QUERY_STRING_UNKNOWN, TypeConstants.SEARCH_ID_UNKNOWN, new ArrayList<>());
+  }
+  
+  public static TripleSearchResult createGoldStandardTripleSearchResult(JCas jcas, Triple triple) {
+    TripleSearchResult tsr = createTripleSearchResult(jcas, triple);
+    tsr.setSearchId(TypeConstants.SEARCH_ID_GOLD_STANDARD);
+    return tsr;
   }
 
   public static Search createSearch(JCas jcas, String query, List<SearchResult> hitList,

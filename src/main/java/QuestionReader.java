@@ -13,6 +13,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 
+import util.TypeConstants;
+
 import com.google.common.collect.Lists;
 
 import json.JsonCollectionReaderHelper;
@@ -67,7 +69,7 @@ public class QuestionReader extends CollectionReader_ImplBase {
     
     TestQuestion question = inputs.remove(0);
     jcas.setDocumentText(question.getBody());
-    JsonCollectionReaderHelper.addQuestionToIndex(question, "source", jcas);
+    JsonCollectionReaderHelper.addQuestionToIndex(question, jcas);
   }
 
   @Override

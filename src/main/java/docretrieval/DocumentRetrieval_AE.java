@@ -1,6 +1,8 @@
 package docretrieval;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import util.TypeFactory;
 import docretrieval.stemmer.KrovetzStemmer;
 import edu.cmu.lti.oaqa.bio.bioasq.services.GoPubMedService;
 import edu.cmu.lti.oaqa.bio.bioasq.services.PubMedSearchServiceResponse;
@@ -25,8 +28,8 @@ import edu.cmu.lti.oaqa.type.retrieval.Document;
 public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
   GoPubMedService service;
   KrovetzStemmer stemmer;
-  
-  
+
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     System.out.println("DocumentRetrieval_AE - initialize()");
@@ -36,13 +39,13 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    
+
     stemmer = new KrovetzStemmer();
-  
-    
+
+
   }
 
-  
+
   /**
    * @param aJcas Assumed to contain questions provided by QuestionReader
    */
@@ -50,11 +53,13 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     System.out.println(aJCas.getDocumentText());
     CollectionStatistics cStat = new CollectionStatistics();
-    
+
     FSIterator<Annotation> iter = aJCas.getAnnotationIndex().iterator();
     if (iter.isValid()) {
       iter.moveToNext();
       Question question = (Question) iter.get();
+
+      QueryInfo query = new QueryInfo(question.getText(), stemmer);
 
       System.out.println("Question: "+question.getText());
 
@@ -72,43 +77,63 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       List<PubMedSearchServiceResponse.Document> list =  pubmedResult.getDocuments();
 
       for(PubMedSearchServiceResponse.Document d: list) {
-        System.out.println("PMID: "+d.getPmid());
-        
+
         String title = d.getTitle();
         String abstractText = d.getDocumentAbstract();
         String year = d.getYear();
         String pmid = d.getPmid();
-        
+
         Map<String, String> fieldTextMap = new HashMap<String, String>();
         fieldTextMap.put("title", title);
         fieldTextMap.put("abstract", abstractText);
-        
+
         DocInfo docInfo = new DocInfo(pmid, fieldTextMap, year, stemmer);
         cStat.addDoc(docInfo);  // Update collection statistics
       }
       cStat.finalize();
       // At this point, we have finished collecting all candidate documents 
       // and constructed the collection statistics
-      
 
-      System.out.println(pubmedResult.getSize());
-      
-      Document docRetr = new Document(aJCas);
-      docRetr.setUri("KKK");
-      docRetr.setRank(-1);
-      docRetr.addToIndexes();
-      
-      aJCas.addFsToIndexes(docRetr);
+
+      List<Pair<DocInfo, Double>> docScoreList = new ArrayList<Pair<DocInfo, Double>>();
+      for(DocInfo doc: cStat.docList) {
+        double score = Ranker.scoreDoc(Ranker.RANKER_OKAPI, cStat, doc, query);
+        docScoreList.add(new Pair<DocInfo, Double>(doc, score));
+      }
+
+      Collections.sort(docScoreList, new DocScoreComparator());
+
+      int rank = 1;
+      for(Pair<DocInfo, Double> p: docScoreList) {
+        System.out.println(p.getValue());
+        Document d = TypeFactory.createDocument(aJCas, 
+                "http://www.ncbi.nlm.nih.gov/pubmed/"+p.getKey().pmid,
+                p.getKey().fieldTextMap.get("abstract"),
+                rank, query.text, p.getKey().fieldTextMap.get("title"), p.getKey().pmid);
+        d.addToIndexes();
+      }
+      //      Document docRetr = new Document(aJCas);
+      //      docRetr.setUri("KKK");
+      //      docRetr.setRank(-1);
+      //      docRetr.addToIndexes();
+      //      
+      //      aJCas.addFsToIndexes(docRetr);
     }
   }
 
   @Override
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     System.out.println("DocumentRetrieval_AE - collectionProcessComplete()");
-  
-    
-    
-    
+
+  }
+
+  public static class DocScoreComparator implements Comparator<Pair<DocInfo, Double>>{
+
+    @Override
+    public int compare(Pair<DocInfo, Double> a, Pair<DocInfo, Double> b) {
+      return -a.getValue().compareTo(b.getValue());
+    }
+
   }
 
 }

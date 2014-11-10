@@ -23,6 +23,7 @@ import edu.cmu.lti.oaqa.type.retrieval.ConceptSearchResult;
 import edu.cmu.lti.oaqa.type.retrieval.Document;
 import edu.cmu.lti.oaqa.type.retrieval.Passage;
 import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
+import util.TypeConstants;
 import util.TypeFactory;
 
 public class JsonCollectionReaderHelper {
@@ -67,17 +68,16 @@ public class JsonCollectionReaderHelper {
 		System.out.println(inputs.get(0).getConcepts());
 	}
 
-	public static void addQuestionToIndex(Question input, String source,
-			JCas jcas) {
+	public static void addQuestionToIndex(Question input, JCas jcas) {
 		// question text and type are required
-		TypeFactory.createQuestion(jcas, input.getId(), source,
+		TypeFactory.createQuestion(jcas, input.getId(), TypeConstants.SEARCH_ID_GOLD_STANDARD,
 				convertQuestionType(input.getType()), input.getBody())
 				.addToIndexes();
 		// if documents, snippets, concepts, and triples are found in the input,
 		// then add them to CAS
 		if (input.getDocuments() != null) {
 			input.getDocuments().stream()
-					.map(uri -> TypeFactory.createDocument(jcas, uri))
+					.map(uri -> TypeFactory.createGoldStandardDocument(jcas, uri))
 					.forEach(Document::addToIndexes);
 		}
 		if (input.getSnippets() != null) {
@@ -93,14 +93,14 @@ public class JsonCollectionReaderHelper {
 		if (input.getConcepts() != null) {
 			input.getConcepts()
 					.stream()
-					.map(concept -> TypeFactory.createConceptSearchResult(jcas,
+					.map(concept -> TypeFactory.createGoldStandardConceptSearchResult(jcas,
 							TypeFactory.createConcept(jcas, concept), concept))
 					.forEach(ConceptSearchResult::addToIndexes);
 		}
 		if (input.getTriples() != null) {
 			input.getTriples()
 					.stream()
-					.map(triple -> TypeFactory.createTripleSearchResult(jcas,
+					.map(triple -> TypeFactory.createGoldStandardTripleSearchResult(jcas,
 							TypeFactory.createTriple(jcas, triple.getS(),
 									triple.getP(), triple.getO())))
 					.forEach(TripleSearchResult::addToIndexes);

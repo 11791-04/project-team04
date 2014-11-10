@@ -1,5 +1,6 @@
 package util;
 
+import java.util.UUID;
 import edu.cmu.lti.oaqa.type.nlp.Token;
 
 public class TypeConstants {
@@ -25,6 +26,8 @@ public class TypeConstants {
   public static final String QUERY_STRING_UNKNOWN = null;
 
   public static final String SEARCH_ID_UNKNOWN = null;
+  
+  public static final String SEARCH_ID_GOLD_STANDARD = UUID.randomUUID().toString();
 
   public static final String ASPECTS_UNKNOWN = null;
 
