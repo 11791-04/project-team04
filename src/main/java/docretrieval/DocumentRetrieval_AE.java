@@ -111,6 +111,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
                 p.getKey().fieldTextMap.get("abstract"),
                 rank, query.text, p.getKey().fieldTextMap.get("title"), p.getKey().pmid);
         d.addToIndexes();
+        rank++;
       }
       //      Document docRetr = new Document(aJCas);
       //      docRetr.setUri("KKK");
