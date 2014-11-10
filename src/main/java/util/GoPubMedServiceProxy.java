@@ -54,10 +54,11 @@ public class GoPubMedServiceProxy {
 
     } catch (ClientProtocolException e) {
       e.printStackTrace();
-      throw new UIMARuntimeException();
-    } catch (IOException e) {
+      //throw new UIMARuntimeException();
+    } catch (Exception e) {
       e.printStackTrace();
-      throw new UIMARuntimeException();
+      // May our children forgive us... We didn't mean to catch them all!
+      // throw new UIMARuntimeException();
     }
     return findings;
   }
@@ -76,10 +77,10 @@ public class GoPubMedServiceProxy {
       entities.addAll(linkedLifeDataResult.getEntities());
     } catch (ClientProtocolException e) {
       e.printStackTrace();
-      throw new UIMARuntimeException();
+      //throw new UIMARuntimeException();
     } catch (IOException e) {
       e.printStackTrace();
-      throw new UIMARuntimeException();
+      //throw new UIMARuntimeException();
     }
     return entities;
   }
@@ -98,10 +99,10 @@ public class GoPubMedServiceProxy {
       docs.addAll(pubmedResult.getDocuments());
     } catch (ClientProtocolException e) {
       e.printStackTrace();
-      throw new UIMARuntimeException();
+      //throw new UIMARuntimeException();
     } catch (IOException e) {
       e.printStackTrace();
-      throw new UIMARuntimeException();
+      //throw new UIMARuntimeException();
     }
     return docs;
   }
