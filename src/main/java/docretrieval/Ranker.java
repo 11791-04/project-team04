@@ -16,9 +16,9 @@ public class Ranker {
   public static double b = 0.8;
   public static double k3 = 0;
 
-  public static double lambda = 0.5;  //JM, Indri, MAG
+  public static double lambda = 0.9;  //JM, Indri, MAG
   public static double mu=10; // Dirichlet, NQG
-  public static double delta = 0.1; // NQG
+  public static double delta = 0.00001; // NQG
 
 
   public static double scoreDoc(int rankerType, CollectionStatistics stat, DocInfo doc, QueryInfo query) {

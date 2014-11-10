@@ -28,7 +28,7 @@ import edu.cmu.lti.oaqa.type.retrieval.Document;
 public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
   GoPubMedService service;
   KrovetzStemmer stemmer;
-  boolean baseline = true;
+  boolean baseline = false;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -99,7 +99,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       int defaultRank = 1;
       for(DocInfo doc: cStat.docList) {
 
-        double score = Ranker.scoreDoc(Ranker.RANKER_OKAPI, cStat, doc, query);
+        double score = Ranker.scoreDoc(Ranker.RANKER_INDRI, cStat, doc, query);
         if(baseline) {
           score = defaultRank++;
         }
