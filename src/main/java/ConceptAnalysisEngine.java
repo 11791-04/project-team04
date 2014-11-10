@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -34,13 +35,13 @@ public class ConceptAnalysisEngine extends JCasAnnotator_ImplBase {
       Question q = (Question) iter.get();
       String query = q.getText();
       List<Finding> findings = service.getFindingsFromQuery(query);
-      findings.sort(new Comparator<Finding>() {
-        @Override
+      Collections.sort(findings, new Comparator<Finding>() {
         public int compare(Finding o1, Finding o2) {
-          if (o1.getScore() >= o2.getScore())
-            return -1;
-          else
+          if(o1.getScore() < o2.getScore()) 
             return 1;
+          else if(o1.getScore() > o2.getScore())
+            return -1;
+          else return 0;
         }
       });
       Integer rank = 0;
