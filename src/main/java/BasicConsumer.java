@@ -79,7 +79,6 @@ public class BasicConsumer extends CasConsumer_ImplBase {
           gsDocuments.add(doc.getUri());
         } else {
           documents.add(doc.getUri());
-          System.out.println("RANK" + doc.getRank() + " - " + doc.getUri());
         }
       }
     } catch (CASException e) {
@@ -130,8 +129,8 @@ public class BasicConsumer extends CasConsumer_ImplBase {
 //    documents.sort((p, o) -> p.getRank().compareTo(o.getRank()));
     
     documentMetric.registerAnswerAndGoldStandard(documents, gsDocuments);
-    //conceptMetric.registerAnswerAndGoldStandard(concepts, gsConcepts);
-    //tripleMetric.registerAnswerAndGoldStandard(triples, gsTriples);
+    conceptMetric.registerAnswerAndGoldStandard(concepts, gsConcepts);
+    tripleMetric.registerAnswerAndGoldStandard(triples, gsTriples);
 
   }
 
@@ -139,9 +138,12 @@ public class BasicConsumer extends CasConsumer_ImplBase {
   public void collectionProcessComplete(ProcessTrace arg0) throws ResourceProcessException,
           IOException {
 
-    System.out.println("RESULTS:");
+    System.out.println("RESULTS doc");
     System.out.println(documentMetric.getCurrentMAP());
-    documentMetric.dumpData();
+    System.out.println("RESULTS concept");
+    System.out.println(conceptMetric.getCurrentMAP());
+    System.out.println("RESULTS triples");
+    System.out.println(tripleMetric.getCurrentMAP());
   }
 
 }
