@@ -26,8 +26,6 @@ public class Metric {
 	  qrelSet_List.add(qrelSet_i);
 	  list_rankList.add(answer);
 
-
-
   }
 
   public String getName() {
@@ -38,6 +36,7 @@ public class Metric {
     double sumAP = 0d;
     for (int i = 0; i < list_rankList.size(); i++) {
       sumAP += getAPforQuery(qrelSet_List.get(i), list_rankList.get(i));
+      
     }
     return sumAP / list_rankList.size();
   }
@@ -70,8 +69,10 @@ public class Metric {
         relCount++;
         double precAtI = relCount / (double) (i + 1);
         precAccum += precAtI;
+        
       }
     }
+    if(relCount==0) {return 0d;}
     double AP = precAccum / relCount;
 
     return AP;
