@@ -53,12 +53,9 @@ public class GoPubMedServiceProxy {
       findings.addAll(uniprotResult.getFindings());
 
     } catch (ClientProtocolException e) {
-      e.printStackTrace();
-      //throw new UIMARuntimeException();
+      System.out.println("ClientProtocolException occurred! " + e.getMessage());
     } catch (Exception e) {
-      e.printStackTrace();
-      // May our children forgive us... We didn't mean to catch them all!
-      // throw new UIMARuntimeException();
+      System.out.println("Exception occurred! " + e.getMessage());
     }
     return findings;
   }
@@ -76,11 +73,9 @@ public class GoPubMedServiceProxy {
       System.out.println("LinkedLifeData: " + linkedLifeDataResult.getEntities().size());
       entities.addAll(linkedLifeDataResult.getEntities());
     } catch (ClientProtocolException e) {
-      e.printStackTrace();
-      //throw new UIMARuntimeException();
-    } catch (IOException e) {
-      e.printStackTrace();
-      //throw new UIMARuntimeException();
+      System.out.println("ClientProtocolException occurred! " + e.getMessage());
+    } catch (Exception e) {
+      System.out.println("Exception occurred! " + e.getMessage());
     }
     return entities;
   }
@@ -98,11 +93,9 @@ public class GoPubMedServiceProxy {
       System.out.println("Documents: " + pubmedResult.getSize());
       docs.addAll(pubmedResult.getDocuments());
     } catch (ClientProtocolException e) {
-      e.printStackTrace();
-      //throw new UIMARuntimeException();
-    } catch (IOException e) {
-      e.printStackTrace();
-      //throw new UIMARuntimeException();
+      System.out.println("ClientProtocolException occurred! " + e.getMessage());
+    } catch (Exception e) {
+      System.out.println("Exception occurred! " + e.getMessage());
     }
     return docs;
   }
