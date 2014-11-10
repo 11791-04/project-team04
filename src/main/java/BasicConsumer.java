@@ -36,12 +36,11 @@ public class BasicConsumer extends CasConsumer_ImplBase {
     tripleMetric = new Metric("triple");
   }
 
-  
   private String triple2String(TripleSearchResult tsr) {
     Triple triple = tsr.getTriple();
-    return "<s>" + triple.getSubject() + "</s><o>" + triple.getObject() + "</o><p>" + triple.getPredicate() + "</p>";
+    return "<s>" + triple.getSubject() + "</s><o>" + triple.getObject() + "</o><p>"
+            + triple.getPredicate() + "</p>";
   }
-
 
   @Override
   public void processCas(CAS aCas) throws ResourceProcessException {
@@ -59,25 +58,28 @@ public class BasicConsumer extends CasConsumer_ImplBase {
     if (qit.hasNext()) {
       question = (Question) qit.next();
     }
-    
-    ArrayList<String> documents = new ArrayList<String>();    
-    ArrayList<String> gsDocuments = new ArrayList<String>();    
 
-    ArrayList<String> concepts = new ArrayList<String>();    
-    ArrayList<String> gsConcepts = new ArrayList<String>();    
+    ArrayList<String> documents = new ArrayList<String>();
+    ArrayList<String> gsDocuments = new ArrayList<String>();
 
-    ArrayList<String> triples = new ArrayList<String>();    
-    ArrayList<String> gsTriples = new ArrayList<String>();    
-    
+    ArrayList<String> concepts = new ArrayList<String>();
+    ArrayList<String> gsConcepts = new ArrayList<String>();
+
+    ArrayList<String> triples = new ArrayList<String>();
+    ArrayList<String> gsTriples = new ArrayList<String>();
+
     try {
       FSIterator<?> it;
-      it = aJCas.getFSIndexRepository().getAllIndexedFS(aJCas.getRequiredType("edu.cmu.lti.oaqa.type.retrieval.Document"));
+      it = aJCas.getFSIndexRepository().getAllIndexedFS(
+              aJCas.getRequiredType("edu.cmu.lti.oaqa.type.retrieval.Document"));
       while (it.hasNext()) {
         Document doc = (Document) it.next();
-        if(doc.getSearchId() != null && doc.getSearchId().equals(TypeConstants.SEARCH_ID_GOLD_STANDARD)) {
+        if (doc.getSearchId() != null
+                && doc.getSearchId().equals(TypeConstants.SEARCH_ID_GOLD_STANDARD)) {
           gsDocuments.add(doc.getUri());
         } else {
           documents.add(doc.getUri());
+          System.out.println("RANK" + doc.getRank() + " - " + doc.getUri());
         }
       }
     } catch (CASException e) {
@@ -85,9 +87,6 @@ public class BasicConsumer extends CasConsumer_ImplBase {
       e.printStackTrace();
     }
 
-    documentMetric.registerAnswerAndGoldStandard(documents, gsDocuments);
-    System.out.println("CURRENT RESULTS:");
-    System.out.println(documentMetric.getCurrentMAP());
 
     try {
       FSIterator<?> it;
@@ -108,19 +107,16 @@ public class BasicConsumer extends CasConsumer_ImplBase {
       e.printStackTrace();
     }
 
-    System.out.println("concepts");
-    System.out.println(concepts);
-    System.out.println("gsConcepts");
-    System.out.println(gsConcepts);
-    
     try {
       FSIterator<?> it;
-      it = aJCas.getFSIndexRepository().getAllIndexedFS(aJCas.getRequiredType("edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult"));
+      it = aJCas.getFSIndexRepository().getAllIndexedFS(
+              aJCas.getRequiredType("edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult"));
 
       while (it.hasNext()) {
         TripleSearchResult triple = (TripleSearchResult) it.next();
         String tripleString = triple2String(triple);
-        if(triple.getSearchId() != null && triple.getSearchId().equals(TypeConstants.SEARCH_ID_GOLD_STANDARD)) {
+        if (triple.getSearchId() != null
+                && triple.getSearchId().equals(TypeConstants.SEARCH_ID_GOLD_STANDARD)) {
           gsTriples.add(tripleString);
         } else {
           triples.add(tripleString);
@@ -131,7 +127,11 @@ public class BasicConsumer extends CasConsumer_ImplBase {
       e.printStackTrace();
     }
 
-    System.out.println("---------");
+//    documents.sort((p, o) -> p.getRank().compareTo(o.getRank()));
+    
+    documentMetric.registerAnswerAndGoldStandard(documents, gsDocuments);
+    //conceptMetric.registerAnswerAndGoldStandard(concepts, gsConcepts);
+    //tripleMetric.registerAnswerAndGoldStandard(triples, gsTriples);
 
   }
 
