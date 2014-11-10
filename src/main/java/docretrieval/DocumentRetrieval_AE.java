@@ -28,7 +28,7 @@ import edu.cmu.lti.oaqa.type.retrieval.Document;
 public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
   GoPubMedService service;
   KrovetzStemmer stemmer;
-
+  boolean baseline = true;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -51,7 +51,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
    */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
-//    System.out.println(aJCas.getDocumentText());
+    //    System.out.println(aJCas.getDocumentText());
     CollectionStatistics cStat = new CollectionStatistics();
 
     FSIterator<Annotation> iter = aJCas.getAnnotationIndex().iterator();
@@ -61,7 +61,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
 
       QueryInfo query = new QueryInfo(question.getText(), stemmer);
 
-//      System.out.println("Question: "+question.getText());
+      //      System.out.println("Question: "+question.getText());
 
       String questionText = question.getText().replace('?', ' ');
 
@@ -96,8 +96,13 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
 
 
       List<Pair<DocInfo, Double>> docScoreList = new ArrayList<Pair<DocInfo, Double>>();
+      int defaultRank = 1;
       for(DocInfo doc: cStat.docList) {
+
         double score = Ranker.scoreDoc(Ranker.RANKER_OKAPI, cStat, doc, query);
+        if(baseline) {
+          score = defaultRank++;
+        }
         docScoreList.add(new Pair<DocInfo, Double>(doc, score));
       }
 
@@ -105,7 +110,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
 
       int rank = 1;
       for(Pair<DocInfo, Double> p: docScoreList) {
-//        System.out.println(p.getValue());
+        //        System.out.println(p.getValue());
         Document d = TypeFactory.createDocument(aJCas, 
                 "http://www.ncbi.nlm.nih.gov/pubmed/"+p.getKey().pmid,
                 p.getKey().fieldTextMap.get("abstract"),
