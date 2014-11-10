@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.7" icons="true" automaticImage="JPEG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="edu.cmu.lti.oaqa.type.kb.Triple" project="project-team04" 
+    file="/project-team04/src/main/java/edu/cmu/lti/oaqa/type/kb/Triple.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="332" width="165" x="41" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="edu.cmu.lti.oaqa.type.kb.Entity" project="project-team04" 
+    file="/project-team04/src/main/java/edu/cmu/lti/oaqa/type/kb/Entity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="188" width="138" x="898" y="409"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="edu.cmu.lti.oaqa.type.kb.ConceptMention" project="project-team04" 
+    file="/project-team04/src/main/java/edu/cmu/lti/oaqa/type/kb/ConceptMention.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="242" width="198" x="466" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="edu.cmu.lti.oaqa.type.kb.Relation" project="project-team04" 
+    file="/project-team04/src/main/java/edu/cmu/lti/oaqa/type/kb/Relation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="188" width="154" x="704" y="409"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="edu.cmu.lti.oaqa.type.kb.Interpretation" project="project-team04" 
+    file="/project-team04/src/main/java/edu/cmu/lti/oaqa/type/kb/Interpretation.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="260" width="180" x="246" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="edu.cmu.lti.oaqa.type.kb.Concept" project="project-team04" 
+    file="/project-team04/src/main/java/edu/cmu/lti/oaqa/type/kb/Concept.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="296" width="160" x="801" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="edu.cmu.lti.oaqa.type.kb.EntityMention" project="project-team04" 
+    file="/project-team04/src/main/java/edu/cmu/lti/oaqa/type/kb/EntityMention.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="206" width="182" x="244" y="409"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="edu.cmu.lti.oaqa.type.kb.RelationMention" project="project-team04" 
+    file="/project-team04/src/main/java/edu/cmu/lti/oaqa/type/kb/RelationMention.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="206" width="198" x="466" y="409"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="9">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <generalization id="11">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="12">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
