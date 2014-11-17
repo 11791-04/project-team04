@@ -16,6 +16,8 @@ import edu.stanford.nlp.ling.CoreAnnotations.CharacterOffsetEndAnnotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
+import snippetextraction.SentenceInfo;
+
 /**
  * A class with a private constructor and only static public functions that stores the different
  * components
@@ -89,8 +91,8 @@ public class TextUtils {
     return res;
   }
   
-  public static List<String> stanfordSentenceTokenizer(String doc) {
-    List<String> res = new ArrayList<String>();
+  public static List<SentenceInfo> stanfordSentenceTokenizer(String doc) {
+    List<SentenceInfo> res = new ArrayList<SentenceInfo>();
 
     edu.stanford.nlp.pipeline.Annotation document = new edu.stanford.nlp.pipeline.Annotation(doc);
     TextUtils.pipeline.annotate(document);
@@ -98,11 +100,9 @@ public class TextUtils {
     System.out.println(document);
     for (CoreMap sent : document.get(SentencesAnnotation.class)) {
       String words = sent.get(TextAnnotation.class);
-      System.out.println(sent);
       int begin = sent.get(CharacterOffsetBeginAnnotation.class);
       int end = sent.get(CharacterOffsetEndAnnotation.class);
-      System.out.println("SENT: [" + begin + "-" + end + "] " + words);
-      res.add(words);
+      res.add(new SentenceInfo(words, begin, end, null));
     }
     return res;
   }
