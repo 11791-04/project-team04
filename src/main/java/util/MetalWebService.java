@@ -59,13 +59,10 @@ public class MetalWebService {
       System.err.println("Error processing Places API URL");
       return null;
     } catch (IOException e) {
-      System.err.println("Error connecting to Places API");
-      System.err.println("Retry in 3 seconds.");
       try {
         Thread.sleep(3000);
       } catch (InterruptedException e1) {
         // TODO Auto-generated catch block
-        e1.printStackTrace();
       }
       
       return get_JSON_Obj_by_URL(url);
@@ -82,7 +79,6 @@ public class MetalWebService {
     try {
       jsonObj = new JSONObject(jsonResults.toString());
     } catch (JSONException e) {
-      e.printStackTrace();
     }
     return jsonObj;
   }
