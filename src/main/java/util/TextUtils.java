@@ -10,7 +10,11 @@ import org.tartarus.snowball.ext.PorterStemmer;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.CharacterOffsetBeginAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.CharacterOffsetEndAnnotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.util.CoreMap;
 
 /**
  * A class with a private constructor and only static public functions that stores the different
@@ -43,7 +47,7 @@ public class TextUtils {
    */
   static {
     props = new Properties();
-    props.put("annotators", "tokenize");
+    props.put("annotators", "tokenize, ssplit");
     pipeline = new StanfordCoreNLP(props);
     stemmer = new EnglishMinimalStemmer();
   }
@@ -81,6 +85,24 @@ public class TextUtils {
     for (CoreLabel token : document.get(TokensAnnotation.class)) {
       String word = token.get(TextAnnotation.class).toLowerCase();
       res.add(word);
+    }
+    return res;
+  }
+  
+  public static List<String> stanfordSentenceTokenizer(String doc) {
+    List<String> res = new ArrayList<String>();
+
+    edu.stanford.nlp.pipeline.Annotation document = new edu.stanford.nlp.pipeline.Annotation(doc);
+    TextUtils.pipeline.annotate(document);
+
+    System.out.println(document);
+    for (CoreMap sent : document.get(SentencesAnnotation.class)) {
+      String words = sent.get(TextAnnotation.class);
+      System.out.println(sent);
+      int begin = sent.get(CharacterOffsetBeginAnnotation.class);
+      int end = sent.get(CharacterOffsetEndAnnotation.class);
+      System.out.println("SENT: [" + begin + "-" + end + "] " + words);
+      res.add(words);
     }
     return res;
   }
