@@ -389,6 +389,14 @@ public class TypeFactory {
             TypeConstants.TITLE_UNKNOWN, TypeConstants.DOC_ID_UNKNOWN, offsetInBeginSection,
             offsetInEndSection, beginSection, endSection, TypeConstants.ASPECTS_UNKNOWN);
   }
+  
+  public static Passage createGoldStandardPassage(JCas jcas, String uri, String text, int offsetInBeginSection,
+          int offsetInEndSection, String beginSection, String endSection) {
+    return createPassage(jcas, uri, TypeConstants.SCORE_UNKNOWN, text, TypeConstants.RANK_UNKNOWN,
+            TypeConstants.QUERY_STRING_UNKNOWN, TypeConstants.SEARCH_ID_UNKNOWN, new ArrayList<>(),
+            TypeConstants.TITLE_UNKNOWN, TypeConstants.SEARCH_ID_GOLD_STANDARD, offsetInBeginSection,
+            offsetInEndSection, beginSection, endSection, TypeConstants.ASPECTS_UNKNOWN);
+  }
 
   public static ConceptSearchResult createConceptSearchResult(JCas jcas, Concept concept,
           String uri, double score, String text, int rank, String queryString, String searchId,
