@@ -2,6 +2,8 @@ package scoring;
 
 import java.util.HashMap;
 
+import counting.FrequencyCounter;
+import counting.FrequencyCounterFactory;
 import snippetextraction.SentenceInfo;
 import docretrieval.CollectionStatistics;
 
@@ -13,8 +15,15 @@ import docretrieval.CollectionStatistics;
  */
 public class CandidateAnswerAdapter extends CandidateAnswer {
 
-  public CandidateAnswerAdapter(SentenceInfo sentence, CollectionStatistics cs) {
-    super(null, null, sentence.getContent(), new HashMap<String,Integer>(cs.collectionTermFreqMap));
+  private static String  counterType = "freq";
+  
+  public CandidateAnswerAdapter(SentenceInfo sentence) {
+    super(null, null, sentence.getContent(), getTermFrequencies(sentence));          
   }
-
+  
+  private static HashMap<String,Integer> getTermFrequencies(SentenceInfo s) {
+    FrequencyCounter fc = FrequencyCounterFactory.getNewFrequencyCounter(counterType);
+    fc.tokenizeAndPutAll(s.getContent(), "\\s");
+    return (HashMap<String, Integer>) fc;
+  }
 }

@@ -25,8 +25,8 @@ public class SentenceScorer extends GenericSentenceScorer {
   
   public SentenceScorer(SentenceInfo query, SentenceInfo sentence, CollectionStatistics cStat) {
     super(query, sentence, cStat);
-    q = new QuestionAdapter(sentence, cStat);
-    ca = new CandidateAnswerAdapter(sentence, cStat);
+    q = new QuestionAdapter(sentence);
+    ca = new CandidateAnswerAdapter(sentence);
   }
 
   @Override
