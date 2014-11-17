@@ -83,7 +83,7 @@ public class JsonCollectionReaderHelper {
 		if (input.getSnippets() != null) {
 			input.getSnippets()
 					.stream()
-					.map(snippet -> TypeFactory.createPassage(jcas,
+					.map(snippet -> TypeFactory.createGoldStandardPassage(jcas,
 							snippet.getDocument(), snippet.getText(),
 							snippet.getOffsetInBeginSection(),
 							snippet.getOffsetInEndSection(),
