@@ -7,7 +7,6 @@ import java.util.Properties;
 import org.apache.lucene.analysis.en.EnglishMinimalStemmer;
 import org.tartarus.snowball.ext.PorterStemmer;
 
-import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
