@@ -82,6 +82,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
         String abstractText = d.getDocumentAbstract();
         String year = d.getYear();
         String pmid = d.getPmid();
+        System.out.println("PMID2:" + d.getPmid());
 
         Map<String, String> fieldTextMap = new HashMap<String, String>();
         fieldTextMap.put("title", title);
