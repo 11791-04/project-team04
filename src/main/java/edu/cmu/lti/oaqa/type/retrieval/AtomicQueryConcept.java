@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** A primitive query concept represented by a single text string
- * Updated by JCasGen Sat Oct 18 19:40:19 EDT 2014
- * XML source: /home/mog/dev/11791/project/project-team04-archetype/src/main/resources/type/OAQATypes.xml
+ * Updated by JCasGen Sun Nov 16 20:40:58 EST 2014
+ * XML source: /home/nwolfe/git/project-team04/src/main/resources/descriptors/PubMedAggregateAEDescriptor.xml
  * @generated */
 public class AtomicQueryConcept extends QueryConcept {
   /** @generated

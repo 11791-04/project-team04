@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>  
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="BasicConsumerDescriptor">
+      <import name="descriptors.BasicConsumerDescriptor"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ConceptAEDescriptor">
+      <import name="descriptors.ConceptAEDescriptor"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DocumentRetrieval_AE">
+      <import name="descriptors.DocumentRetrieval_AE"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SnippetAEDescriptor">
+      <import name="descriptors.SnippetAEDescriptor"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TriplesExtractionDescriptor">
+      <import name="descriptors.TriplesExtractionDescriptor"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>PubMedAggregateAEDescriptor</name>
+    <description/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>ConceptAEDescriptor</node>
+        <node>TriplesExtractionDescriptor</node>
+        <node>DocumentRetrieval_AE</node>
+        <node>SnippetAEDescriptor</node>
+        <node>BasicConsumerDescriptor</node>
+      </fixedFlow>
+    </flowConstraints>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+  <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

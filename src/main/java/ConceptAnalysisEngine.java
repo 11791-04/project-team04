@@ -57,8 +57,7 @@ public class ConceptAnalysisEngine extends JCasAnnotator_ImplBase {
     ConceptSearchResult csr = TypeFactory.createConceptSearchResult(jcas, concept, c.getUri(),
             f.getScore(), c.getLabel(), queryString);
     csr.setRank(rank);
-    System.out.println("Concept: " + concept.getName() + " URI: "
-            + concept.getUris().getNthElement(0));
+    //System.out.println("Concept: " + concept.getName() + " URI: " + concept.getUris().getNthElement(0));
     csr.addToIndexes(jcas);
   }
 }
