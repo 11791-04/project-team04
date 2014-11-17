@@ -1,11 +1,9 @@
 package util;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
-import org.apache.uima.UIMARuntimeException;
 
 import edu.cmu.lti.oaqa.bio.bioasq.services.*;
 
