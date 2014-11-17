@@ -29,7 +29,6 @@ public class GoPubMedServiceProxy {
   public List<OntologyServiceResponse.Finding> getFindingsFromQuery(String query) {
     List<OntologyServiceResponse.Finding> findings = new LinkedList<OntologyServiceResponse.Finding>();
     try {
-
       OntologyServiceResponse.Result diseaseOntologyResult = service
               .findDiseaseOntologyEntitiesPaged(query, 0);
       System.out.println("Disease ontology: " + diseaseOntologyResult.getFindings().size());
@@ -91,7 +90,11 @@ public class GoPubMedServiceProxy {
     try {
       pubmedResult = service.findPubMedCitations(query, 0);
       System.out.println("Documents: " + pubmedResult.getSize());
-      docs.addAll(pubmedResult.getDocuments());
+      for(PubMedSearchServiceResponse.Document doc : pubmedResult.getDocuments()) {
+        if(doc.isFulltextAvailable()){
+          docs.add(doc);
+        }
+      }
     } catch (ClientProtocolException e) {
       System.out.println("ClientProtocolException occurred! " + e.getMessage());
     } catch (Exception e) {
