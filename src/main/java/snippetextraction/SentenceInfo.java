@@ -16,8 +16,5 @@ public class SentenceInfo {
     this.endIndex = endIndex;
     this.hostDoc = hostDoc;
   }
-
-  
-  
-  
 }
+
