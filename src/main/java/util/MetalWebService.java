@@ -15,19 +15,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * @author saxman
+ * @author Di Xu
  */
 public class MetalWebService {
-  public static final String LOG_TAG = "ExampleApp";
 
   public static final String METAL_API_BASE = "http://metal.lti.cs.cmu.edu:30002/pmc/";
 
-
-
-
-  public static URL buildUrl(String searchType, String keyword, Double lat, Double lng, Integer radius, String reference) {
+  
+  public static JSONObject getDocFullTextJSon(String pmid) {
+    return get_JSON_Obj_by_URL(buildUrl(pmid));
+  }
+  
+  public static URL buildUrl(String pmid) {
     StringBuilder sb = new StringBuilder(METAL_API_BASE);
-    sb.append(searchType);
+    sb.append(pmid);
     
     System.out.printf("URL: %s\n", sb.toString());
 
@@ -74,7 +75,7 @@ public class MetalWebService {
       }
     }
 
-    System.out.println(jsonResults.toString());
+    //System.out.println(jsonResults.toString());
 
     // Create a JSON object hierarchy from the results
     JSONObject jsonObj = null;
@@ -86,7 +87,20 @@ public class MetalWebService {
     return jsonObj;
   }
 
-
+  public static void main(String[] args) {
+    JSONObject docFull = getDocFullTextJSon("23193287");
+    
+    System.out.println(docFull.get("pmid"));
+    System.out.println(docFull.get("title"));
+    
+    JSONArray sectionArr = docFull.getJSONArray("sections");
+    System.out.println(sectionArr.length());
+    
+    for(int i=0; i<sectionArr.length(); i++) {
+      System.out.println(sectionArr.get(i));
+    }
+    
+  }
 
 
 }
