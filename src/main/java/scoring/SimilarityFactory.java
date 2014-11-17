@@ -1,4 +1,4 @@
-package stuff;
+package scoring;
 
 public class SimilarityFactory {
   
@@ -18,7 +18,9 @@ public class SimilarityFactory {
 
   private static String current = weighted;
 
-  public static Similarity getNewSimilarity() {
+  public static Similarity getNewSimilarity(String type) {
+    if(type != null)
+      current = type;
     if (current.equals(dj))
       return new DiceJaccardStrategy();
     else if (current.equals(dice))

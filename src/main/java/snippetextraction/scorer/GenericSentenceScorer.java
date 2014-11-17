@@ -21,8 +21,5 @@ public abstract class GenericSentenceScorer {
    * Must override
    * @return confidence
    */
-  public double score() {
-    return Double.NaN;
-  }
-  
+  public abstract double score(); 
 }

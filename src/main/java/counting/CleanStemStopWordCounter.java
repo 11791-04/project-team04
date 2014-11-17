@@ -1,4 +1,4 @@
-package stuff;
+package counting;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,11 +13,13 @@ import org.apache.uima.UIMARuntimeException;
 
 /*
  * Extension of the FrequencyCounter class which does preprocessing on the data by removing 
- * all stop words, lowercasing, and then before adding it to the map
+ * all whitespace characters and punctuation marks using a Regex expression, then 
+ * removing all stop words and then before adding it to the map using the Stanford 
+ * Lemmatizer stemWord() function which stems the word and returns it in lowercase form. 
  */
-public class StopWordCounter extends FrequencyCounter {
+public class CleanStemStopWordCounter extends FrequencyCounter {
 
-  private static final long serialVersionUID = -7268589467673447334L;
+  private static final long serialVersionUID = 341926969087233677L;
 
   private final Pattern punc = Pattern.compile("\\p{Punct}+");
 
@@ -25,7 +27,7 @@ public class StopWordCounter extends FrequencyCounter {
 
   private final HashMap<String, String> stopwords;
 
-  public StopWordCounter() {
+  public CleanStemStopWordCounter() {
     super();
     stopwords = new HashMap<String, String>();
     try {
@@ -52,7 +54,9 @@ public class StopWordCounter extends FrequencyCounter {
     m = wsp.matcher(doc);
     doc = m.replaceAll(" ");
     for (String str : doc.split(delimiter)) {
+      // Lemmatize the words here
       if (!stopwords.containsKey(str)) {
+        str = StanfordLemmatizer.stemWord(str);
         items.add(str);
       }
     }

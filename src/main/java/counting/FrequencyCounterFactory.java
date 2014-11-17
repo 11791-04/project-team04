@@ -1,4 +1,4 @@
-package stuff;
+package counting;
 
 public class FrequencyCounterFactory {
   private static String cleanStem = "cleanStem";
@@ -15,7 +15,9 @@ public class FrequencyCounterFactory {
 
   private static String current = cleanStem;
 
-  public static FrequencyCounter getNewFrequencyCounter() {
+  public static FrequencyCounter getNewFrequencyCounter(String type) {
+    if(type != null) 
+      current = type;
     if (current.equals(cleanStem))
       return new CleanStemCounter();
     else if (current.equals(stemStopWord))

@@ -1,4 +1,4 @@
-package stuff;
+package counting;
 /*
  *  Copyright 2014 Carnegie Mellon University
  *

@@ -1,37 +1,28 @@
-package stuff;
+package scoring;
 
 /*
- * Returns a weighted sum of all strategies
+ * Takes the average of all other similarity metrics
  */
-public class WeightedSumStrategy implements Similarity {
+public class AverageStrategy implements Similarity {
 
   private DiceSimilarityStrategy dss;
 
   private JaccardSimilarityStrategy jss;
 
   private CosineSimilarityStrategy cos;
-  
-  /**
-   * Here's the black magic!
-   */
-  private Double diceCoeff = 0.1;
 
-  private Double jaccCoeff = 0.3;
-
-  private Double cosCoeff = 0.5;
-
-  public WeightedSumStrategy() {
+  public AverageStrategy() {
     dss = new DiceSimilarityStrategy();
     jss = new JaccardSimilarityStrategy();
     cos = new CosineSimilarityStrategy();
   }
 
   @Override
-  public Double computeSimilarity(Question query, Answer ans) {
+  public Double computeSimilarity(Question query, CandidateAnswer ans) {
     Double dice = dss.computeSimilarity(query, ans);
     Double jacc = jss.computeSimilarity(query, ans);
     Double cosine = cos.computeSimilarity(query, ans);
-    return (dice * diceCoeff) + (jacc * jaccCoeff) + (cosine * cosCoeff);
+    return (dice + jacc + cosine) / 3;
   }
 
 }

@@ -1,4 +1,4 @@
-package stuff;
+package scoring;
 
 public class DiceJaccardStrategy implements Similarity {
 
@@ -15,7 +15,7 @@ public class DiceJaccardStrategy implements Similarity {
   }
 
   @Override
-  public Double computeSimilarity(Question query, Answer ans) {
+  public Double computeSimilarity(Question query, CandidateAnswer ans) {
     Double dice = dss.computeSimilarity(query, ans);
     Double jaccard = jss.computeSimilarity(query, ans);
     Double[] data = { dice, jaccard };

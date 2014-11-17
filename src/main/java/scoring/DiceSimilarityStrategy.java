@@ -1,4 +1,4 @@
-package stuff;
+package scoring;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -7,7 +7,7 @@ import java.util.Set;
 public class DiceSimilarityStrategy implements Similarity {
 
   @Override
-  public Double computeSimilarity(Question query, Answer ans) {
+  public Double computeSimilarity(Question query, CandidateAnswer ans) {
     return diceCoefficient(query.getDocText(), ans.getDocText());
   }
 

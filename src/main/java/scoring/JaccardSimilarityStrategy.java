@@ -1,4 +1,4 @@
-package stuff;
+package scoring;
 
 import java.util.Map;
 import java.util.Set;
@@ -14,12 +14,12 @@ import edu.stanford.nlp.util.Sets;
 public class JaccardSimilarityStrategy implements Similarity {
 
   @Override
-  public Double computeSimilarity(Question query, Answer ans) {
+  public Double computeSimilarity(Question query, CandidateAnswer ans) {
     return jaccardCoefficient(query.getDocTokenFrequencies(), ans.getDocTokenFrequencies());
   }
 
   /**
-   * Compute the Jaccard coefficient between a Question and Answer
+   * Compute the Jaccard coefficient between a Question and CandidateAnswer
    * 
    * Source:
    * http://web.mit.edu/course/6/6.863/OldFiles/tools/tregex/src/edu/stanford/nlp/stats/Counters

@@ -1,4 +1,4 @@
-package stuff;
+package counting;
 
 import java.util.LinkedList;
 import java.util.List;

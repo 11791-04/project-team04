@@ -1,4 +1,4 @@
-package stuff;
+package scoring;
 
 /**
  * Computes all other metrics and takes a vote
@@ -20,7 +20,7 @@ public class VoteStrategy implements Similarity {
   }
 
   @Override
-  public Double computeSimilarity(Question query, Answer ans) {
+  public Double computeSimilarity(Question query, CandidateAnswer ans) {
     Double dice = dss.computeSimilarity(query, ans);
     Double jacc = jss.computeSimilarity(query, ans);
     Double cosine = cos.computeSimilarity(query, ans);

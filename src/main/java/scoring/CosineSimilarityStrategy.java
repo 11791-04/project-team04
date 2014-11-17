@@ -1,15 +1,15 @@
-package stuff;
+package scoring;
 
 import java.util.Map;
 
 /*
- * A type of Similarity object which takes a Question and Answer object and returns
+ * A type of Similarity object which takes a Question and CandidateAnswer object and returns
  * the cosine similarity between them
  */
 public class CosineSimilarityStrategy implements Similarity {
 
   @Override
-  public Double computeSimilarity(Question query, Answer ans) {
+  public Double computeSimilarity(Question query, CandidateAnswer ans) {
     return computeCosineSimilarity(query.getDocTokenFrequencies(), ans.getDocTokenFrequencies());
   }
 

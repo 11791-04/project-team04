@@ -1,4 +1,4 @@
-package stuff;
+package scoring;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,9 +1,9 @@
-package stuff;
+package scoring;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Answer implements Comparable<Answer> {
+public class CandidateAnswer implements Comparable<CandidateAnswer> {
 
   private final Integer queryId;
 
@@ -17,7 +17,7 @@ public class Answer implements Comparable<Answer> {
   
   private Double similarity = 0.0;
 
-  public Answer(Integer queryId, Integer relevance, String docText,
+  public CandidateAnswer(Integer queryId, Integer relevance, String docText,
           HashMap<String, Integer> docTokenFreqs) {
     super();
     this.queryId = queryId;
@@ -69,7 +69,7 @@ public class Answer implements Comparable<Answer> {
   }
 
   @Override
-  public int compareTo(Answer o) {
+  public int compareTo(CandidateAnswer o) {
     if (this.similarity > o.getSimilarity()) {
       return -1;
     } else if (this.similarity < o.getSimilarity()) {
