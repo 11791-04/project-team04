@@ -102,7 +102,7 @@ public class TextUtils {
       String words = sent.get(TextAnnotation.class);
       int begin = sent.get(CharacterOffsetBeginAnnotation.class);
       int end = sent.get(CharacterOffsetEndAnnotation.class);
-      res.add(new SentenceInfo(words, begin, end, null));
+      res.add(new SentenceInfo(words, -1, begin, end, null));
     }
     return res;
   }
