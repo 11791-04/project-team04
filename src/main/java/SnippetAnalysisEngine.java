@@ -17,6 +17,7 @@ import edu.cmu.lti.oaqa.type.retrieval.Document;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
+import edu.cmu.lti.oaqa.type.retrieval.Passage;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,6 +30,7 @@ import snippetextraction.SentenceInfo;
 import util.MetalWebService;
 import util.TextUtils;
 import util.TypeConstants;
+import util.TypeFactory;
 
 public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
 
@@ -110,6 +112,20 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
             .sorted((e1, e2) -> Double.compare(e2.score, e1.score))
             .collect(Collectors.toList())
             ;
+/*    
+  createPassage(JCas jcas, String uri, double score, String text, int rank,
+          String queryString, String searchId, Collection<CandidateAnswerVariant> candidateAnswers,
+          String title, String docId, int offsetInBeginSection, int offsetInEndSection,
+          String beginSection, String endSection, String aspects);
+          */
+    
+    String _query = question.getText();
+    allSentences.stream()
+					.map(snippet -> TypeFactory.createPassage(aJCas, snippet.hostDoc.pmid, snippet.score.doubleValue(), snippet.content, -1,
+					        _query, null, new ArrayList<>(),
+					        snippet.hostDoc.fieldTextMap.get("title"), snippet.hostDoc.pmid, snippet.startIndex, snippet.endIndex,
+							"" + snippet.sectionIndex, "" + snippet.sectionIndex, TypeConstants.ASPECTS_UNKNOWN))
+					.forEachOrdered(Passage::addToIndexes);
     
   }
 
