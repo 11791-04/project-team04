@@ -67,6 +67,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
         }
         try {
           String pmid = doc.getDocId();
+          String uri = doc.getUri();
           JSONObject docFull = MetalWebService.getDocFullTextJSon(pmid);
           JSONArray sectionArr = docFull.getJSONArray("sections");
           System.out.println(sectionArr.length());
@@ -76,7 +77,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
           for (int i = 0; i < sectionArr.length(); i++) {
             fieldTextMap.put("section:" + i, (String) sectionArr.get(i));
           }
-          DocInfo docInfo = new DocInfo(pmid, fieldTextMap, null, stemmer);
+          DocInfo docInfo = new DocInfo(uri, pmid, fieldTextMap, null, stemmer);
           cStat.addDoc(docInfo);
 
           for (int i = 0; i < sectionArr.length(); i++) {
@@ -126,7 +127,6 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
 					        snippet.hostDoc.fieldTextMap.get("title"), snippet.hostDoc.pmid, snippet.startIndex, snippet.endIndex,
 							"" + snippet.sectionIndex, "" + snippet.sectionIndex, TypeConstants.ASPECTS_UNKNOWN))
 					.forEachOrdered(Passage::addToIndexes);
-    
   }
 
   @Override

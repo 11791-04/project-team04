@@ -11,6 +11,7 @@ public class DocInfo {
 
   
   public String pmid;
+  public String uri;
 
   public Map<String, String> fieldTextMap;
   
@@ -25,7 +26,7 @@ public class DocInfo {
   public Map<String, Integer> fieldLenMap;
 
   
-  public DocInfo(String pmid, Map<String, String> fieldTextMap, String year, KrovetzStemmer stemmer) {
+  public DocInfo(String uri, String pmid, Map<String, String> fieldTextMap, String year, KrovetzStemmer stemmer) {
     super();
     this.pmid = pmid;
     this.fieldTextMap = fieldTextMap;
