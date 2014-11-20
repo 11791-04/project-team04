@@ -81,6 +81,7 @@ public class JsonCollectionReaderHelper {
 					.forEach(Document::addToIndexes);
 		}
 		if (input.getSnippets() != null) {
+		  System.out.println("SNIPPETS ARE NOT NULL: " + input.getSnippets());
 			input.getSnippets()
 					.stream()
 					.map(snippet -> TypeFactory.createGoldStandardPassage(jcas,

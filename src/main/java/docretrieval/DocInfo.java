@@ -29,6 +29,7 @@ public class DocInfo {
   public DocInfo(String uri, String pmid, Map<String, String> fieldTextMap, String year, KrovetzStemmer stemmer) {
     super();
     this.pmid = pmid;
+    this.uri = uri;
     this.fieldTextMap = fieldTextMap;
     this.year = year;
 

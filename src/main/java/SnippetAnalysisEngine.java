@@ -85,7 +85,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
             List<SentenceInfo> sentences = TextUtils.stanfordSentenceTokenizer(section);
             for (SentenceInfo sentence : sentences) {
               sentence.hostDoc = docInfo;
-              sentence.sectionIndex = i;
+              sentence.sectionIndex = "sections." + i;
               allSentences.add(sentence);
               System.out.println(sentence);
             }
@@ -99,7 +99,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    SentenceInfo questionInfo = new SentenceInfo(question.getText(), -1, -1, -1, null);
+    SentenceInfo questionInfo = new SentenceInfo(question.getText(), null, -1, -1, null);
     scoring.Question query = new scoring.QuestionAdapter(questionInfo);
     Similarity similarity = SimilarityFactory.getNewSimilarity(SimilarityFactory.cos);
 
@@ -122,7 +122,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
     
     String _query = question.getText();
     allSentences.stream()
-					.map(snippet -> TypeFactory.createPassage(aJCas, snippet.hostDoc.pmid, snippet.score.doubleValue(), snippet.content, -1,
+					.map(snippet -> TypeFactory.createPassage(aJCas, snippet.hostDoc.uri, snippet.score.doubleValue(), snippet.content, -1,
 					        _query, null, new ArrayList<>(),
 					        snippet.hostDoc.fieldTextMap.get("title"), snippet.hostDoc.pmid, snippet.startIndex, snippet.endIndex,
 							"" + snippet.sectionIndex, "" + snippet.sectionIndex, TypeConstants.ASPECTS_UNKNOWN))
