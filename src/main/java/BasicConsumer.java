@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -13,7 +12,6 @@ import org.apache.uima.resource.ResourceProcessException;
 import org.apache.uima.util.ProcessTrace;
 
 import docretrieval.DocInfo;
-import docretrieval.stemmer.KrovetzStemmer;
 import snippetextraction.SentenceInfo;
 import util.TypeConstants;
 import edu.cmu.lti.oaqa.type.input.Question;
@@ -21,10 +19,7 @@ import edu.cmu.lti.oaqa.type.retrieval.ConceptSearchResult;
 import edu.cmu.lti.oaqa.type.retrieval.Document;
 import edu.cmu.lti.oaqa.type.retrieval.Passage;
 import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
-import edu.stanford.nlp.io.EncodingPrintWriter.out;
 import edu.cmu.lti.oaqa.type.kb.Triple;
-import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
-import edu.stanford.nlp.io.EncodingPrintWriter.out;
 
 public class BasicConsumer extends CasConsumer_ImplBase {
 

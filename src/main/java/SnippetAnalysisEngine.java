@@ -108,6 +108,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
       sentence.score = similarity.computeSimilarity(query, answer);
     }
     
+    //TODO try different similarity functions
     allSentences = (ArrayList<SentenceInfo>) allSentences.stream()
             .filter(e -> e.score >= 0.0001)
             .sorted((e1, e2) -> Double.compare(e2.score, e1.score))

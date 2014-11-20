@@ -5,7 +5,6 @@ import java.util.HashMap;
 import counting.FrequencyCounter;
 import counting.FrequencyCounterFactory;
 import snippetextraction.SentenceInfo;
-import docretrieval.CollectionStatistics;
 
 /**
  * Converts between a {@link SentenceInfo} and a {@link CandidateAnswer} type 
