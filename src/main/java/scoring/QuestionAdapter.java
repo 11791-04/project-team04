@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import counting.FrequencyCounter;
 import counting.FrequencyCounterFactory;
-import docretrieval.CollectionStatistics;
 import snippetextraction.SentenceInfo;
 
 /**

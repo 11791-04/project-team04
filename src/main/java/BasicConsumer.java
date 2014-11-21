@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -10,17 +11,15 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
 import org.apache.uima.util.ProcessTrace;
 
+import docretrieval.DocInfo;
+import snippetextraction.SentenceInfo;
 import util.TypeConstants;
 import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.retrieval.ConceptSearchResult;
 import edu.cmu.lti.oaqa.type.retrieval.Document;
 import edu.cmu.lti.oaqa.type.retrieval.Passage;
 import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
-import edu.stanford.nlp.io.EncodingPrintWriter.out;
-
 import edu.cmu.lti.oaqa.type.kb.Triple;
-import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
-import edu.stanford.nlp.io.EncodingPrintWriter.out;
 
 public class BasicConsumer extends CasConsumer_ImplBase {
 
@@ -40,6 +39,11 @@ public class BasicConsumer extends CasConsumer_ImplBase {
     Triple triple = tsr.getTriple();
     return "<s>" + triple.getSubject() + "</s><o>" + triple.getObject() + "</o><p>"
             + triple.getPredicate() + "</p>";
+  }
+  
+  private SentenceInfo passage2sentence(Passage passage) {
+    return new SentenceInfo(passage.getText(), passage.getBeginSection(), passage.getOffsetInBeginSection(), passage.getOffsetInEndSection(), 
+            new DocInfo(passage.getUri(), passage.getDocId(), new HashMap<String, String>(), null, null), passage.getScore());
   }
 
   @Override
@@ -67,6 +71,9 @@ public class BasicConsumer extends CasConsumer_ImplBase {
 
     ArrayList<String> triples = new ArrayList<String>();
     ArrayList<String> gsTriples = new ArrayList<String>();
+
+    ArrayList<SentenceInfo> snippets = new ArrayList<SentenceInfo>();
+    ArrayList<SentenceInfo> gsSnippets = new ArrayList<SentenceInfo>();
 
     try {
       FSIterator<?> it;
@@ -125,12 +132,39 @@ public class BasicConsumer extends CasConsumer_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    
+
+    try {
+      FSIterator<?> it;
+      it = aJCas.getFSIndexRepository().getAllIndexedFS(
+              aJCas.getRequiredType("edu.cmu.lti.oaqa.type.retrieval.Passage"));
+
+      while (it.hasNext()) {
+        Passage passage = (Passage) it.next();
+        SentenceInfo snippet = passage2sentence(passage);
+        if (passage.getSearchId() != null
+                && passage.getSearchId().equals(TypeConstants.SEARCH_ID_GOLD_STANDARD)) {
+          gsSnippets.add(snippet);
+        } else {
+          snippets.add(snippet);
+        }
+      }
+    } catch (CASException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    
+    System.out.println("gs snippet:\n" + gsSnippets);
+    System.out.println("snippet:\n" + snippets);
 
 //    documents.sort((p, o) -> p.getRank().compareTo(o.getRank()));
     
     documentMetric.registerAnswerAndGoldStandard(documents, gsDocuments);
     conceptMetric.registerAnswerAndGoldStandard(concepts, gsConcepts);
     tripleMetric.registerAnswerAndGoldStandard(triples, gsTriples);
+    
+// TODO
+//    snippetMetric.registerAnswerAndGoldStandard(snippets, gsSnippets);
 
   }
 

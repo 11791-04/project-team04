@@ -2,19 +2,19 @@ package scoring;
 
 public class SimilarityFactory {
   
-  private static String weighted = "weighted";
+  public final static String weighted = "weighted";
   
-  private static String avg = "average";
+  public final static String avg = "average";
   
-  private static String vote = "vote";
+  public final static String vote = "vote";
 
-  private static String dj = "dice-jaccard";
+  public final static String dj = "dice-jaccard";
 
-  private static String dice = "dice";
+  public final static String dice = "dice";
 
-  private static String jaccard = "jaccard";
+  public final static String jaccard = "jaccard";
 
-  private static String cos = "cosine";
+  public final static String cos = "cosine";
 
   private static String current = weighted;
 

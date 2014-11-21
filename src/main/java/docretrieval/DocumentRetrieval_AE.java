@@ -88,7 +88,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
         fieldTextMap.put("title", title);
         fieldTextMap.put("abstract", abstractText);
 
-        DocInfo docInfo = new DocInfo(pmid, fieldTextMap, year, stemmer);
+        DocInfo docInfo = new DocInfo("http://www.ncbi.nlm.nih.gov/pubmed/" + pmid, pmid, fieldTextMap, year, stemmer);
         cStat.addDoc(docInfo);  // Update collection statistics
       }
       cStat.finalize();
