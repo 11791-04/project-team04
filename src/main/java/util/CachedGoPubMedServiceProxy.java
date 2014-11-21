@@ -1,12 +1,12 @@
 package util;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.File;
 import java.util.List;
-
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import edu.cmu.lti.oaqa.bio.bioasq.services.LinkedLifeDataServiceResponse.Entity;
 import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse.Finding;
@@ -17,6 +17,9 @@ public class CachedGoPubMedServiceProxy extends GoPubMedServiceProxy {
   private BetterMap<String, Finding> cachedFindings;
   private BetterMap<String, Entity> cachedEntities;
   private BetterMap<String, Document> cachedDocuments;
+  private final String cachePath = "src/main/resources/cache/";
+  private final Pattern punc = Pattern.compile("\\p{Punct}+");
+  private final Pattern wsp = Pattern.compile("\\p{Space}+");
   
   public CachedGoPubMedServiceProxy() {
     super();
@@ -37,23 +40,37 @@ public class CachedGoPubMedServiceProxy extends GoPubMedServiceProxy {
     return new BetterMap<String, Finding>();
   }
   
-  private PrintStream getWriter(String name) {
-    String hash = name.replaceAll("\\s", "_");
+  private String cleanName(String s) {
+    Matcher m = punc.matcher(s);
+    s = m.replaceAll("");
+    m = wsp.matcher(s);
+    s = m.replaceAll("_");
+    return s;
+  }
+  
+  private ObjectOutputStream getWriter(String name) {
+    String hash = cleanName(name);
     try {
-      PrintStream ps = new PrintStream(hash);
-      return ps;
-    } catch (FileNotFoundException e) {
-      System.out.println("FileNotFoundException: " + e.getMessage());
+      FileOutputStream fs = new FileOutputStream(new File(cachePath + hash + ".ser"));
+      ObjectOutputStream oos = new ObjectOutputStream(fs);
+      return oos;
+    } catch (IOException e) {
+      System.out.println("IOException: " + e.getMessage());
     }
     return null;
   }
-
+  
   @Override
   public List<Finding> getFindingsFromQuery(String query) {
     if(!cachedFindings.containsKey(query)) {
-      //PrintStream ps = getWriter(query);
-      //ps.println(query);
-      for(Finding f : super.getFindingsFromQuery(query)) {
+      ObjectOutputStream os = getWriter(query);
+      List<Finding> findings = super.getFindingsFromQuery(query);
+      try {
+        os.writeBytes(query);
+      } catch (IOException e) {
+        System.out.println("IOException: " + e.getMessage());
+      }
+      for(Finding f : findings) {
         cachedFindings.addItem(query, f);
       }
     } 
