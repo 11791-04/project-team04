@@ -10,6 +10,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import util.GoPubMedServiceProxy;
+import util.GoPubMedServiceProxyFactory;
 import util.TypeFactory;
 import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse;
 import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse.Finding;
@@ -24,7 +25,7 @@ public class ConceptAnalysisEngine extends JCasAnnotator_ImplBase {
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    this.service = new GoPubMedServiceProxy();
+    this.service = GoPubMedServiceProxyFactory.getInstance();
   }
 
   @Override
