@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <primitive>true</primitive>  <annotatorImplementationName>ConceptAnalysisEngine</annotatorImplementationName>
+  <primitive>true</primitive>  <annotatorImplementationName>descriptorimpl.SnippetAnalysisEngine</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>conceptAEDescriptor</name>
+    <name>SnippetAEDescriptor</name>
     <description/>
     <version>1.0</version>
     <vendor/>
@@ -12,7 +11,7 @@
     <configurationParameterSettings/>
     <typeSystemDescription>
       <imports>
-        <import name="type.OAQATypes"/>
+        <import name="bioasq.type.OAQATypes"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -26,7 +25,7 @@
     </capabilities>
   <operationalProperties>
       <modifiesCas>true</modifiesCas>
-      <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>

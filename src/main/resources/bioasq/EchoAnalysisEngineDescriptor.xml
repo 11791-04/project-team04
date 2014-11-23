@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <implementationName>QuestionReader</implementationName>
-  <processingResourceMetaData>
-    <name>questionReaderDescriptor</name>
+  <primitive>true</primitive>  <annotatorImplementationName>descriptorimpl.EchoAnalysisEngine</annotatorImplementationName>
+  <analysisEngineMetaData>
+    <name>EchoAnalysisEngineDescriptor</name>
     <description/>
     <version>1.0</version>
     <vendor/>
@@ -25,9 +25,9 @@
     </capabilities>
   <operationalProperties>
       <modifiesCas>true</modifiesCas>
-      <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
-      <outputsNewCASes>true</outputsNewCASes>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
-  </processingResourceMetaData>
+  </analysisEngineMetaData>
   <resourceManagerConfiguration/>
-</collectionReaderDescription>
+</analysisEngineDescription>

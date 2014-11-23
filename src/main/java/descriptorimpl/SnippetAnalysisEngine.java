@@ -1,3 +1,4 @@
+package descriptorimpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,19 +8,9 @@ import java.util.stream.Collectors;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-
-import docretrieval.CollectionStatistics;
-import docretrieval.DocInfo;
-import docretrieval.stemmer.KrovetzStemmer;
-import edu.cmu.lti.oaqa.type.input.Question;
-import edu.cmu.lti.oaqa.type.retrieval.Document;
-
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
-
-import edu.cmu.lti.oaqa.type.retrieval.Passage;
-
 import org.apache.uima.resource.ResourceInitializationException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,12 +20,17 @@ import scoring.CandidateAnswerAdapter;
 import scoring.Similarity;
 import scoring.SimilarityFactory;
 import snippetextraction.SentenceInfo;
-import util.MetalWebService;
 import util.TextUtils;
 import util.TypeConstants;
 import util.TypeFactory;
 import util.WebAPIServiceProxy;
 import util.WebAPIServiceProxyFactory;
+import docretrieval.CollectionStatistics;
+import docretrieval.DocInfo;
+import docretrieval.stemmer.KrovetzStemmer;
+import edu.cmu.lti.oaqa.type.input.Question;
+import edu.cmu.lti.oaqa.type.retrieval.Document;
+import edu.cmu.lti.oaqa.type.retrieval.Passage;
 
 public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
 

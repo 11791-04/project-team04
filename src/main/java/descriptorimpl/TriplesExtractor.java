@@ -1,3 +1,4 @@
+package descriptorimpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,12 @@ import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.kb.Triple;
 import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
 
+/**
+ * 
+ * Analysis engine for extracting triples.
+ * @author pyadapad
+ *
+ */
 public class TriplesExtractor extends JCasAnnotator_ImplBase {
 
   private static WebAPIServiceProxy service = null;
