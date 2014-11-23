@@ -1,7 +1,10 @@
 package util;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.client.ClientProtocolException;
 
@@ -16,10 +19,22 @@ public class GoPubMedServiceProxy {
 
   private GoPubMedService service;
 
+  private final Pattern punc = Pattern.compile("\\p{Punct}+");
+
+  private final Pattern wsp = Pattern.compile("\\p{Space}+");
+
   private boolean FULL_TEXT_ONLY = false;
 
   public GoPubMedServiceProxy() {
     this.service = GoPubMedServiceFactory.getInstance();
+  }
+
+  protected String cleanString(String s, String replaceSpacesWith) {
+    Matcher m = punc.matcher(s);
+    s = m.replaceAll("");
+    m = wsp.matcher(s);
+    s = m.replaceAll(replaceSpacesWith);
+    return s.trim();
   }
 
   /**
@@ -27,7 +42,7 @@ public class GoPubMedServiceProxy {
    * @return a list of Finding objects based on a query string
    */
   public List<OntologyServiceResponse.Finding> getFindingsFromQuery(String query) {
-    List<OntologyServiceResponse.Finding> findings = new LinkedList<OntologyServiceResponse.Finding>();
+    List<OntologyServiceResponse.Finding> findings = new ArrayList<OntologyServiceResponse.Finding>();
     try {
       OntologyServiceResponse.Result diseaseOntologyResult = service
               .findDiseaseOntologyEntitiesPaged(query, 0);
@@ -52,8 +67,10 @@ public class GoPubMedServiceProxy {
       findings.addAll(uniprotResult.getFindings());
 
     } catch (ClientProtocolException e) {
+      e.printStackTrace();
       System.out.println("ClientProtocolException occurred! " + e.getMessage());
     } catch (Exception e) {
+      e.printStackTrace();
       System.out.println("Exception occurred! " + e.getMessage());
     }
     return findings;
@@ -65,15 +82,17 @@ public class GoPubMedServiceProxy {
    * @return a list of Entities from query string
    */
   public List<LinkedLifeDataServiceResponse.Entity> getEntitiesFromQuery(String query) {
-    List<LinkedLifeDataServiceResponse.Entity> entities = new LinkedList<LinkedLifeDataServiceResponse.Entity>();
+    List<LinkedLifeDataServiceResponse.Entity> entities = new ArrayList<LinkedLifeDataServiceResponse.Entity>();
     LinkedLifeDataServiceResponse.Result linkedLifeDataResult;
     try {
       linkedLifeDataResult = service.findLinkedLifeDataEntitiesPaged(query, 0);
       System.out.println("LinkedLifeData: " + linkedLifeDataResult.getEntities().size());
       entities.addAll(linkedLifeDataResult.getEntities());
     } catch (ClientProtocolException e) {
+      e.printStackTrace();
       System.out.println("ClientProtocolException occurred! " + e.getMessage());
     } catch (Exception e) {
+      e.printStackTrace();
       System.out.println("Exception occurred! " + e.getMessage());
     }
     return entities;
@@ -85,7 +104,7 @@ public class GoPubMedServiceProxy {
    * @return a list of documents from query string
    */
   public List<PubMedSearchServiceResponse.Document> getPubMedDocumentsFromQuery(String query) {
-    List<PubMedSearchServiceResponse.Document> docs = null;
+    List<PubMedSearchServiceResponse.Document> docs = new ArrayList<PubMedSearchServiceResponse.Document>();
     PubMedSearchServiceResponse.Result pubmedResult = null;
     try {
       pubmedResult = service.findPubMedCitations(query, 0);
@@ -98,12 +117,14 @@ public class GoPubMedServiceProxy {
           }
         }
       }
+      return docs;
     } catch (ClientProtocolException e) {
+      e.printStackTrace();
       System.out.println("ClientProtocolException occurred! " + e.getMessage());
     } catch (Exception e) {
+      e.printStackTrace();
       System.out.println("Exception occurred! " + e.getMessage());
     }
     return docs;
   }
-
 }

@@ -7,8 +7,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.cedarsoftware.util.io.JsonReader;
 import com.cedarsoftware.util.io.JsonWriter;
@@ -26,10 +24,6 @@ public class CachedGoPubMedServiceProxy extends GoPubMedServiceProxy {
   private BetterMap<String, Document> cachedDocuments;
 
   private final String cachePath = "src/main/resources/cache/";
-
-  private final Pattern punc = Pattern.compile("\\p{Punct}+");
-
-  private final Pattern wsp = Pattern.compile("\\p{Space}+");
 
   private final String findings = "findings/";
 
@@ -107,16 +101,8 @@ public class CachedGoPubMedServiceProxy extends GoPubMedServiceProxy {
     return json;
   }
 
-  private String cleanName(String s) {
-    Matcher m = punc.matcher(s);
-    s = m.replaceAll("");
-    m = wsp.matcher(s);
-    s = m.replaceAll("_");
-    return s;
-  }
-
   private PrintStream getWriter(String name, String subdir) {
-    String hash = cleanName(name).toLowerCase();
+    String hash = cleanString(name, "_").toLowerCase();
     try {
       PrintStream ps = new PrintStream(cachePath + subdir + hash + ".txt");
       return ps;
@@ -129,7 +115,7 @@ public class CachedGoPubMedServiceProxy extends GoPubMedServiceProxy {
   private void writeResultToFile(PrintStream ps, Object o) {
     try {
       String json = JsonWriter.objectToJson(o);
-      ps.println(json);
+      ps.print("\n" + json);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -139,45 +125,49 @@ public class CachedGoPubMedServiceProxy extends GoPubMedServiceProxy {
   public List<Finding> getFindingsFromQuery(String query) {
     if (!cachedFindings.containsKey(query)) {
       PrintStream ps = getWriter(query, findings);
-      ps.println(query);
+      ps.print(query);
       List<Finding> findings = super.getFindingsFromQuery(query);
       for (Finding f : findings) {
         cachedFindings.addItem(query, f);
         writeResultToFile(ps, f);
       }
       ps.close();
-    }
-    return cachedFindings.get(query);
+      return findings;
+    } else
+      return cachedFindings.get(query);
   }
 
   @Override
   public List<Entity> getEntitiesFromQuery(String query) {
     if (!cachedEntities.containsKey(query)) {
       PrintStream ps = getWriter(query, entities);
-      ps.println(query);
+      ps.print(query);
       List<Entity> entities = super.getEntitiesFromQuery(query);
       for (Entity e : entities) {
         cachedEntities.addItem(query, e);
         writeResultToFile(ps, e);
       }
       ps.close();
-    }
-    return cachedEntities.get(query);
+      return entities;
+    } else
+      return cachedEntities.get(query);
   }
 
   @Override
   public List<Document> getPubMedDocumentsFromQuery(String query) {
     if (!cachedDocuments.containsKey(query)) {
       PrintStream ps = getWriter(query, documents);
-      ps.println(query);
+      ps.print(query);
+      cachedDocuments.addItem(query, null);
       List<Document> documents = super.getPubMedDocumentsFromQuery(query);
       for (Document d : documents) {
         cachedDocuments.addItem(query, d);
         writeResultToFile(ps, d);
       }
       ps.close();
-    }
-    return cachedDocuments.get(query);
+      return documents;
+    } else
+      return cachedDocuments.get(query);
   }
 
 }

@@ -21,7 +21,8 @@ public class BetterMap<K, E> extends HashMap<K, ArrayList<E>> {
       super.get(k).add(q);
     } else {
       ArrayList<E> arr = new ArrayList<E>();
-      arr.add(q);
+      if(q != null) 
+        arr.add(q);
       super.put(k, arr);
     }
   }
