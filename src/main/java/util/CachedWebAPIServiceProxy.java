@@ -20,6 +20,8 @@ import edu.cmu.lti.oaqa.bio.bioasq.services.PubMedSearchServiceResponse.Document
 public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
 
   public boolean CLEAR_CACHE = false;
+  
+  public boolean APPLY_YEAR_CHANGE_HACK = false;
 
   private BetterMap<String, Finding> cachedFindings;
 
@@ -29,7 +31,7 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
 
   private BetterMap<String, JSONObject> cachedMetal;
 
-  private final String cachePath = "src/main/resources/cache/";
+  private String cachePath = "src/main/resources/cache/";
 
   private final String findings = "findings/";
 
@@ -44,6 +46,9 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
     if (CLEAR_CACHE) {
       clearCache();
       System.exit(0);
+    }
+    if (APPLY_YEAR_CHANGE_HACK) {
+      cachePath = "src/main/resources/cache2014/";
     }
     try {
       this.cachedFindings = getCachedFindings();
@@ -125,7 +130,15 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
           scn = new Scanner(filePath.toFile());
           String query = scn.nextLine();
           while (scn.hasNextLine()) {
-            Object o = JsonReader.jsonToJava(scn.nextLine());
+            String line = scn.nextLine();
+            if (APPLY_YEAR_CHANGE_HACK) {
+              String hack = "\"year\":\"2012\"";
+              String replaceHack = "\"year\":\"2014\"";
+              if(line.contains(hack)) {
+                line = line.replaceAll(hack, replaceHack);
+              }
+            }
+            Object o = JsonReader.jsonToJava(line);
             json.addItem(query, o);
           }
         } catch (Exception e) {
