@@ -17,7 +17,9 @@ import edu.cmu.lti.oaqa.type.retrieval.Document;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
+
 import edu.cmu.lti.oaqa.type.retrieval.Passage;
+
 import org.apache.uima.resource.ResourceInitializationException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,15 +33,18 @@ import util.MetalWebService;
 import util.TextUtils;
 import util.TypeConstants;
 import util.TypeFactory;
+import util.WebAPIServiceProxy;
+import util.WebAPIServiceProxyFactory;
 
 public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
 
   KrovetzStemmer stemmer;
+  private WebAPIServiceProxy service;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
-    // TODO Auto-generated method stub
     super.initialize(aContext);
+    this.service = WebAPIServiceProxyFactory.getInstance();
     stemmer = new KrovetzStemmer();
   }
 
@@ -49,7 +54,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
     Question question = null;
     if (qit.hasNext()) {
       question = (Question) qit.next();
-      System.out.println(question.getText());
+      //System.out.println(question.getText());
       System.out.println(question.getId());
       System.out.println(question.getQuestionType());
     }
@@ -68,9 +73,9 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
         try {
           String pmid = doc.getDocId();
           String uri = doc.getUri();
-          JSONObject docFull = MetalWebService.getDocFullTextJSon(pmid);
+          JSONObject docFull = service.getDocFullTextJSon(pmid);
           JSONArray sectionArr = docFull.getJSONArray("sections");
-          System.out.println(sectionArr.length());
+          //System.out.println(sectionArr.length());
 
           Map<String, String> fieldTextMap = new HashMap<String, String>();
           fieldTextMap.put("title", doc.getTitle());
@@ -87,7 +92,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
               sentence.hostDoc = docInfo;
               sentence.sectionIndex = "sections." + i;
               allSentences.add(sentence);
-              System.out.println(sentence);
+              //System.out.println(sentence);
             }
           }
         } catch (Exception e) {

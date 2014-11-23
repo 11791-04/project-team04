@@ -15,8 +15,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import util.GoPubMedServiceProxy;
-import util.GoPubMedServiceProxyFactory;
+import util.WebAPIServiceProxy;
+import util.WebAPIServiceProxyFactory;
 import util.TypeFactory;
 import docretrieval.stemmer.KrovetzStemmer;
 import edu.cmu.lti.oaqa.bio.bioasq.services.PubMedSearchServiceResponse;
@@ -25,7 +25,7 @@ import edu.cmu.lti.oaqa.type.retrieval.Document;
 
 public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
 
-  GoPubMedServiceProxy service;
+  WebAPIServiceProxy service;
 
   KrovetzStemmer stemmer;
 
@@ -34,7 +34,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     System.out.println("DocumentRetrieval_AE - initialize()");
-    service = GoPubMedServiceProxyFactory.getInstance();
+    service = WebAPIServiceProxyFactory.getInstance();
     stemmer = new KrovetzStemmer();
 
   }

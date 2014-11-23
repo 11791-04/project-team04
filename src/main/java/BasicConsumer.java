@@ -55,7 +55,7 @@ public class BasicConsumer extends CasConsumer_ImplBase {
       throw new ResourceProcessException(e);
     }
 
-    System.out.println(aJCas);
+    //System.out.println(aJCas);
 
     FSIterator<?> qit = aJCas.getAnnotationIndex(Question.type).iterator();
     Question question = null;

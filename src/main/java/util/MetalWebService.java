@@ -15,14 +15,14 @@ import java.net.URL;
  */
 public class MetalWebService {
 
-  public static final String METAL_API_BASE = "http://metal.lti.cs.cmu.edu:30002/pmc/";
+  private final String METAL_API_BASE = "http://metal.lti.cs.cmu.edu:30002/pmc/";
 
   
-  public static JSONObject getDocFullTextJSon(String pmid) {
+  public JSONObject getDocFullTextJSon(String pmid) {
     return get_JSON_Obj_by_URL(buildUrl(pmid));
   }
   
-  public static URL buildUrl(String pmid) {
+  private URL buildUrl(String pmid) {
     StringBuilder sb = new StringBuilder(METAL_API_BASE);
     sb.append(pmid);
     
@@ -39,7 +39,7 @@ public class MetalWebService {
   }
 
 
-  public static JSONObject get_JSON_Obj_by_URL(URL url) {
+  private JSONObject get_JSON_Obj_by_URL(URL url) {
     HttpURLConnection conn = null;
     StringBuilder jsonResults = new StringBuilder();
     try {
@@ -80,7 +80,8 @@ public class MetalWebService {
   }
 
   public static void main(String[] args) {
-    JSONObject docFull = getDocFullTextJSon("23193287");
+    MetalWebService metal = new MetalWebService();
+    JSONObject docFull = metal.getDocFullTextJSon("23193287");
     
     System.out.println(docFull.get("pmid"));
     System.out.println(docFull.get("title"));

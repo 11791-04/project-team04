@@ -10,8 +10,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 
-import util.GoPubMedServiceProxy;
-import util.GoPubMedServiceProxyFactory;
+import util.WebAPIServiceProxy;
+import util.WebAPIServiceProxyFactory;
 import util.TypeConstants;
 import util.TypeFactory;
 import edu.cmu.lti.oaqa.bio.bioasq.services.GoPubMedService;
@@ -22,11 +22,11 @@ import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
 
 public class TriplesExtractor extends JCasAnnotator_ImplBase {
 
-  private static GoPubMedServiceProxy service = null;
+  private static WebAPIServiceProxy service = null;
 
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
-    service = GoPubMedServiceProxyFactory.getInstance();
+    service = WebAPIServiceProxyFactory.getInstance();
     processInstance(aJCas);
   }
 
@@ -37,7 +37,7 @@ public class TriplesExtractor extends JCasAnnotator_ImplBase {
     Question question = null;
     while (qit.hasNext()) {
       question = (Question) qit.next();
-      System.out.println(question.getText());
+      //System.out.println(question.getText());
       System.out.println(question.getId());
       System.out.println(question.getQuestionType());
       try {

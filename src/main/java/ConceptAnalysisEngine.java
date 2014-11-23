@@ -9,8 +9,8 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import util.GoPubMedServiceProxy;
-import util.GoPubMedServiceProxyFactory;
+import util.WebAPIServiceProxy;
+import util.WebAPIServiceProxyFactory;
 import util.TypeFactory;
 import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse;
 import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse.Finding;
@@ -20,12 +20,12 @@ import edu.cmu.lti.oaqa.type.retrieval.ConceptSearchResult;
 
 public class ConceptAnalysisEngine extends JCasAnnotator_ImplBase {
 
-  private GoPubMedServiceProxy service;
+  private WebAPIServiceProxy service;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    this.service = GoPubMedServiceProxyFactory.getInstance();
+    this.service = WebAPIServiceProxyFactory.getInstance();
   }
 
   @Override
