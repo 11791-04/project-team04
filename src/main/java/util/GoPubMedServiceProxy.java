@@ -16,6 +16,8 @@ public class GoPubMedServiceProxy {
 
   private GoPubMedService service;
 
+  private boolean FULL_TEXT_ONLY = false;
+
   public GoPubMedServiceProxy() {
     this.service = GoPubMedServiceFactory.getInstance();
   }
@@ -83,14 +85,17 @@ public class GoPubMedServiceProxy {
    * @return a list of documents from query string
    */
   public List<PubMedSearchServiceResponse.Document> getPubMedDocumentsFromQuery(String query) {
-    List<PubMedSearchServiceResponse.Document> docs = new LinkedList<PubMedSearchServiceResponse.Document>();
-    PubMedSearchServiceResponse.Result pubmedResult;
+    List<PubMedSearchServiceResponse.Document> docs = null;
+    PubMedSearchServiceResponse.Result pubmedResult = null;
     try {
       pubmedResult = service.findPubMedCitations(query, 0);
       System.out.println("Documents: " + pubmedResult.getSize());
-      for(PubMedSearchServiceResponse.Document doc : pubmedResult.getDocuments()) {
-        if(doc.isFulltextAvailable()){
-          docs.add(doc);
+      docs = pubmedResult.getDocuments();
+      if (FULL_TEXT_ONLY) {
+        for (PubMedSearchServiceResponse.Document doc : docs) {
+          if (!doc.isFulltextAvailable()) {
+            docs.remove(doc);
+          }
         }
       }
     } catch (ClientProtocolException e) {
