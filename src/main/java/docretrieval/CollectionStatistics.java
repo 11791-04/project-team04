@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 
 public class CollectionStatistics {
   
-  
   public Map<String, Integer> collectionTermFreqMap;  // This collapses field-level statistics
   public Map<String, Integer> termID_Map;
   public ArrayList<DocInfo> docList;

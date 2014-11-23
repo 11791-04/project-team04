@@ -5,22 +5,32 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.http.client.ClientProtocolException;
 import org.json.JSONObject;
 
 import com.cedarsoftware.util.io.JsonReader;
 import com.cedarsoftware.util.io.JsonWriter;
 
+import edu.cmu.lti.oaqa.bio.bioasq.services.LinkedLifeDataServiceResponse;
 import edu.cmu.lti.oaqa.bio.bioasq.services.LinkedLifeDataServiceResponse.Entity;
 import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse.Finding;
 import edu.cmu.lti.oaqa.bio.bioasq.services.PubMedSearchServiceResponse.Document;
+import edu.cmu.lti.oaqa.type.kb.Triple;
 
+/**
+ * 
+ * @author nwolfe and pyadapad
+ * Class which caches results from PubMed API
+ *
+ */
 public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
 
   public boolean CLEAR_CACHE = false;
-  
+
   public boolean APPLY_YEAR_CHANGE_HACK = false;
 
   private BetterMap<String, Finding> cachedFindings;
@@ -28,6 +38,8 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
   private BetterMap<String, Entity> cachedEntities;
 
   private BetterMap<String, Document> cachedDocuments;
+
+  private ArrayList<BetterMap<String, String>> cachedTriples;
 
   private BetterMap<String, JSONObject> cachedMetal;
 
@@ -38,6 +50,8 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
   private final String entities = "entities/";
 
   private final String documents = "documents/";
+
+  private final String triples = "triples/";
 
   private final String snippets = "snippets/";
 
@@ -61,7 +75,7 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
   }
 
   public void clearCache() {
-    String[] subdirs = { findings, entities, documents, snippets };
+    String[] subdirs = { findings, entities, documents, snippets, triples };
     for (String subdir : subdirs) {
       try {
         Files.walk(Paths.get(cachePath + subdir)).forEach(filePath -> {
@@ -70,17 +84,17 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
               Files.deleteIfExists(filePath);
             }
           } catch (Exception e) {
-            //e.printStackTrace();
-            System.out.println("Exception: " + e.getMessage());
-          }
-        });
+            // e.printStackTrace();
+                System.out.println("Exception: " + e.getMessage());
+              }
+            });
       } catch (IOException e) {
-        //e.printStackTrace();
+        // e.printStackTrace();
         System.out.println("IOException: " + e.getMessage());
       }
     }
   }
-  
+
   private class FileReadHelper<T> {
     public BetterMap<String, T> getStuff(String subdir) throws Exception {
       BetterMap<String, T> map = new BetterMap<String, T>();
@@ -97,7 +111,7 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
           }
         }
       }
-      return map; 
+      return map;
     }
   }
 
@@ -134,7 +148,7 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
             if (APPLY_YEAR_CHANGE_HACK) {
               String hack = "\"year\":\"2012\"";
               String replaceHack = "\"year\":\"2014\"";
-              if(line.contains(hack)) {
+              if (line.contains(hack)) {
                 line = line.replaceAll(hack, replaceHack);
               }
             }
@@ -165,10 +179,14 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
       String json = JsonWriter.objectToJson(o);
       ps.print("\n" + json);
     } catch (IOException e) {
-      //e.printStackTrace();
+      // e.printStackTrace();
     }
   }
-  
+
+  /**
+   * Checks the cache for findings. If cached results do not
+   * exist, then call the API.
+   */
   @Override
   public List<Finding> getFindingsFromQuery(String query) {
     if (!cachedFindings.containsKey(query)) {
@@ -190,6 +208,10 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
       return cachedFindings.get(query);
   }
 
+  /**
+   * Check cache for previously fetched entities.
+   * If not found, use the API in parent class 
+   */
   @Override
   public List<Entity> getEntitiesFromQuery(String query) {
     if (!cachedEntities.containsKey(query)) {
@@ -211,6 +233,10 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
       return cachedEntities.get(query);
   }
 
+  /**
+   * Fetches all the documents that are cached. If not cached,
+   * the PubMed API is used to fetch documents.
+   */
   @Override
   public List<Document> getPubMedDocumentsFromQuery(String query) {
     if (!cachedDocuments.containsKey(query)) {
@@ -232,6 +258,10 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
       return cachedDocuments.get(query);
   }
 
+  /**
+   * Method to get FullText in json. Check for
+   * cached results before calling API.
+   */
   @Override
   public JSONObject getDocFullTextJSon(String pmid) {
     if (!cachedMetal.containsKey(pmid)) {
@@ -245,6 +275,27 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
     } else
       // only ever one result...
       return cachedMetal.get(pmid).get(0);
+  }
+
+  /**
+   * Triples are fetched from cached entities.
+   */
+  @Override
+  public ArrayList<HashMap<String, String>> fetchTriples(String text)
+          throws ClientProtocolException, IOException {
+    ArrayList<HashMap<String, String>> triples = new ArrayList<HashMap<String, String>>();
+    List<LinkedLifeDataServiceResponse.Entity> searchResult = getEntitiesFromQuery(text);
+    for (LinkedLifeDataServiceResponse.Entity entity : searchResult) {
+      Double score = entity.getScore();
+      LinkedLifeDataServiceResponse.Relation relation = entity.getRelations().get(0);
+      HashMap<String, String> t = new HashMap<String, String>();
+      t.put("PRED", relation.getPred());
+      t.put("SUB", relation.getSubj());
+      t.put("OBJ", relation.getObj());
+      t.put("SCORE", score.toString());
+      triples.add(t);
+    }
+    return triples;
   }
 
 }

@@ -1,7 +1,8 @@
 package util;
 
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,7 +10,10 @@ import java.util.regex.Pattern;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONObject;
 
-import edu.cmu.lti.oaqa.bio.bioasq.services.*;
+import edu.cmu.lti.oaqa.bio.bioasq.services.GoPubMedService;
+import edu.cmu.lti.oaqa.bio.bioasq.services.LinkedLifeDataServiceResponse;
+import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse;
+import edu.cmu.lti.oaqa.bio.bioasq.services.PubMedSearchServiceResponse;
 
 /**
  * 
@@ -134,6 +138,31 @@ public class WebAPIServiceProxy {
 
   public JSONObject getDocFullTextJSon(String pmid) {
     return metal.getDocFullTextJSon(pmid);
+  }
+  
+  /**
+   * Fetches the triples for a given question text
+   * 
+   * @param text
+   * @return
+   * @throws ClientProtocolException
+   * @throws IOException
+   */
+  public ArrayList<HashMap<String, String>> fetchTriples(String text)
+          throws ClientProtocolException, IOException {
+    ArrayList<HashMap<String, String>> triples = new ArrayList<HashMap<String, String>>();
+    List<LinkedLifeDataServiceResponse.Entity> searchResult = getEntitiesFromQuery(text);
+    for (LinkedLifeDataServiceResponse.Entity entity : searchResult) {
+      Double score = entity.getScore();
+      LinkedLifeDataServiceResponse.Relation relation = entity.getRelations().get(0);
+      HashMap<String, String> t = new HashMap<String, String>();
+      t.put("PRED", relation.getPred());
+      t.put("SUB", relation.getSubj());
+      t.put("OBJ", relation.getObj());
+      t.put("SCORE", score.toString());
+      triples.add(t);
+    }
+    return triples;
   }
 
 }

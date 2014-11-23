@@ -3,18 +3,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 
-import util.WebAPIServiceProxy;
-import util.WebAPIServiceProxyFactory;
+import util.CachedWebAPIServiceProxy;
 import util.TypeConstants;
 import util.TypeFactory;
-import edu.cmu.lti.oaqa.bio.bioasq.services.GoPubMedService;
+import util.WebAPIServiceProxy;
+import util.WebAPIServiceProxyFactory;
 import edu.cmu.lti.oaqa.bio.bioasq.services.LinkedLifeDataServiceResponse;
 import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.kb.Triple;
@@ -37,18 +36,12 @@ public class TriplesExtractor extends JCasAnnotator_ImplBase {
     Question question = null;
     while (qit.hasNext()) {
       question = (Question) qit.next();
-      //System.out.println(question.getText());
       System.out.println(question.getId());
       System.out.println(question.getQuestionType());
       try {
-        ArrayList<HashMap<String, String>> triplesList = fetchTriples(question.getText());
+        ArrayList<HashMap<String, String>> triplesList = new CachedWebAPIServiceProxy().fetchTriples(question.getText());
         int rank = 1;
         for (HashMap<String, String> t : triplesList) {
-          /*
-           * System.out.println("Predicate: " + t.get("PRED")); System.out.println("Subject: " +
-           * t.get("SUB")); System.out.println("Object: " + t.get("OBJ"));
-           * System.out.println("Score:" + t.get("SCORE"));
-           */
           Triple triple = TypeFactory
                   .createTriple(aJCas, t.get("SUB"), t.get("PRED"), t.get("OBJ"));
           TripleSearchResult tsr = TypeFactory.createTripleSearchResult(aJCas, triple,
