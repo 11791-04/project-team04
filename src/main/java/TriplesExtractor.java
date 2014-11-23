@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.http.client.ClientProtocolException;
@@ -9,6 +10,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 
+import util.GoPubMedServiceProxy;
+import util.GoPubMedServiceProxyFactory;
 import util.TypeConstants;
 import util.TypeFactory;
 import edu.cmu.lti.oaqa.bio.bioasq.services.GoPubMedService;
@@ -19,15 +22,11 @@ import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
 
 public class TriplesExtractor extends JCasAnnotator_ImplBase {
 
-  private static GoPubMedService service = null;
+  private static GoPubMedServiceProxy service = null;
 
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
-    try {
-      service = new GoPubMedService("project.properties");
-    } catch (ConfigurationException e) {
-      System.out.println("ConfigurationException occurred: " + e.getMessage());
-    }
+    service = GoPubMedServiceProxyFactory.getInstance();
     processInstance(aJCas);
   }
 
@@ -50,10 +49,12 @@ public class TriplesExtractor extends JCasAnnotator_ImplBase {
            * t.get("SUB")); System.out.println("Object: " + t.get("OBJ"));
            * System.out.println("Score:" + t.get("SCORE"));
            */
-          Triple triple = TypeFactory.createTriple(aJCas, t.get("SUB"), t.get("PRED"), t.get("OBJ"));
-          TripleSearchResult tsr = TypeFactory.createTripleSearchResult(aJCas, triple, TypeConstants.URI_UNKNOWN,
-                  Double.parseDouble(t.get("SCORE")), TypeConstants.TEXT_UNKNOWN, rank++,
-                  question.getText(), TypeConstants.SEARCH_ID_UNKNOWN, new ArrayList<>());
+          Triple triple = TypeFactory
+                  .createTriple(aJCas, t.get("SUB"), t.get("PRED"), t.get("OBJ"));
+          TripleSearchResult tsr = TypeFactory.createTripleSearchResult(aJCas, triple,
+                  TypeConstants.URI_UNKNOWN, Double.parseDouble(t.get("SCORE")),
+                  TypeConstants.TEXT_UNKNOWN, rank++, question.getText(),
+                  TypeConstants.SEARCH_ID_UNKNOWN, new ArrayList<>());
           tsr.addToIndexes();
         }
       } catch (IOException e) {
@@ -76,10 +77,9 @@ public class TriplesExtractor extends JCasAnnotator_ImplBase {
   public static ArrayList<HashMap<String, String>> fetchTriples(String text)
           throws ClientProtocolException, IOException {
     ArrayList<HashMap<String, String>> triples = new ArrayList<HashMap<String, String>>();
-    LinkedLifeDataServiceResponse.Result linkedLifeDataResult = service
-            .findLinkedLifeDataEntitiesPaged(text, 0);
+    List<LinkedLifeDataServiceResponse.Entity> searchResult = service.getEntitiesFromQuery(text);
     // System.out.println("LinkedLifeData: " + linkedLifeDataResult.getEntities().size());
-    for (LinkedLifeDataServiceResponse.Entity entity : linkedLifeDataResult.getEntities()) {
+    for (LinkedLifeDataServiceResponse.Entity entity : searchResult) {
       // LinkedLifeDataServiceResponse.Entity entity = linkedLifeDataResult.getEntities().get(0);
       // System.out.println(" 6> " + entity.getEntity());
       Double score = entity.getScore();
