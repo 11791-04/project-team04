@@ -1,4 +1,4 @@
-package descriptorimpl;
+package concept.prf;
 
 import util.text.counting.FrequencyCounter;
 import util.text.counting.FrequencyCounterFactory;
