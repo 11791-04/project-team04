@@ -38,8 +38,9 @@ public class BasicConsumer extends CasConsumer_ImplBase {
 
   private String triple2String(TripleSearchResult tsr) {
     Triple triple = tsr.getTriple();
-    return "<s>" + triple.getSubject() + "</s><o>" + triple.getObject() + "</o><p>"
-            + triple.getPredicate() + "</p>";
+    return triple.getSubject() + ":delim:" + triple.getObject() + ":delim:" + triple.getPredicate();
+    /*return "<s>" + triple.getSubject() + "</s><o>" + triple.getObject() + "</o><p>"
+            + triple.getPredicate() + "</p>";*/
   }
   
   private SentenceInfo passage2sentence(Passage passage) {
@@ -173,19 +174,19 @@ public class BasicConsumer extends CasConsumer_ImplBase {
   public void collectionProcessComplete(ProcessTrace arg0) throws ResourceProcessException,
           IOException {
 
-    System.out.println("RESULTS doc");
+    System.out.println("RESULTS doc MAP");
     System.out.println(documentMetric.getCurrentMAP());
-    System.out.println("RESULTS concept");
+    System.out.println("RESULTS concept MAP");
     System.out.println(conceptMetric.getCurrentMAP());
-    System.out.println("RESULTS triples");
-    System.out.println(tripleMetric.getCurrentMAP());
-    
-    System.out.println("RESULTS doc");
+    System.out.println("RESULTS triples MAP");
+    System.out.println(tripleMetric.getMAPForTriples());
+
+    System.out.println("RESULTS doc GMAP");
     System.out.println(documentMetric.getCurrentGMAP(0.01));
-    System.out.println("RESULTS concept");
+    System.out.println("RESULTS concept GMAP");
     System.out.println(conceptMetric.getCurrentGMAP(0.01));
-    System.out.println("RESULTS triples");
-    System.out.println(tripleMetric.getCurrentGMAP(0.01));
+    System.out.println("RESULTS triples GMAP");
+    System.out.println(tripleMetric.getCurrentGMAPForTriples(0.01));
   }
 
 }
