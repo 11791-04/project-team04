@@ -49,8 +49,6 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
 
   private final String documents = "documents/";
 
-  private final String triples = "triples/";
-
   private final String snippets = "snippets/";
 
   public CachedWebAPIServiceProxy() {
@@ -73,7 +71,7 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
   }
 
   public void clearCache() {
-    String[] subdirs = { findings, entities, documents, snippets, triples };
+    String[] subdirs = { findings, entities, documents, snippets};
     for (String subdir : subdirs) {
       try {
         Files.walk(Paths.get(cachePath + subdir)).forEach(filePath -> {

@@ -58,8 +58,10 @@ public class TriplesExtractor extends JCasAnnotator_ImplBase {
           tsr.addToIndexes();
         }
       } catch (IOException e) {
+        e.printStackTrace();
         System.out.println("IOException occurred: " + e.getMessage());
       } catch (Exception e) {
+        e.printStackTrace();
         System.out.println("Exception occurred: " + e.getMessage());
       }
     }
@@ -78,21 +80,16 @@ public class TriplesExtractor extends JCasAnnotator_ImplBase {
           throws ClientProtocolException, IOException {
     ArrayList<HashMap<String, String>> triples = new ArrayList<HashMap<String, String>>();
     List<LinkedLifeDataServiceResponse.Entity> searchResult = service.getEntitiesFromQuery(text);
-    // System.out.println("LinkedLifeData: " + linkedLifeDataResult.getEntities().size());
     for (LinkedLifeDataServiceResponse.Entity entity : searchResult) {
-      // LinkedLifeDataServiceResponse.Entity entity = linkedLifeDataResult.getEntities().get(0);
-      // System.out.println(" 6> " + entity.getEntity());
       Double score = entity.getScore();
-      // System.out.println("Score: " + entity.getScore());
-      // for (LinkedLifeDataServiceResponse.Relation relation : entity.getRelations()) {
-      LinkedLifeDataServiceResponse.Relation relation = entity.getRelations().get(0);
+      for (LinkedLifeDataServiceResponse.Relation relation : entity.getRelations()) {
       HashMap<String, String> t = new HashMap<String, String>();
       t.put("PRED", relation.getPred());
       t.put("SUB", relation.getSubj());
       t.put("OBJ", relation.getObj());
       t.put("SCORE", score.toString());
       triples.add(t);
-      // }
+      }
     }
     return triples;
   }
