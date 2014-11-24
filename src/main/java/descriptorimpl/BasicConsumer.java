@@ -26,14 +26,14 @@ public class BasicConsumer extends CasConsumer_ImplBase {
 
   Metric documentMetric;
 
-  Metric conceptMetric;
+  MetricExtension conceptMetric;
 
-  Metric tripleMetric;
+  MetricExtension tripleMetric;
 
   public void initialize() throws ResourceInitializationException {
     documentMetric = new Metric("document");
-    conceptMetric = new Metric("concept");
-    tripleMetric = new Metric("triple");
+    conceptMetric = new MetricExtension("concept");
+    tripleMetric = new MetricExtension("triple");
   }
 
   private String triple2String(TripleSearchResult tsr) {
@@ -177,8 +177,12 @@ public class BasicConsumer extends CasConsumer_ImplBase {
     System.out.println(documentMetric.getCurrentMAP());
     System.out.println("RESULTS concept");
     System.out.println(conceptMetric.getCurrentMAP());
+    System.out.println("Concept R,P,F:\n");
+    System.out.println(conceptMetric.getPrecision());
     System.out.println("RESULTS triples");
     System.out.println(tripleMetric.getCurrentMAP());
+    System.out.println("Triple R,P,F:\n");
+    System.out.println(tripleMetric.getPrecision());
     
     System.out.println("RESULTS doc");
     System.out.println(documentMetric.getCurrentGMAP(0.01));
@@ -186,6 +190,8 @@ public class BasicConsumer extends CasConsumer_ImplBase {
     System.out.println(conceptMetric.getCurrentGMAP(0.01));
     System.out.println("RESULTS triples");
     System.out.println(tripleMetric.getCurrentGMAP(0.01));
+    
+    
   }
 
 }

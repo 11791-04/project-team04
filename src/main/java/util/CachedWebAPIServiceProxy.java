@@ -31,7 +31,7 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
 
   public boolean CLEAR_CACHE = false;
 
-  public boolean APPLY_YEAR_CHANGE_HACK = false;
+  public boolean APPLY_YEAR_CHANGE_HACK = true;
 
   private BetterMap<String, Finding> cachedFindings;
 
@@ -143,13 +143,7 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
           String query = scn.nextLine();
           while (scn.hasNextLine()) {
             String line = scn.nextLine();
-            if (APPLY_YEAR_CHANGE_HACK) {
-              String hack = "\"year\":\"2012\"";
-              String replaceHack = "\"year\":\"2014\"";
-              if (line.contains(hack)) {
-                line = line.replaceAll(hack, replaceHack);
-              }
-            }
+            line = new StupidHack().doHackyBullshit(line);
             Object o = JsonReader.jsonToJava(line);
             json.addItem(query, o);
           }
@@ -160,6 +154,29 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
     });
     return json;
   }
+  
+  private class StupidHack {
+    public String doHackyBullshit(String line) {
+      if (APPLY_YEAR_CHANGE_HACK) {
+        String hack = "\"year\":\"2014\"";
+        String replaceHack = "\"year\":\"2012\"";
+        line = doReplaceBullshit(line, hack, replaceHack);
+        hack = "mesh/2014";
+        replaceHack = "mesh/2012";
+        return doReplaceBullshit(line, hack, replaceHack);
+      } else
+      return line;
+    }
+    private String doReplaceBullshit(String line, String hack, String replacement) {
+      if(line.contains(hack)) {
+        return line.replaceAll(hack, replacement);
+      } else {
+        return line;
+      }
+    }
+  }
+  
+  
 
   private PrintStream getWriter(String name, String subdir) {
     String hash = cleanString(name, "_").toLowerCase();
