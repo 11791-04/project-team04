@@ -16,7 +16,7 @@ import org.apache.uima.resource.ResourceProcessException;
 import org.apache.uima.util.ProcessTrace;
 
 import docretrieval.DocInfo;
-import snippetextraction.SentenceInfo;
+import snippet.SentenceInfo;
 import util.TypeConstants;
 import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.retrieval.ConceptSearchResult;

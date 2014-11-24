@@ -11,11 +11,11 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import util.FindingPseudoRelevanceFeedback;
-import util.PseudoRelevanceFeedbackFactory;
-import util.WebAPIServiceProxy;
-import util.WebAPIServiceProxyFactory;
+import concept.prf.FindingPseudoRelevanceFeedback;
+import concept.prf.PseudoRelevanceFeedbackFactory;
 import util.TypeFactory;
+import webservice.WebAPIServiceProxy;
+import webservice.WebAPIServiceProxyFactory;
 import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse;
 import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse.Finding;
 import edu.cmu.lti.oaqa.type.input.Question;

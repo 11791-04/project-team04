@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import snippetextraction.SentenceInfo;
+import snippet.SentenceInfo;
 
 
 public class MetricSnippet extends MetricBasic<SentenceInfo> {

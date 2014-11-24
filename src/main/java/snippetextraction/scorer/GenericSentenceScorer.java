@@ -1,7 +1,7 @@
 package snippetextraction.scorer;
 
 import docretrieval.CollectionStatistics;
-import snippetextraction.SentenceInfo;
+import snippet.SentenceInfo;
 
 public abstract class GenericSentenceScorer {
 

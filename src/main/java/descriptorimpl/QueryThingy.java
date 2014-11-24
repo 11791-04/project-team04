@@ -1,7 +1,7 @@
 package descriptorimpl;
 
-import counting.FrequencyCounter;
-import counting.FrequencyCounterFactory;
+import util.text.counting.FrequencyCounter;
+import util.text.counting.FrequencyCounterFactory;
 
 public class QueryThingy {
   public String playWithQuery(String query) {

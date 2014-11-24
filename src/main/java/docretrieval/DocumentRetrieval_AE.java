@@ -22,9 +22,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import util.WebAPIServiceProxy;
-import util.WebAPIServiceProxyFactory;
 import util.TypeFactory;
+import webservice.WebAPIServiceProxy;
+import webservice.WebAPIServiceProxyFactory;
 import docretrieval.stemmer.KrovetzStemmer;
 import edu.cmu.lti.oaqa.bio.bioasq.services.PubMedSearchServiceResponse;
 import edu.cmu.lti.oaqa.type.input.Question;

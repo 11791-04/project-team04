@@ -10,11 +10,11 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 
-import util.CachedWebAPIServiceProxy;
 import util.TypeConstants;
 import util.TypeFactory;
-import util.WebAPIServiceProxy;
-import util.WebAPIServiceProxyFactory;
+import webservice.CachedWebAPIServiceProxy;
+import webservice.WebAPIServiceProxy;
+import webservice.WebAPIServiceProxyFactory;
 import edu.cmu.lti.oaqa.bio.bioasq.services.LinkedLifeDataServiceResponse;
 import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.kb.Triple;

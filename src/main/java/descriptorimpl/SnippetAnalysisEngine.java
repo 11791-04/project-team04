@@ -15,16 +15,16 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import scoring.CandidateAnswer;
-import scoring.CandidateAnswerAdapter;
-import scoring.Similarity;
-import scoring.SimilarityFactory;
-import snippetextraction.SentenceInfo;
-import util.TextUtils;
+import snippet.SentenceInfo;
+import snippet.scoring.adapter.CandidateAnswer;
+import snippet.scoring.adapter.CandidateAnswerAdapter;
+import snippet.scoring.factory.Similarity;
+import snippet.scoring.factory.SimilarityFactory;
 import util.TypeConstants;
 import util.TypeFactory;
-import util.WebAPIServiceProxy;
-import util.WebAPIServiceProxyFactory;
+import util.text.TextUtils;
+import webservice.WebAPIServiceProxy;
+import webservice.WebAPIServiceProxyFactory;
 import docretrieval.CollectionStatistics;
 import docretrieval.DocInfo;
 import docretrieval.stemmer.KrovetzStemmer;
@@ -101,7 +101,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
       e.printStackTrace();
     }
     SentenceInfo questionInfo = new SentenceInfo(question.getText(), null, -1, -1, null);
-    scoring.Question query = new scoring.QuestionAdapter(questionInfo);
+    snippet.scoring.factory.Question query = new snippet.scoring.factory.QuestionAdapter(questionInfo);
     Similarity similarity = SimilarityFactory.getNewSimilarity(SimilarityFactory.weighted);
 
     for (SentenceInfo sentence : allSentences) {

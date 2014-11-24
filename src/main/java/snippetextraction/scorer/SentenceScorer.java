@@ -1,12 +1,12 @@
 package snippetextraction.scorer;
 
-import scoring.CandidateAnswer;
-import scoring.CandidateAnswerAdapter;
-import scoring.Question;
-import scoring.QuestionAdapter;
-import scoring.Similarity;
-import scoring.SimilarityFactory;
-import snippetextraction.SentenceInfo;
+import snippet.SentenceInfo;
+import snippet.scoring.adapter.CandidateAnswer;
+import snippet.scoring.adapter.CandidateAnswerAdapter;
+import snippet.scoring.factory.Question;
+import snippet.scoring.factory.QuestionAdapter;
+import snippet.scoring.factory.Similarity;
+import snippet.scoring.factory.SimilarityFactory;
 import docretrieval.CollectionStatistics;
 
 /**
