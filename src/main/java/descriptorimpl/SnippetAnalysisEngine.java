@@ -115,12 +115,12 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
             .sorted((e1, e2) -> Double.compare(e2.score, e1.score))
             .collect(Collectors.toList())
             ;
-/*    
-  createPassage(JCas jcas, String uri, double score, String text, int rank,
-          String queryString, String searchId, Collection<CandidateAnswerVariant> candidateAnswers,
-          String title, String docId, int offsetInBeginSection, int offsetInEndSection,
-          String beginSection, String endSection, String aspects);
-          */
+    /*    
+    createPassage(JCas jcas, String uri, double score, String text, int rank,
+            String queryString, String searchId, Collection<CandidateAnswerVariant> candidateAnswers,
+            String title, String docId, int offsetInBeginSection, int offsetInEndSection,
+            String beginSection, String endSection, String aspects);
+            */
     
     String _query = question.getText();
     allSentences.stream()

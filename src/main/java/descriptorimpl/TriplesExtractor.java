@@ -46,7 +46,7 @@ public class TriplesExtractor extends JCasAnnotator_ImplBase {
       System.out.println(question.getId());
       System.out.println(question.getQuestionType());
       try {
-        ArrayList<HashMap<String, String>> triplesList = new CachedWebAPIServiceProxy().fetchTriples(question.getText());
+        ArrayList<HashMap<String, String>> triplesList = fetchTriples(question.getText());
         int rank = 1;
         for (HashMap<String, String> t : triplesList) {
           Triple triple = TypeFactory
