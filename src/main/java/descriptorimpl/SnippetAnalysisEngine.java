@@ -102,7 +102,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
     }
     SentenceInfo questionInfo = new SentenceInfo(question.getText(), null, -1, -1, null);
     scoring.Question query = new scoring.QuestionAdapter(questionInfo);
-    Similarity similarity = SimilarityFactory.getNewSimilarity(SimilarityFactory.cos);
+    Similarity similarity = SimilarityFactory.getNewSimilarity(SimilarityFactory.weighted);
 
     for (SentenceInfo sentence : allSentences) {
       CandidateAnswer answer = new CandidateAnswerAdapter(sentence);

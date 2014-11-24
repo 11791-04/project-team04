@@ -1,22 +1,22 @@
 package counting;
 
 public class FrequencyCounterFactory {
-  private static String cleanStem = "cleanStem";
+  public static final String cleanStem = "cleanStem";
 
-  private static String stemStopWord = "stemStopWord";
+  public static final String stemStopWord = "stemStopWord";
 
-  private static String stopWord = "stopWord";
+  public static final String stopWord = "stopWord";
 
-  private static String freq = "freq";
+  public static final String freq = "freq";
 
-  private static String lemma = "lemma";
+  public static final String lemma = "lemma";
 
-  private static String stem = "stem";
+  public static final String stem = "stem";
 
   private static String current = cleanStem;
 
   public static FrequencyCounter getNewFrequencyCounter(String type) {
-    if(type != null) 
+    if (type != null)
       current = type;
     if (current.equals(cleanStem))
       return new CleanStemCounter();

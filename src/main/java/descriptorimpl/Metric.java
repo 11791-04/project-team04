@@ -61,8 +61,7 @@ public class Metric {
     
   }
 
-  private double getAPforQuery(Set<String> qrelSet, List<String> rankList) {
-
+  protected double getAPforQuery(Set<String> qrelSet, List<String> rankList) {
     double precAccum = 0d;
     int relCount = 0;
     for (int i = 0; i < rankList.size(); i++) {

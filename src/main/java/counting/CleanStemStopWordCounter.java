@@ -31,7 +31,7 @@ public class CleanStemStopWordCounter extends FrequencyCounter {
     super();
     stopwords = new HashMap<String, String>();
     try {
-      Scanner scn = new Scanner(new File("src/main/resources/stopwords.txt"));
+      Scanner scn = new Scanner(new File("src/main/resources/stoppers"));
       while (scn.hasNextLine()) {
         String stopword = scn.nextLine();
         stopwords.put(stopword, stopword);
