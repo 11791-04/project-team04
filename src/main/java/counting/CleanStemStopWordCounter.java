@@ -26,6 +26,8 @@ public class CleanStemStopWordCounter extends FrequencyCounter {
   private final Pattern wsp = Pattern.compile("\\p{Space}+");
 
   private final HashMap<String, String> stopwords;
+  
+  private final Integer minLength = 2;
 
   public CleanStemStopWordCounter() {
     super();
@@ -36,6 +38,7 @@ public class CleanStemStopWordCounter extends FrequencyCounter {
         String stopword = scn.nextLine();
         stopwords.put(stopword, stopword);
       }
+      scn.close();
     } catch (FileNotFoundException e) {
       e.printStackTrace();
       throw new UIMARuntimeException();
@@ -57,7 +60,8 @@ public class CleanStemStopWordCounter extends FrequencyCounter {
       // Lemmatize the words here
       if (!stopwords.containsKey(str)) {
         str = StanfordLemmatizer.stemWord(str);
-        items.add(str);
+        if(str.length() > minLength) 
+          items.add(str);
       }
     }
     this.putAll(items);
