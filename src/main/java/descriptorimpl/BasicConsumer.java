@@ -23,24 +23,26 @@ import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
 import edu.cmu.lti.oaqa.type.kb.Triple;
 
 public class BasicConsumer extends CasConsumer_ImplBase {
+  
+  MetricDTC documentMetric;
 
-  Metric documentMetric;
+  MetricDTC conceptMetric;
 
-  MetricExtension conceptMetric;
+  MetricDTC tripleMetric;
 
-  MetricExtension tripleMetric;
-
+  MetricSnippet snippetMetric;
+  
   public void initialize() throws ResourceInitializationException {
-    documentMetric = new Metric("document");
-    conceptMetric = new MetricExtension("concept");
-    tripleMetric = new MetricExtension("triple");
+    documentMetric = new MetricDTC("document");
+    conceptMetric = new MetricDTC("concept");
+    tripleMetric = new MetricDTC("triple");
+    snippetMetric = new MetricSnippet("snippet");
   }
 
   private String triple2String(TripleSearchResult tsr) {
     Triple triple = tsr.getTriple();
-    return triple.getSubject() + ":delim:" + triple.getObject() + ":delim:" + triple.getPredicate();
-    /*return "<s>" + triple.getSubject() + "</s><o>" + triple.getObject() + "</o><p>"
-            + triple.getPredicate() + "</p>";*/
+    return "<s>" + triple.getSubject() + "</s><o>" + triple.getObject() + "</o><p>"
+            + triple.getPredicate() + "</p>";
   }
   
   private SentenceInfo passage2sentence(Passage passage) {
@@ -156,14 +158,15 @@ public class BasicConsumer extends CasConsumer_ImplBase {
       e.printStackTrace();
     }
     
-    System.out.println("gs snippet:\n" + gsSnippets);
-    System.out.println("snippet:\n" + snippets);
+//    System.out.println("gs snippet:\n" + gsSnippets);
+//    System.out.println("snippet:\n" + snippets);
 
 //    documents.sort((p, o) -> p.getRank().compareTo(o.getRank()));
     
     documentMetric.registerAnswerAndGoldStandard(documents, gsDocuments);
     conceptMetric.registerAnswerAndGoldStandard(concepts, gsConcepts);
     tripleMetric.registerAnswerAndGoldStandard(triples, gsTriples);
+    snippetMetric.registerAnswerAndGoldStandard(snippets, gsSnippets);
     
 // TODO
 //    snippetMetric.registerAnswerAndGoldStandard(snippets, gsSnippets);
@@ -174,25 +177,27 @@ public class BasicConsumer extends CasConsumer_ImplBase {
   public void collectionProcessComplete(ProcessTrace arg0) throws ResourceProcessException,
           IOException {
 
-    System.out.println("RESULTS doc MAP");
+    System.out.println("RESULTS doc");
     System.out.println(documentMetric.getCurrentMAP());
-    System.out.println("RESULTS concept MAP");
+    System.out.println("RESULTS concept");
     System.out.println(conceptMetric.getCurrentMAP());
-    System.out.println("Concept R,P,F:\n");
-    conceptMetric.getPrecision();
     System.out.println("RESULTS triples");
-    System.out.println(tripleMetric.getMAPForTriples());
+
+//    System.out.println(tripleMetric.getMAPForTriples());
     System.out.println("Triple R,P,F:\n");
-    tripleMetric.getPrecision();
-    
+    tripleMetric.getCurrentMAP();
+ 
     System.out.println("RESULTS doc");
     System.out.println(documentMetric.getCurrentGMAP(0.01));
-    System.out.println("RESULTS concept GMAP");
+    System.out.println("RESULTS concept");
     System.out.println(conceptMetric.getCurrentGMAP(0.01));
-    System.out.println("RESULTS triples GMAP");
-    System.out.println(tripleMetric.getCurrentGMAPForTriples(0.01));
+    System.out.println("RESULTS triples");
+    System.out.println(tripleMetric.getCurrentGMAP(0.01));
     
     
+    System.out.println(snippetMetric.list_rankList.size());
+    System.out.println("RESULT SNIPPETS:");
+    System.out.println(snippetMetric.getCurrentF1());
   }
 
 }

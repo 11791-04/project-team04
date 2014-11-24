@@ -1,11 +1,18 @@
 package docretrieval;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -29,16 +36,58 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
 
   KrovetzStemmer stemmer;
 
+  private PrintWriter outQuestions;
+  
   boolean baseline = false;
 
+  Set<String> conceptSet;
+  
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     System.out.println("DocumentRetrieval_AE - initialize()");
     service = WebAPIServiceProxyFactory.getInstance();
+    
+    //service = new WebAPIServiceProxy();
     stemmer = new KrovetzStemmer();
 
+    try {
+      outQuestions = new PrintWriter(new FileOutputStream(new File("questions.txt"), false));
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    
+    conceptSet = new HashSet<String>();
+    
+    try {
+      Scanner in = new Scanner(new File("concepts.evil"));
+      
+      while(in.hasNextLine()) {
+        String l = in.nextLine().trim();
+        if(l.equals("")) {continue;}
+        conceptSet.add(l);
+        System.out.println("==="+l);
+      }
+      
+      
+      in.close();
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    
   }
 
+  public String qeWithConcept(String raw) {
+    for(String c: conceptSet) {
+      if(raw.contains(c)) {
+        raw = raw.replace(c, c+" [mesh] ");
+      }
+    }
+    return raw;
+  }
+  
+  
   /**
    * @param aJcas
    *          Assumed to contain questions provided by QuestionReader
@@ -54,7 +103,12 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       Question question = (Question) iter.get();
       QueryInfo query = new QueryInfo(question.getText(), stemmer);
       String questionText = question.getText().replace('?', ' ');
-
+      questionText = qeWithConcept(questionText);
+      System.out.println("###: "+questionText);
+      outQuestions.println(questionText);
+      
+      
+      
       List<PubMedSearchServiceResponse.Document> list = service.getPubMedDocumentsFromQuery(questionText);
 
       for (PubMedSearchServiceResponse.Document d : list) {
@@ -112,7 +166,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
   @Override
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     System.out.println("DocumentRetrieval_AE - collectionProcessComplete()");
-
+    outQuestions.close();
   }
 
   public static class DocScoreComparator implements Comparator<Pair<DocInfo, Double>> {
