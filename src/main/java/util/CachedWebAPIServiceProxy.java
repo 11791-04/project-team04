@@ -39,8 +39,6 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
 
   private BetterMap<String, Document> cachedDocuments;
 
-  private ArrayList<BetterMap<String, String>> cachedTriples;
-
   private BetterMap<String, JSONObject> cachedMetal;
 
   private String cachePath = "src/main/resources/cache/";
@@ -275,27 +273,6 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
     } else
       // only ever one result...
       return cachedMetal.get(pmid).get(0);
-  }
-
-  /**
-   * Triples are fetched from cached entities.
-   */
-  @Override
-  public ArrayList<HashMap<String, String>> fetchTriples(String text)
-          throws ClientProtocolException, IOException {
-    ArrayList<HashMap<String, String>> triples = new ArrayList<HashMap<String, String>>();
-    List<LinkedLifeDataServiceResponse.Entity> searchResult = getEntitiesFromQuery(text);
-    for (LinkedLifeDataServiceResponse.Entity entity : searchResult) {
-      Double score = entity.getScore();
-      LinkedLifeDataServiceResponse.Relation relation = entity.getRelations().get(0);
-      HashMap<String, String> t = new HashMap<String, String>();
-      t.put("PRED", relation.getPred());
-      t.put("SUB", relation.getSubj());
-      t.put("OBJ", relation.getObj());
-      t.put("SCORE", score.toString());
-      triples.add(t);
-    }
-    return triples;
   }
 
 }
