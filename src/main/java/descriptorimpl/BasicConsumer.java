@@ -181,7 +181,7 @@ public class BasicConsumer extends CasConsumer_ImplBase {
     System.out.println("Concept R,P,F:\n");
     conceptMetric.getPrecision();
     System.out.println("RESULTS triples");
-    System.out.println(tripleMetric.getCurrentMAP());
+    System.out.println(tripleMetric.getMAPForTriples());
     System.out.println("Triple R,P,F:\n");
     tripleMetric.getPrecision();
     
