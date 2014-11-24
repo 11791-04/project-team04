@@ -58,8 +58,10 @@ public class TriplesExtractor extends JCasAnnotator_ImplBase {
           tsr.addToIndexes();
         }
       } catch (IOException e) {
+        e.printStackTrace();
         System.out.println("IOException occurred: " + e.getMessage());
       } catch (Exception e) {
+        e.printStackTrace();
         System.out.println("Exception occurred: " + e.getMessage());
       }
     }
