@@ -1,4 +1,4 @@
-package descriptorimpl;
+package metric;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -46,7 +46,7 @@ public abstract class MetricBasic<T> {
     return sumAP / list_rankList.size();
   }
 
-  double getCurrentGMAP(double epsilon) {
+  public double getCurrentGMAP(double epsilon) {
     if (Double.compare(epsilon, 0d) == 0) {
       epsilon = 0.01;
     }
