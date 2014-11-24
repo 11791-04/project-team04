@@ -1,4 +1,4 @@
-package docretrieval;
+package descriptorimpl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,9 +23,14 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import util.TypeFactory;
+import util.datastructure.Pair;
 import webservice.WebAPIServiceProxy;
 import webservice.WebAPIServiceProxyFactory;
-import docretrieval.stemmer.KrovetzStemmer;
+import document.DocInfo;
+import document.QueryInfo;
+import document.scoring.CollectionStatistics;
+import document.scoring.Ranker;
+import document.stemmer.KrovetzStemmer;
 import edu.cmu.lti.oaqa.bio.bioasq.services.PubMedSearchServiceResponse;
 import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.retrieval.Document;

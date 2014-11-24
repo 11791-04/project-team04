@@ -1,9 +1,16 @@
-package docretrieval;
+package util.text;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import docretrieval.stemmer.KrovetzStemmer;
+import document.stemmer.KrovetzStemmer;
+
+
+/**
+ * 
+ * @author Di Xu
+ *
+ */
 
 public class TextProcessingTools {
 

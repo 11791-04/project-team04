@@ -1,6 +1,6 @@
 package snippet;
 
-import docretrieval.DocInfo;
+import document.DocInfo;
 
 public class SentenceInfo {
 

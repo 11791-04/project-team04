@@ -1,4 +1,4 @@
-package docretrieval;
+package util.datastructure;
 
 
 import java.util.Map;

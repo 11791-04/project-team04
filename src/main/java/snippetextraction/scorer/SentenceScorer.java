@@ -7,7 +7,7 @@ import snippet.scoring.factory.Question;
 import snippet.scoring.factory.QuestionAdapter;
 import snippet.scoring.factory.Similarity;
 import snippet.scoring.factory.SimilarityFactory;
-import docretrieval.CollectionStatistics;
+import document.scoring.CollectionStatistics;
 
 /**
  * Sublcass of {@link GenericSentenceScorer} which "similarity" score for the query

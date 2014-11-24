@@ -1,8 +1,9 @@
-package docretrieval;
+package document;
 
 import java.util.Map;
 
-import docretrieval.stemmer.KrovetzStemmer;
+import util.text.TextProcessingTools;
+import document.stemmer.KrovetzStemmer;
 
 public class QueryInfo {
 

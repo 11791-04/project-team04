@@ -1,4 +1,4 @@
-package docretrieval;
+package document.scoring;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+
+import document.DocInfo;
 
 public class CollectionStatistics {
   

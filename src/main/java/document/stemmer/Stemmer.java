@@ -1,7 +1,7 @@
 /*
  *  BSD License (http://lemurproject.org/galago-license)
  */
-package docretrieval.stemmer;
+package document.stemmer;
 
 import java.io.IOException;
 import java.util.HashMap;

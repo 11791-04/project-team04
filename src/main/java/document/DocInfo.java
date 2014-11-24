@@ -1,10 +1,11 @@
-package docretrieval;
+package document;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import docretrieval.stemmer.KrovetzStemmer;
+import util.text.TextProcessingTools;
+import document.stemmer.KrovetzStemmer;
 
 
 public class DocInfo {

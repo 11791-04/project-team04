@@ -1,7 +1,10 @@
-package docretrieval;
+package document.scoring;
 
 import java.util.Map;
 import java.util.Map.Entry;
+
+import document.DocInfo;
+import document.QueryInfo;
 
 public class Ranker {
 

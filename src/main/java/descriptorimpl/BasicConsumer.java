@@ -15,7 +15,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
 import org.apache.uima.util.ProcessTrace;
 
-import docretrieval.DocInfo;
+import document.DocInfo;
 import snippet.SentenceInfo;
 import util.TypeConstants;
 import edu.cmu.lti.oaqa.type.input.Question;

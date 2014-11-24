@@ -1,6 +1,6 @@
 package snippetextraction.scorer;
 
-import docretrieval.CollectionStatistics;
+import document.scoring.CollectionStatistics;
 import snippet.SentenceInfo;
 
 public abstract class GenericSentenceScorer {
