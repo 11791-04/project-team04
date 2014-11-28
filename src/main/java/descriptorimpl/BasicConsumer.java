@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import metric.MetricDTC;
 import metric.MetricSnippet;
+import metric.MetricTriples;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -15,15 +16,15 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
 import org.apache.uima.util.ProcessTrace;
 
-import document.DocInfo;
 import snippet.SentenceInfo;
 import util.TypeConstants;
+import document.DocInfo;
 import edu.cmu.lti.oaqa.type.input.Question;
+import edu.cmu.lti.oaqa.type.kb.Triple;
 import edu.cmu.lti.oaqa.type.retrieval.ConceptSearchResult;
 import edu.cmu.lti.oaqa.type.retrieval.Document;
 import edu.cmu.lti.oaqa.type.retrieval.Passage;
 import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
-import edu.cmu.lti.oaqa.type.kb.Triple;
 
 public class BasicConsumer extends CasConsumer_ImplBase {
   
@@ -31,21 +32,21 @@ public class BasicConsumer extends CasConsumer_ImplBase {
 
   MetricDTC conceptMetric;
 
-  MetricDTC tripleMetric;
+  MetricTriples tripleMetric;
 
   MetricSnippet snippetMetric;
   
   public void initialize() throws ResourceInitializationException {
     documentMetric = new MetricDTC("document");
     conceptMetric = new MetricDTC("concept");
-    tripleMetric = new MetricDTC("triple");
+    tripleMetric = new MetricTriples("triple");
     snippetMetric = new MetricSnippet("snippet");
   }
 
   private String triple2String(TripleSearchResult tsr) {
     Triple triple = tsr.getTriple();
-    return "<s>" + triple.getSubject() + "</s><o>" + triple.getObject() + "</o><p>"
-            + triple.getPredicate() + "</p>";
+    return triple.getSubject() + ":delim:" + triple.getObject() + ":delim:"
+            + triple.getPredicate();
   }
   
   private SentenceInfo passage2sentence(Passage passage) {
@@ -185,17 +186,14 @@ public class BasicConsumer extends CasConsumer_ImplBase {
     System.out.println("RESULTS concept");
     System.out.println(conceptMetric.getCurrentMAP());
     System.out.println("RESULTS triples");
-
-//    System.out.println(tripleMetric.getMAPForTriples());
-    System.out.println("Triple R,P,F:\n");
-    tripleMetric.getCurrentMAP();
+    System.out.println(tripleMetric.getMAPForTriples());
  
     System.out.println("RESULTS doc");
     System.out.println(documentMetric.getCurrentGMAP(0.01));
     System.out.println("RESULTS concept");
     System.out.println(conceptMetric.getCurrentGMAP(0.01));
     System.out.println("RESULTS triples");
-    System.out.println(tripleMetric.getCurrentGMAP(0.01));
+    System.out.println(tripleMetric.getCurrentGMAPForTriples(0.01));
     
     
     System.out.println(snippetMetric.list_rankList.size());
