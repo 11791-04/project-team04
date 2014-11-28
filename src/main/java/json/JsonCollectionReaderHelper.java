@@ -10,9 +10,12 @@ import com.google.common.collect.Lists;
 
 import json.gson.Question;
 import json.gson.QuestionType;
+import json.gson.TestFactoidQuestion;
+import json.gson.TestListQuestion;
 import json.gson.TestQuestion;
 import json.gson.TestSet;
 import json.gson.TestSummaryQuestion;
+import json.gson.TestYesNoQuestion;
 import json.gson.TrainingFactoidQuestion;
 import json.gson.TrainingListQuestion;
 import json.gson.TrainingQuestion;
@@ -81,7 +84,7 @@ public class JsonCollectionReaderHelper {
 					.forEach(Document::addToIndexes);
 		}
 		if (input.getSnippets() != null) {
-		  System.out.println("SNIPPETS ARE NOT NULL: " + input.getSnippets());
+//		  System.out.println("SNIPPETS ARE NOT NULL: " + input.getSnippets());
 			input.getSnippets()
 					.stream()
 					.map(snippet -> TypeFactory.createGoldStandardPassage(jcas,
@@ -109,12 +112,36 @@ public class JsonCollectionReaderHelper {
 		// add answers to CAS index
 		if (input instanceof TestQuestion) {
 			// test question should not have ideal or exact answers
+//		  System.out.println("TEST QUESTION");
+		  if (input instanceof TestFactoidQuestion) {
+        List<String> answerVariants = ((TestFactoidQuestion) input)
+            .getExactAnswer();
+        if (answerVariants != null) {
+          TypeFactory.createAnswer(jcas, answerVariants)
+              .addToIndexes();
+        }
+      } else if (input instanceof TestListQuestion) {
+        List<List<String>> answerVariantsList = ((TestListQuestion) input)
+            .getExactAnswer();
+        if (answerVariantsList != null) {
+          answerVariantsList
+              .stream()
+              .map(answerVariants -> TypeFactory.createAnswer(
+                  jcas, answerVariants))
+              .forEach(Answer::addToIndexes);
+        }
+      } else if (input instanceof TestYesNoQuestion) {
+        String answer = ((TestYesNoQuestion) input)
+            .getExactAnswer();
+        if (answer != null) {
+          TypeFactory.createAnswer(jcas, answer).addToIndexes();
+        }
+      } else if (input instanceof TestSummaryQuestion) {
+        // summary questions do not have exact answers
+      }
+		  
 		} else if (input instanceof TrainingQuestion) {
-			List<String> summaryVariants = ((TrainingQuestion) input)
-					.getIdealAnswer();
-			if (summaryVariants != null) {
-				TypeFactory.createSummary(jcas, summaryVariants).addToIndexes();
-			}
+//		  System.out.println("TRAIN QUESTION");
 			if (input instanceof TrainingFactoidQuestion) {
 				List<String> answerVariants = ((TrainingFactoidQuestion) input)
 						.getExactAnswer();
