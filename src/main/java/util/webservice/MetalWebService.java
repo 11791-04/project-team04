@@ -15,7 +15,8 @@ import java.net.URL;
  */
 public class MetalWebService {
 
-  private final String METAL_API_BASE = "http://metal.lti.cs.cmu.edu:30002/pmc/";
+  //private final String METAL_API_BASE = "http://metal.lti.cs.cmu.edu:30002/pmc/";
+  private final String METAL_API_BASE = "http://islpc19.is.cs.cmu.edu/gopubmed:30002/pmc/";
 
   
   public JSONObject getDocFullTextJSon(String pmid) {

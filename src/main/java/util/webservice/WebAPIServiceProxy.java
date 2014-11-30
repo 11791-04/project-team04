@@ -53,7 +53,7 @@ public class WebAPIServiceProxy {
     List<OntologyServiceResponse.Finding> findings = new ArrayList<OntologyServiceResponse.Finding>();
     try {
       OntologyServiceResponse.Result diseaseOntologyResult = service
-              .findDiseaseOntologyEntitiesPaged(query, 0);
+              .findDiseaseOntologyEntitiesPaged(query,0);
       System.out.println("Disease ontology: " + diseaseOntologyResult.getFindings().size());
       findings.addAll(diseaseOntologyResult.getFindings());
 
