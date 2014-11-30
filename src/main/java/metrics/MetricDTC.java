@@ -20,6 +20,7 @@ public class MetricDTC extends MetricBasic<String> {
     int relCount = 0;
     for (int i = 0; i < rankList.size(); i++) {
       if (qrelSet.contains(rankList.get(i))) {
+        //System.out.println("Found it!");
         relCount++;
         double precAtI = relCount / (double) (i + 1);
         precAccum += precAtI;

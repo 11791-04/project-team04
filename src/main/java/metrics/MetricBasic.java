@@ -27,7 +27,11 @@ public abstract class MetricBasic<T> {
     Set<T> qrelSet_i = new HashSet<T>();
     for(T docID: gold) {
       qrelSet_i.add(docID);
+      //System.out.println("GOLD: " + docID);
     }
+    /*for(T ans : answer) {
+      System.out.println("ANSWER: " + ans);
+    }*/
     qrelSet_List.add(qrelSet_i);
     list_rankList.add(answer);
 
@@ -40,8 +44,9 @@ public abstract class MetricBasic<T> {
   public double getCurrentMAP() {
     double sumAP = 0d;
     for (int i = 0; i < list_rankList.size(); i++) {
-      sumAP += getAPforQuery(qrelSet_List.get(i), list_rankList.get(i));
-      
+      double val = getAPforQuery(qrelSet_List.get(i), list_rankList.get(i));
+      sumAP += val;
+      System.out.println(val);
     }
     return sumAP / list_rankList.size();
   }

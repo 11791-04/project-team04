@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import util.text.lm.Ngram;
 import document.stemmer.KrovetzStemmer;
 import document.stemmer.Stemmer;
 
@@ -18,8 +19,8 @@ import document.stemmer.Stemmer;
 public class QueryExpander {
 
   /**
-   * Expands the query by creating bigrams out of the input text
-   * List of stopwords are created.
+   * Expands the query by creating bigrams out of the input text List of stopwords are created.
+   * 
    * @param question
    * @param stemmer
    * @return
@@ -31,7 +32,7 @@ public class QueryExpander {
     try {
       fileReader = new FileReader("src/main/resources/stoppers");
       BufferedReader bf = new BufferedReader(fileReader);
-      while((line = bf.readLine()) != null) {
+      while ((line = bf.readLine()) != null) {
         stopWords.add(line);
       }
       bf.close();
@@ -64,9 +65,11 @@ public class QueryExpander {
     }
     String[] temp = finalQuery.trim().split("\\s");
     for (int i = 0; i < temp.length - 1; i++) {
-      biGramQuery += temp[i] + " AND " + temp[i + 1];
-      if (i != temp.length - 2)
-        biGramQuery += " OR ";
+      if (Ngram.getUnigram(temp[i]) <= 0.0001 && Ngram.getUnigram(temp[i + 1]) <= 0.0001) {
+        biGramQuery += temp[i] + " AND " + temp[i + 1];
+        if (i != temp.length - 2)
+          biGramQuery += " ";
+      }
     }
     return biGramQuery.trim();
   }
@@ -78,7 +81,8 @@ public class QueryExpander {
     stopwords.add("of");
     stopwords.add("for");
     System.out.println(expandQuery(
-            "Which acetylcholinesterase inhibitors are used for treatment of myasthenia gravis?", stemmer));
+            "Which acetylcholinesterase inhibitors are used for treatment of myasthenia gravis?",
+            stemmer));
   }
 
 }
