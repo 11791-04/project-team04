@@ -26,6 +26,12 @@ public class ExactMatchConsumer extends CasConsumer_ImplBase {
   private int yesNoTotal = 0;
 
   private int yesNoCorrect = 0;
+  
+  private int factoidTotal = 0;
+  
+  private int factoidStrictCorrect = 0;
+  
+  private int factoidLenientCorrect = 0;
 
   private ArrayList<Double> listPrecision;
 
@@ -87,7 +93,18 @@ public class ExactMatchConsumer extends CasConsumer_ImplBase {
     }
     switch (qType) {
       case "FACTOID":
-        
+        factoidTotal += 1;
+        if (answers.isEmpty()) {
+          System.out.println("YESNO Answer does not exist in the INDEX!!!");
+        } else if (!goldStandards.isEmpty()) {
+          if (goldStandards.get(0).equals(answers.get(0))) {
+            factoidStrictCorrect += 1;
+          }
+	        List<String> TP = intersection(goldStandards, answers);
+	        if (!TP.isEmpty()) {
+            factoidLenientCorrect += 1;
+	        }
+        }
         break;
       case "LIST":
         List<String> TP = intersection(goldStandards, answers);
@@ -142,6 +159,8 @@ public class ExactMatchConsumer extends CasConsumer_ImplBase {
   public void collectionProcessComplete(ProcessTrace arg0) throws ResourceProcessException,
           IOException {
     System.out.println("================================================================================");
+    System.out.println("FACTOID Strict Accuracy:  " + (((float) factoidStrictCorrect) / factoidTotal) + " (total: " + factoidTotal + ")");
+    System.out.println("FACTOID Lenient Accuracy: " + (((float) factoidLenientCorrect) / factoidTotal));
     System.out.println("YESNO Accuracy: " + (((float) yesNoCorrect) / yesNoTotal) + " (total: " + yesNoTotal + ")");
     System.out.println("LIST Mean P:  " + averageList(listPrecision) + " (total: " + listPrecision.size() + ")");
     System.out.println("LIST Mean R:  " + averageList(listRecall));
