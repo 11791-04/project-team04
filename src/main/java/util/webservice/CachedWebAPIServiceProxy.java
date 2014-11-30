@@ -33,7 +33,7 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
 
   public boolean CLEAR_CACHE = false;
 
-  public boolean APPLY_YEAR_CHANGE_HACK = false;
+  public boolean APPLY_YEAR_CHANGE_HACK = true;
 
   private BetterMap<String, Finding> cachedFindings;
 
@@ -58,9 +58,6 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
     if (CLEAR_CACHE) {
       clearCache();
       System.exit(0);
-    }
-    if (APPLY_YEAR_CHANGE_HACK) {
-      cachePath = "src/main/resources/cache2014/";
     }
     try {
       this.cachedFindings = getCachedFindings();
