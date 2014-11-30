@@ -33,7 +33,7 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
 
   public boolean CLEAR_CACHE = false;
 
-  public boolean APPLY_YEAR_CHANGE_HACK = true;
+  public boolean APPLY_YEAR_CHANGE_HACK = false;
 
   private BetterMap<String, Finding> cachedFindings;
 

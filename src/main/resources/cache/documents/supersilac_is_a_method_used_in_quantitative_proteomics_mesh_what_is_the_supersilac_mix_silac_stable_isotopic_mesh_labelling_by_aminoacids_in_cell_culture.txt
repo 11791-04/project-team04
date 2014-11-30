@@ -1,2 +1,0 @@
-Super-SILAC is a method used in quantitative proteomics [mesh] . What is the super-SILAC mix  (SILAC: Stable Isotopic [mesh]  labelling by aminoacids in cell culture)
-null
