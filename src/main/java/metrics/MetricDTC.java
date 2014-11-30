@@ -2,7 +2,11 @@ package metrics;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * Class for evaluating metrics for concepts and documents
+ * @author dix
+ *
+ */
 public class MetricDTC extends MetricBasic<String> {
 
   

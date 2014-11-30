@@ -20,7 +20,11 @@ import json.JsonCollectionReaderHelper;
 import json.gson.TestQuestion;
 import json.gson.TestSet;
 
-
+/**
+ * CollectionReader for reading questions.
+ * @author josephc1
+ *
+ */
 public class QuestionReader extends CollectionReader_ImplBase {
   
   private List<TestQuestion> inputs;
