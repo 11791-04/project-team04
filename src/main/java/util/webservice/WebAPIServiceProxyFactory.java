@@ -3,7 +3,7 @@ package util.webservice;
 public class WebAPIServiceProxyFactory {
   
   private static WebAPIServiceProxy proxy = null;
-  public static boolean DISABLE_CACHE = true;
+  public static boolean DISABLE_CACHE = false;
   
   public static WebAPIServiceProxy getInstance() {
     return getGoPubMedServiceProxy();

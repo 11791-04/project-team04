@@ -1,0 +1,2 @@
+detect AND survivin survivin AND protein [mesh]  protein [mesh]  AND expression expression AND normal adult AND tissues [mesh] 
+null

@@ -109,8 +109,8 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       Question question = (Question) iter.get();
       QueryInfo query = new QueryInfo(question.getText(), stemmer);
       String questionText = question.getText().replace('?', ' ');
-      //questionText = QueryExpander.expandQuery(questionText, stemmer);
-      questionText = qeWithConcept(questionText);
+      questionText = QueryExpander.expandQuery(questionText, stemmer);
+      //questionText = qeWithConcept(questionText);
       System.out.println("###: " + questionText);
       outQuestions.println(questionText);
 

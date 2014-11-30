@@ -46,7 +46,7 @@ public abstract class MetricBasic<T> {
     for (int i = 0; i < list_rankList.size(); i++) {
       double val = getAPforQuery(qrelSet_List.get(i), list_rankList.get(i));
       sumAP += val;
-      System.out.println(val);
+      //System.out.println(val);
     }
     return sumAP / list_rankList.size();
   }
