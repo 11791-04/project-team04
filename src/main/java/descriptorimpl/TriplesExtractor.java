@@ -12,9 +12,9 @@ import org.apache.uima.jcas.JCas;
 
 import util.TypeConstants;
 import util.TypeFactory;
-import webservice.CachedWebAPIServiceProxy;
-import webservice.WebAPIServiceProxy;
-import webservice.WebAPIServiceProxyFactory;
+import util.webservice.CachedWebAPIServiceProxy;
+import util.webservice.WebAPIServiceProxy;
+import util.webservice.WebAPIServiceProxyFactory;
 import edu.cmu.lti.oaqa.bio.bioasq.services.LinkedLifeDataServiceResponse;
 import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.kb.Triple;

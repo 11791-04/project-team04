@@ -24,8 +24,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import util.TypeFactory;
 import util.datastructure.Pair;
-import webservice.WebAPIServiceProxy;
-import webservice.WebAPIServiceProxyFactory;
+import util.webservice.WebAPIServiceProxy;
+import util.webservice.WebAPIServiceProxyFactory;
 import document.DocInfo;
 import document.QueryInfo;
 import document.scoring.CollectionStatistics;

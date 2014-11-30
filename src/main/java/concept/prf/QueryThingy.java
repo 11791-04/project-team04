@@ -1,7 +1,7 @@
 package concept.prf;
 
-import util.text.counting.FrequencyCounter;
-import util.text.counting.FrequencyCounterFactory;
+import util.text.counter.FrequencyCounter;
+import util.text.counter.FrequencyCounterFactory;
 
 public class QueryThingy {
   public String playWithQuery(String query) {

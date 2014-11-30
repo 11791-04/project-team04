@@ -3,8 +3,8 @@ package snippet.scoring.adapter;
 import java.util.HashMap;
 
 import snippet.SentenceInfo;
-import util.text.counting.FrequencyCounter;
-import util.text.counting.FrequencyCounterFactory;
+import util.text.counter.FrequencyCounter;
+import util.text.counter.FrequencyCounterFactory;
 
 /**
  * Converts between a {@link SentenceInfo} and a {@link CandidateAnswer} type 

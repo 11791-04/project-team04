@@ -1,12 +1,12 @@
 package snippet.scoring.factory;
 
-import snippet.scoring.strategy.AverageStrategy;
-import snippet.scoring.strategy.CosineSimilarityStrategy;
-import snippet.scoring.strategy.DiceJaccardStrategy;
-import snippet.scoring.strategy.DiceSimilarityStrategy;
-import snippet.scoring.strategy.JaccardSimilarityStrategy;
-import snippet.scoring.strategy.VoteStrategy;
-import snippet.scoring.strategy.WeightedSumStrategy;
+import snippets.scoring.strategy.AverageStrategy;
+import snippets.scoring.strategy.CosineSimilarityStrategy;
+import snippets.scoring.strategy.DiceJaccardStrategy;
+import snippets.scoring.strategy.DiceSimilarityStrategy;
+import snippets.scoring.strategy.JaccardSimilarityStrategy;
+import snippets.scoring.strategy.VoteStrategy;
+import snippets.scoring.strategy.WeightedSumStrategy;
 
 public class SimilarityFactory {
   

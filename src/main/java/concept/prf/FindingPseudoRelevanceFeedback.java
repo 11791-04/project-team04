@@ -4,10 +4,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import util.text.counting.FrequencyCounter;
-import util.text.counting.FrequencyCounterFactory;
-import webservice.WebAPIServiceProxy;
-import webservice.WebAPIServiceProxyFactory;
+import util.text.counter.FrequencyCounter;
+import util.text.counter.FrequencyCounterFactory;
+import util.webservice.WebAPIServiceProxy;
+import util.webservice.WebAPIServiceProxyFactory;
 import edu.cmu.lti.oaqa.bio.bioasq.services.OntologyServiceResponse.Finding;
 
 public class FindingPseudoRelevanceFeedback {

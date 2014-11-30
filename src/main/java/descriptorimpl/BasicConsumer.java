@@ -3,9 +3,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import metric.MetricDTC;
-import metric.MetricSnippet;
-import metric.MetricTriples;
+import metrics.MetricDTC;
+import metrics.MetricSnippet;
+import metrics.MetricTriples;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
