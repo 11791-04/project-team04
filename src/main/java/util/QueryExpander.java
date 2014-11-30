@@ -64,9 +64,9 @@ public class QueryExpander {
     }
     String[] temp = finalQuery.trim().split("\\s");
     for (int i = 0; i < temp.length - 1; i++) {
-      biGramQuery += temp[i] + " " + temp[i + 1];
+      biGramQuery += temp[i] + " AND " + temp[i + 1];
       if (i != temp.length - 2)
-        biGramQuery += " or ";
+        biGramQuery += " OR ";
     }
     return biGramQuery.trim();
   }
