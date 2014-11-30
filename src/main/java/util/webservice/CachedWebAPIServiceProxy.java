@@ -175,7 +175,8 @@ public class CachedWebAPIServiceProxy extends WebAPIServiceProxy {
   }
   
   private PrintStream getWriter(String name, String subdir) {
-    String hash = cleanString(name, "_").toLowerCase();
+    //String hash = cleanString(name, "_").toLowerCase();
+    String hash = UUID.randomUUID().toString();
     try {
       PrintStream ps = new PrintStream(cachePath + subdir + hash + ".txt");
       return ps;

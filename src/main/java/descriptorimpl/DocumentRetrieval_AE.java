@@ -22,6 +22,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import util.QueryExpander;
 import util.TypeFactory;
 import util.datastructure.Pair;
 import util.webservice.WebAPIServiceProxy;
@@ -42,17 +43,17 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
   KrovetzStemmer stemmer;
 
   private PrintWriter outQuestions;
-  
+
   boolean baseline = false;
 
   Set<String> conceptSet;
-  
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     System.out.println("DocumentRetrieval_AE - initialize()");
     service = WebAPIServiceProxyFactory.getInstance();
-    
-    //service = new WebAPIServiceProxy();
+
+    // service = new WebAPIServiceProxy();
     stemmer = new KrovetzStemmer();
 
     try {
@@ -61,38 +62,38 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    
+
     conceptSet = new HashSet<String>();
-    
+
     try {
       Scanner in = new Scanner(new File("concepts.evil"));
-      
-      while(in.hasNextLine()) {
+
+      while (in.hasNextLine()) {
         String l = in.nextLine().trim();
-        if(l.equals("")) {continue;}
+        if (l.equals("")) {
+          continue;
+        }
         conceptSet.add(l);
-        System.out.println("==="+l);
+        System.out.println("===" + l);
       }
-      
-      
+
       in.close();
     } catch (FileNotFoundException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    
+
   }
 
   public String qeWithConcept(String raw) {
-    for(String c: conceptSet) {
-      if(raw.contains(c)) {
-        raw = raw.replace(c, c+" [mesh] ");
+    for (String c : conceptSet) {
+      if (raw.contains(c)) {
+        raw = raw.replace(c, c + " [mesh] ");
       }
     }
     return raw;
   }
-  
-  
+
   /**
    * @param aJcas
    *          Assumed to contain questions provided by QuestionReader
@@ -108,13 +109,13 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       Question question = (Question) iter.get();
       QueryInfo query = new QueryInfo(question.getText(), stemmer);
       String questionText = question.getText().replace('?', ' ');
+      //questionText = QueryExpander.expandQuery(questionText, stemmer);
       questionText = qeWithConcept(questionText);
-      System.out.println("###: "+questionText);
+      System.out.println("###: " + questionText);
       outQuestions.println(questionText);
-      
-      
-      
-      List<PubMedSearchServiceResponse.Document> list = service.getPubMedDocumentsFromQuery(questionText);
+
+      List<PubMedSearchServiceResponse.Document> list = service
+              .getPubMedDocumentsFromQuery(questionText);
 
       for (PubMedSearchServiceResponse.Document d : list) {
 
@@ -128,9 +129,11 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
         fieldTextMap.put("title", title);
         fieldTextMap.put("abstract", abstractText);
 
-        DocInfo docInfo = new DocInfo("http://www.ncbi.nlm.nih.gov/pubmed/" + pmid, pmid,
-                fieldTextMap, year, stemmer);
-        cStat.addDoc(docInfo); // Update collection statistics
+        if (title != null && abstractText != null && pmid != null && fieldTextMap != null && year != null) {
+          DocInfo docInfo = new DocInfo("http://www.ncbi.nlm.nih.gov/pubmed/" + pmid, pmid,
+                  fieldTextMap, year, stemmer);
+          cStat.addDoc(docInfo); // Update collection statistics
+        }
       }
       cStat.finalize();
       // At this point, we have finished collecting all candidate documents

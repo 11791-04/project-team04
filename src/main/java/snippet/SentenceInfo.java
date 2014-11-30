@@ -46,6 +46,7 @@ public class SentenceInfo {
     this.hostDoc = hostDoc;
   }
   
+  
   public String toString() {
     String out = "";
     out += "<SENT " + startIndex + ":" + endIndex + " doc:" + hostDoc.uri + " -" + content.replace('\n', ' ') + " " + String.format("%.3f", score) + ">";

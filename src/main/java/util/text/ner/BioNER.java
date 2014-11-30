@@ -13,6 +13,8 @@ import java.util.Map.Entry;
 
 import org.apache.uima.resource.ResourceInitializationException;
 
+import util.text.lm.Ngram;
+
 import com.aliasi.chunk.Chunk;
 import com.aliasi.chunk.Chunker;
 import com.aliasi.chunk.Chunking;
@@ -42,21 +44,21 @@ public class BioNER {
 
 
   private static PosTagNamedEntityRecognizer posTagger = null;
-  //  static {
-  //    try {
-  //      posTagger =  new PosTagNamedEntityRecognizer();
-  //    } catch (Exception e) {
-  //      e.printStackTrace();
-  //      System.err.println("PosTagNamedEntityRecognizer failed to initialize!");
-  //    }
-  //  }
+  static {
+    try {
+      posTagger =  new PosTagNamedEntityRecognizer();
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.err.println("PosTagNamedEntityRecognizer failed to initialize!");
+    }
+  }
 
 
   private static Tagger abnerTager = new Tagger(Tagger.BIOCREATIVE);
   private static Chunker  chunker = null;
   static {
     try {
-      chunker = (Chunker) AbstractExternalizable.readResourceObject(BioNER.class, "/LingPipeModels/ne-en-bio-genetag.HmmChunker");
+      chunker = (Chunker) AbstractExternalizable.readResourceObject(BioNER.class, "/models/ne-en-bio-genetag.HmmChunker");
     } catch (Exception e) {
       // e.printStackTrace();
       System.err.println("LingPipe failed to initialize!");
@@ -65,7 +67,7 @@ public class BioNER {
   private static ExactDictionaryChunker dictionaryChunkerTF;
   static {
     MapDictionary<String> dictionary = new MapDictionary<String>();
-    InputStream is = ExactDictionaryChunker.class.getResourceAsStream("/LingPipeModels/dictionary");
+    InputStream is = ExactDictionaryChunker.class.getResourceAsStream("/models/dictionary");
     String ln;
 
     try {
@@ -237,22 +239,12 @@ public class BioNER {
    * Test client
    */
   public static void main(String[] args) {
-    System.err.println("AAA");
 
-
-    try {
-      posTagger =  new PosTagNamedEntityRecognizer();
-    } catch (Exception e) {
-      e.printStackTrace();
-      System.err.println("PosTagNamedEntityRecognizer failed to initialize!");
-    }
-
-
-
-    Set<String> tags = getBioTags("Tumors of which three organs are classically associated with the multiple endocrine neoplasia type 1 syndrome?");
+    Set<String> tags = getBioTags("Tumors of which three people are classically associated with the multiple endocrine neoplasia type 1 syndrome?");
     for(String tag: tags) {
-      System.out.println(tag);
+      System.out.println(tag+" "+Ngram.getUnigram(tag));
+      
     }
-    System.err.println("BBB");
+
   }
 }

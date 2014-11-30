@@ -15,12 +15,12 @@ public class GoPubMedServiceExample {
 
   public static void main(String[] args) throws ClientProtocolException, IOException,
           ConfigurationException {
-     String text = "Is Rheumatoid Arthritis more common in men or women?";
+     String text = "In which isochores are Alu elements enriched?";
 //    String text = "Are there any DNMT3 proteins present in plants?";
     GoPubMedService service = new GoPubMedService("project.properties");
     OntologyServiceResponse.Result diseaseOntologyResult = service
             .findDiseaseOntologyEntitiesPaged(text, 0);
-    System.out.println("Disease ontology: " + diseaseOntologyResult.getFindings().size());
+    /*System.out.println("Disease ontology: " + diseaseOntologyResult.getFindings().size());
     for (OntologyServiceResponse.Finding finding : diseaseOntologyResult.getFindings()) {
       System.out.println(" 1> " + finding.getConcept().getLabel() + " "
               + finding.getConcept().getUri() + " " + finding.getScore());
@@ -61,7 +61,7 @@ public class GoPubMedServiceExample {
         System.out.println("   - sub: " + relation.getSubj());
         System.out.println("   - obj: " + relation.getObj());
       }
-    }
+    }*/
     text = text.replace('?', ' ');
     System.out.println(text);
 
@@ -69,6 +69,7 @@ public class GoPubMedServiceExample {
     List<PubMedSearchServiceResponse.Document> list =  pubmedResult.getDocuments();
     
     for(PubMedSearchServiceResponse.Document d: list) {
+      System.out.println(d.getDocumentAbstract());
       System.out.println(d.getPmid());
     }
     
