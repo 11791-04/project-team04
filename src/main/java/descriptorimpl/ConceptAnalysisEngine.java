@@ -49,7 +49,7 @@ public class ConceptAnalysisEngine extends JCasAnnotator_ImplBase {
       /* TODO */
       //query = new QueryThingy().playWithQuery(query);
       List<Finding> findings = service.getFindingsFromQuery(query);
-      findings = prf.getPRF(findings);
+      //findings = prf.getPRF(findings);
       Collections.sort(findings, new Comparator<Finding>() {
         public int compare(Finding o1, Finding o2) {
           if (o1.getScore() < o2.getScore())

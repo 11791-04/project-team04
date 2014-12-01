@@ -53,27 +53,36 @@ public class WebAPIServiceProxy {
     List<OntologyServiceResponse.Finding> findings = new ArrayList<OntologyServiceResponse.Finding>();
     try {
       OntologyServiceResponse.Result diseaseOntologyResult = service
-              .findDiseaseOntologyEntitiesPaged(query,0);
-      System.out.println("Disease ontology: " + diseaseOntologyResult.getFindings().size());
-      findings.addAll(diseaseOntologyResult.getFindings());
+              .findDiseaseOntologyEntitiesPaged(query, 0);
+      if (diseaseOntologyResult != null) {
+        System.out.println("Disease ontology: " + diseaseOntologyResult.getFindings().size());
+        findings.addAll(diseaseOntologyResult.getFindings());
+      }
 
       OntologyServiceResponse.Result geneOntologyResult = service.findGeneOntologyEntitiesPaged(
-              query, 0, 10);
-      System.out.println("Gene ontology: " + geneOntologyResult.getFindings().size());
-      findings.addAll(geneOntologyResult.getFindings());
+              query, 0);
+      if (geneOntologyResult != null) {
+        System.out.println("Gene ontology: " + geneOntologyResult.getFindings().size());
+        findings.addAll(geneOntologyResult.getFindings());
+      }
 
       OntologyServiceResponse.Result jochemResult = service.findJochemEntitiesPaged(query, 0);
-      System.out.println("Jochem: " + jochemResult.getFindings().size());
-      findings.addAll(jochemResult.getFindings());
+      if (jochemResult != null) {
+        System.out.println("Jochem: " + jochemResult.getFindings().size());
+        findings.addAll(jochemResult.getFindings());
+      }
 
       OntologyServiceResponse.Result meshResult = service.findMeshEntitiesPaged(query, 0);
-      System.out.println("MeSH: " + meshResult.getFindings().size());
-      findings.addAll(meshResult.getFindings());
+      if (meshResult != null) {
+        System.out.println("MeSH: " + meshResult.getFindings().size());
+        findings.addAll(meshResult.getFindings());
+      }
 
       OntologyServiceResponse.Result uniprotResult = service.findUniprotEntitiesPaged(query, 0);
-      System.out.println("UniProt: " + uniprotResult.getFindings().size());
-      findings.addAll(uniprotResult.getFindings());
-
+      if (uniprotResult != null) {
+        System.out.println("UniProt: " + uniprotResult.getFindings().size());
+        findings.addAll(uniprotResult.getFindings());
+      }
     } catch (ClientProtocolException e) {
       e.printStackTrace();
       System.out.println("ClientProtocolException occurred! " + e.getMessage());
@@ -94,8 +103,10 @@ public class WebAPIServiceProxy {
     LinkedLifeDataServiceResponse.Result linkedLifeDataResult;
     try {
       linkedLifeDataResult = service.findLinkedLifeDataEntitiesPaged(query, 0);
-      System.out.println("LinkedLifeData: " + linkedLifeDataResult.getEntities().size());
-      entities.addAll(linkedLifeDataResult.getEntities());
+      if (linkedLifeDataResult != null) {
+        System.out.println("LinkedLifeData: " + linkedLifeDataResult.getEntities().size());
+        entities.addAll(linkedLifeDataResult.getEntities());
+      }
     } catch (ClientProtocolException e) {
       e.printStackTrace();
       System.out.println("ClientProtocolException occurred! " + e.getMessage());
@@ -116,8 +127,10 @@ public class WebAPIServiceProxy {
     PubMedSearchServiceResponse.Result pubmedResult = null;
     try {
       pubmedResult = service.findPubMedCitations(query, 0);
-      System.out.println("Documents: " + pubmedResult.getSize());
-      docs = pubmedResult.getDocuments();
+      if(pubmedResult != null){
+        System.out.println("Documents: " + pubmedResult.getSize());
+        docs = pubmedResult.getDocuments();
+      }
       if (FULL_TEXT_ONLY) {
         for (PubMedSearchServiceResponse.Document doc : docs) {
           if (!doc.isFulltextAvailable()) {
@@ -139,7 +152,7 @@ public class WebAPIServiceProxy {
   public JSONObject getDocFullTextJSon(String pmid) {
     return metal.getDocFullTextJSon(pmid);
   }
-  
+
   /**
    * Fetches the triples for a given question text
    * 
