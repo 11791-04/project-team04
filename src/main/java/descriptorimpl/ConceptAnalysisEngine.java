@@ -11,8 +11,6 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import concept.prf.FindingPseudoRelevanceFeedback;
-import concept.prf.PseudoRelevanceFeedbackFactory;
 import util.TypeFactory;
 import util.webservice.WebAPIServiceProxy;
 import util.webservice.WebAPIServiceProxyFactory;
@@ -22,6 +20,11 @@ import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.kb.Concept;
 import edu.cmu.lti.oaqa.type.retrieval.ConceptSearchResult;
 
+/**
+ * Analysis engine for concept extraction
+ * @author nwolfe
+ *
+ */
 public class ConceptAnalysisEngine extends JCasAnnotator_ImplBase {
 
   private WebAPIServiceProxy service;
@@ -62,6 +65,13 @@ public class ConceptAnalysisEngine extends JCasAnnotator_ImplBase {
     }
   }
 
+  /**
+   * Creates a Concept type and adds it to the type system
+   * @param jcas
+   * @param f
+   * @param queryString
+   * @param rank
+   */
   private void createConceptSearchResultFromFinding(JCas jcas, Finding f, String queryString,
           Integer rank) {
     OntologyServiceResponse.Concept c = f.getConcept();

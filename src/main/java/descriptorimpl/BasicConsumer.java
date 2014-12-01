@@ -26,6 +26,12 @@ import edu.cmu.lti.oaqa.type.retrieval.Document;
 import edu.cmu.lti.oaqa.type.retrieval.Passage;
 import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
 
+/**
+ * 
+ * Cas consumer for the pipeline
+ * @author josephc1
+ *
+ */
 public class BasicConsumer extends CasConsumer_ImplBase {
   
   MetricDTC documentMetric;
@@ -181,23 +187,21 @@ public class BasicConsumer extends CasConsumer_ImplBase {
   public void collectionProcessComplete(ProcessTrace arg0) throws ResourceProcessException,
           IOException {
 
-    System.out.println("RESULTS doc");
-    System.out.println(documentMetric.getCurrentMAP());
-    System.out.println("RESULTS concept");
-    System.out.println(conceptMetric.getCurrentMAP());
-    System.out.println("RESULTS triples");
-    System.out.println(tripleMetric.getMAPForTriples());
+    System.out.println("----------------------------->>> MAP <<<-----------------------------");
+    System.out.println("=======>>> RESULTS doc MAP <<<======= \n" + documentMetric.getCurrentMAP() + "\n");
+    System.out.println("=======>>> RESULTS concept MAP <<<======= \n" + conceptMetric.getCurrentMAP() + "\n");
+    System.out.println("=======>>> RESULTS triples MAP <<<======= \n" + tripleMetric.getMAPForTriples() + "\n");
+    System.out.println("----------------------------->>> END MAP <<<-----------------------------");
  
-    System.out.println("RESULTS doc");
-    System.out.println(documentMetric.getCurrentGMAP(0.01));
-    System.out.println("RESULTS concept");
-    System.out.println(conceptMetric.getCurrentGMAP(0.01));
-    System.out.println("RESULTS triples");
-    System.out.println(tripleMetric.getCurrentGMAPForTriples(0.01));
+    System.out.println("----------------------------->>> GMAP <<<-----------------------------");
+    System.out.println("=======>>> RESULTS doc GMAP <<<======= \n" + documentMetric.getCurrentGMAP(0.01) + "\n");
+    System.out.println("=======>>> RESULTS concept GMAP <<<======= \n" + conceptMetric.getCurrentGMAP(0.01) + "\n");
+    System.out.println("=======>>> RESULTS triples GMAP <<<======= \n" + tripleMetric.getCurrentGMAPForTriples(0.01) + "\n");
+    System.out.println("----------------------------->>> END GMAP <<<-----------------------------");
     
     
     System.out.println(snippetMetric.list_rankList.size());
-    System.out.println("RESULT SNIPPETS:");
+    System.out.println("=======>>> RESULT SNIPPETS: <<<=======");
     System.out.println(snippetMetric.getCurrentF1());
   }
 

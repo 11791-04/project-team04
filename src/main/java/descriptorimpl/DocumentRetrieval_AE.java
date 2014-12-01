@@ -36,6 +36,11 @@ import edu.cmu.lti.oaqa.bio.bioasq.services.PubMedSearchServiceResponse;
 import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.retrieval.Document;
 
+/**
+ * Analysis engine for document retrieval
+ * @author dix
+ *
+ */
 public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
 
   WebAPIServiceProxy service;

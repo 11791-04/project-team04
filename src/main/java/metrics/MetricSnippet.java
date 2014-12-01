@@ -1,15 +1,17 @@
 package metrics;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import snippet.SentenceInfo;
 
-
+/**
+ * Class for evaluating metrics for snippets
+ * @author dix
+ *
+ */
 public class MetricSnippet extends MetricBasic<SentenceInfo> {
 
   public MetricSnippet(String _name) {

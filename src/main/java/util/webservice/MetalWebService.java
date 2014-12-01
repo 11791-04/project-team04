@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.cedarsoftware.util.io.JsonWriter;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -15,12 +17,17 @@ import java.net.URL;
  */
 public class MetalWebService {
 
-  //private final String METAL_API_BASE = "http://metal.lti.cs.cmu.edu:30002/pmc/";
-  private final String METAL_API_BASE = "http://islpc19.is.cs.cmu.edu/gopubmed:30002/pmc/";
-
+  private final String METAL_API_BASE = "http://metal.lti.cs.cmu.edu:30002/pmc/";
+  //private final String METAL_API_BASE = "http://islpc19.is.cs.cmu.edu:30001/pmc/";
+  
+  public boolean DISABLE_METAL_WEB_SERVICE = true;
+  
   
   public JSONObject getDocFullTextJSon(String pmid) {
-    return get_JSON_Obj_by_URL(buildUrl(pmid));
+    if(!DISABLE_METAL_WEB_SERVICE)
+      return get_JSON_Obj_by_URL(buildUrl(pmid));
+    else
+      return new JSONObject("{pmid:"+pmid+"}");
   }
   
   private URL buildUrl(String pmid) {
@@ -82,6 +89,7 @@ public class MetalWebService {
 
   public static void main(String[] args) {
     MetalWebService metal = new MetalWebService();
+    metal.DISABLE_METAL_WEB_SERVICE = false;
     JSONObject docFull = metal.getDocFullTextJSon("23193287");
     
     System.out.println(docFull.get("pmid"));
