@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cpeDescription xmlns="http://uima.apache.org/resourceSpecifier">
-
-	<!-- Collection Reader -->
-	<collectionReader>
-		<collectionIterator>
-			<descriptor>
-				<import location="bioasq/collection/questionReaderDescriptor.xml" />
-			</descriptor>
-		</collectionIterator>
-	</collectionReader>
-
-	<casProcessors casPoolSize="3" processingUnitThreadCount="1">
-
-		<!-- Pub Med Aggregate Analysis Engine AE -->
-		<casProcessor deployment="integrated" name="PubMedAggregateAnalysisEngine">
-			<descriptor>
-				<import location="bioasq/PubMedAggregateAEDescriptor.xml" />
-			</descriptor>
-			<deploymentParameters />
-			<errorHandling>
-				<errorRateThreshold action="terminate" value="0/1000" />
-				<maxConsecutiveRestarts action="terminate"
-					value="30" />
-				<timeout max="100000" default="-1" />
-			</errorHandling>
-			<checkpoint batch="10000" time="1000ms" />
-		</casProcessor>
-		
-	</casProcessors>
-
-	<cpeConfig>
-		<numToProcess>-1</numToProcess>
-		<deployAs>immediate</deployAs>
-		<checkpoint batch="0" time="300000ms" />
-		<timerImpl />
-	</cpeConfig>
-
+    <collectionReader>
+        <collectionIterator>
+            <descriptor>
+                <import location="bioasq/collection/questionReaderDescriptor.xml"/>
+            </descriptor>
+        </collectionIterator>
+    </collectionReader>
+    <casProcessors casPoolSize="3" processingUnitThreadCount="1">
+        <casProcessor deployment="integrated" name="PubMedAggregateAEDescriptor">
+            <descriptor>
+                <import location="bioasq/PubMedAggregateAEDescriptor.xml"/>
+            </descriptor>
+            <deploymentParameters/>
+            <errorHandling>
+                <errorRateThreshold action="terminate" value="0/1000"/>
+                <maxConsecutiveRestarts action="terminate" value="30"/>
+                <timeout max="100000" default="-1"/>
+            </errorHandling>
+            <checkpoint batch="10000" time="1000ms"/>
+        </casProcessor>
+        <casProcessor deployment="integrated" name="ExactMatchConsumerDescriptor">
+            <descriptor>
+                <import location="descriptors/ExactMatchConsumerDescriptor.xml"/>
+            </descriptor>
+            <deploymentParameters/>
+            <errorHandling>
+                <errorRateThreshold action="terminate" value="0/1000"/>
+                <maxConsecutiveRestarts action="terminate" value="30"/>
+                <timeout max="100000" default="-1"/>
+            </errorHandling>
+            <checkpoint batch="10000" time="1000ms"/>
+        </casProcessor>
+    </casProcessors>
+    <cpeConfig>
+        <numToProcess>-1</numToProcess>
+        <deployAs>immediate</deployAs>
+        <checkpoint batch="0" time="300000ms"/>
+        <timerImpl/>
+    </cpeConfig>
 </cpeDescription>

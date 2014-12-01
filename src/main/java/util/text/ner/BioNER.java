@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -109,6 +110,21 @@ public class BioNER {
     return ret;
   }
 
+  public static Set<String> getUnigramBioTags(String content){
+    Set<String> rawSet = getBioTags(content);
+    Set<String> unigramSet = new HashSet<String>();
+
+    for(String tag: rawSet) {
+      if(tag.contains(" ")) {
+        String[] tagSplit = tag.split("[ ]+");
+        unigramSet.addAll(new HashSet<String>(Arrays.asList(tagSplit)));
+      }else {
+        unigramSet.add(tag);
+      }
+    }
+    return unigramSet;
+  }
+  
   public static Set<GeneMentionTag> getAbnerNER(String content){
 
     Set<GeneMentionTag> ret = new HashSet<GeneMentionTag>();
@@ -240,7 +256,7 @@ public class BioNER {
    */
   public static void main(String[] args) {
 
-    Set<String> tags = getBioTags("Tumors of which three people are classically associated with the multiple endocrine neoplasia type 1 syndrome?");
+    Set<String> tags = getBioTags("H3R17 protein arginine R methyltransferases 1 and 4 PRMT1");
     for(String tag: tags) {
       System.out.println(tag+" "+Ngram.getUnigram(tag));
       

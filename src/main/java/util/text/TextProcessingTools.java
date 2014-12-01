@@ -16,14 +16,19 @@ public class TextProcessingTools {
 
   
   public static String[] getFormattedTermArray(String rawText, KrovetzStemmer stemmer) {
-    rawText = rawText.replaceAll("[.,;!-]", " ");
-    rawText = rawText.toLowerCase();
+    //rawText = rawText.replaceAll("[.,;!-]", " ");
+    rawText = rawText.replaceAll("[\\p{Punct}]", " ");
+    
+    //rawText = rawText.toLowerCase();
     
     String[] textSplit = rawText.split("\\s+");
     
-    for(int i=0; i<textSplit.length; i++) {
-      textSplit[i] = stemmer.stem(textSplit[i]);
+    if(stemmer!=null) {
+      for(int i=0; i<textSplit.length; i++) {
+        textSplit[i] = stemmer.stem(textSplit[i]);
+      }
     }
+    
     
     return textSplit;
   }
