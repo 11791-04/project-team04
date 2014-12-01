@@ -1,0 +1,2 @@
+( acetylcholinesterase AND inhibitors ) OR ( myasthenia AND gravis )
+null

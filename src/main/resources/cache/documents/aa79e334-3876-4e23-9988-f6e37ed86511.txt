@@ -1,0 +1,2 @@
+OR ( poor AND prognosis ) OR ( prognosis AND brain ) OR ( brain AND tumor )
+null

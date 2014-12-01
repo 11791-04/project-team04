@@ -1,0 +1,2 @@
+( antiepileptic AND drug ) OR ( drug AND strongly ) OR ( spina AND bifida )
+null

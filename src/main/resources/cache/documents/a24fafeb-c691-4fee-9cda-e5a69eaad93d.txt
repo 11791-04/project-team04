@@ -1,0 +1,2 @@
+( medication AND administered ) OR ( administered AND managing ) OR ( suspected AND acute ) OR ( acute AND opioid ) OR ( opioid AND overdose )
+null

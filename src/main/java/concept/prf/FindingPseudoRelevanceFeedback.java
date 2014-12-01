@@ -16,7 +16,7 @@ public class FindingPseudoRelevanceFeedback {
 
   private WebAPIServiceProxy service;
 
-  private int numRecursion = 2;
+  private int numRecursion = 0                                                                                  ;
 
   public FindingPseudoRelevanceFeedback() {
     this.service = WebAPIServiceProxyFactory.getInstance();
@@ -39,7 +39,11 @@ public class FindingPseudoRelevanceFeedback {
             return 0;
         }
       });
-      List<Finding> nBest = initialResults.subList(0, 10);
+      List<Finding> nBest;
+      if(initialResults.size()>10)
+        nBest = initialResults.subList(0, 10);
+      else
+        nBest = initialResults;
       StringBuilder document = new StringBuilder();
       for (Finding f : nBest) {
         document.append(f.getConcept().getLabel() + " ");
@@ -48,11 +52,9 @@ public class FindingPseudoRelevanceFeedback {
               .getNewFrequencyCounter(FrequencyCounterFactory.stemStopWord);
       fc.tokenizeAndPutAll(document.toString().trim(), " ");
       String query = String.join(" ", fc.keySet()).trim();
-      query = QueryExpander.expandQuery(query, new KrovetzStemmer());
+      //query = QueryExpander.expandQuery(query, new KrovetzStemmer());
       List<Finding> newFindings = service.getFindingsFromQuery(query);
       if(newFindings.isEmpty()) {
-        return initialResults;
-      } else if (newFindings.size() <= initialResults.size()) {
         return initialResults;
       } else {
         return getPRFHelper(newFindings, recursion);

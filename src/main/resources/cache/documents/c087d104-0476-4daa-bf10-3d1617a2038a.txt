@@ -1,0 +1,2 @@
+( extra AND thyroid ) OR ( thyroid AND tissues ) OR ( tissues AND thyrotropin ) OR ( thyrotropin AND (tsh) ) OR ( (tsh) AND receptors )
+null

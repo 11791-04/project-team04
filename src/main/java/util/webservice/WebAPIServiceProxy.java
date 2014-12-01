@@ -66,11 +66,11 @@ public class WebAPIServiceProxy {
         findings.addAll(geneOntologyResult.getFindings());
       }
 
-      OntologyServiceResponse.Result jochemResult = service.findJochemEntitiesPaged(query, 0);
+      /*OntologyServiceResponse.Result jochemResult = service.findJochemEntitiesPaged(query, 0);
       if (jochemResult != null) {
         System.out.println("Jochem: " + jochemResult.getFindings().size());
         findings.addAll(jochemResult.getFindings());
-      }
+      }*/
 
       OntologyServiceResponse.Result meshResult = service.findMeshEntitiesPaged(query, 0);
       if (meshResult != null) {
@@ -78,11 +78,11 @@ public class WebAPIServiceProxy {
         findings.addAll(meshResult.getFindings());
       }
 
-      OntologyServiceResponse.Result uniprotResult = service.findUniprotEntitiesPaged(query, 0);
+      /*OntologyServiceResponse.Result uniprotResult = service.findUniprotEntitiesPaged(query, 0);
       if (uniprotResult != null) {
         System.out.println("UniProt: " + uniprotResult.getFindings().size());
         findings.addAll(uniprotResult.getFindings());
-      }
+      }*/
     } catch (ClientProtocolException e) {
       e.printStackTrace();
       System.out.println("ClientProtocolException occurred! " + e.getMessage());
