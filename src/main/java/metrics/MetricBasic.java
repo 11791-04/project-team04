@@ -4,7 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * Generic class for storing metrics
+ * @author dix
+ *
+ * @param <T>
+ */
 public abstract class MetricBasic<T> {
 
   
@@ -23,15 +28,16 @@ public abstract class MetricBasic<T> {
     list_rankList = new ArrayList<List<T>>();
   }
 
+  /**
+   * Register retrieved answers and gold standard answers
+   * @param answer
+   * @param gold
+   */
   public void registerAnswerAndGoldStandard(List<T> answer, List<T> gold) {
     Set<T> qrelSet_i = new HashSet<T>();
     for(T docID: gold) {
       qrelSet_i.add(docID);
-      //System.out.println("GOLD: " + docID);
     }
-    /*for(T ans : answer) {
-      System.out.println("ANSWER: " + ans);
-    }*/
     qrelSet_List.add(qrelSet_i);
     list_rankList.add(answer);
 
@@ -41,16 +47,25 @@ public abstract class MetricBasic<T> {
     return name;
   }
 
+  /**
+   * Calculate MAP for current input
+   * @return
+   */
   public double getCurrentMAP() {
     double sumAP = 0d;
     for (int i = 0; i < list_rankList.size(); i++) {
       double val = getAPforQuery(qrelSet_List.get(i), list_rankList.get(i));
       sumAP += val;
-      System.out.println(val);
+      //System.out.println(val);
     }
     return sumAP / list_rankList.size();
   }
 
+  /**
+   * Calculate GMAP for current input
+   * @param epsilon
+   * @return
+   */
   public double getCurrentGMAP(double epsilon) {
     if (Double.compare(epsilon, 0d) == 0) {
       epsilon = 0.01;

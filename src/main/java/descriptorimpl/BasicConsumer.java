@@ -26,6 +26,12 @@ import edu.cmu.lti.oaqa.type.retrieval.Document;
 import edu.cmu.lti.oaqa.type.retrieval.Passage;
 import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
 
+/**
+ * 
+ * Cas consumer for the pipeline
+ * @author josephc1
+ *
+ */
 public class BasicConsumer extends CasConsumer_ImplBase {
   
   MetricDTC documentMetric;

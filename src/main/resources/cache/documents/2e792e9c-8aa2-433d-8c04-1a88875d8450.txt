@@ -1,0 +1,2 @@
+mammalian AND gene gene AND irg1
+null

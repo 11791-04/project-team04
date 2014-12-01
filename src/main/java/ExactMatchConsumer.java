@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import metrics.ExactMatchMetrics;
+
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
@@ -23,29 +25,14 @@ import edu.cmu.lti.oaqa.type.kb.Triple;
 
 public class ExactMatchConsumer extends CasConsumer_ImplBase {
 
-  private int yesNoTotal = 0;
-
-  private int yesNoCorrect = 0;
-  
-  private int factoidTotal = 0;
-  
-  private int factoidStrictCorrect = 0;
-  
-  private int factoidLenientCorrect = 0;
-
-  private ArrayList<Double> listPrecision;
-
-  private ArrayList<Double> listRecall;
-
-  private ArrayList<Double> listF1;
-  
-  private ArrayList<Double> factoidMRR;
+  private ExactMatchMetrics yesNoMetric;
+  private ExactMatchMetrics listMetric;
+  private ExactMatchMetrics factoidMetric;
 
   public void initialize() throws ResourceInitializationException {
-    listPrecision = new ArrayList<Double>();
-    listRecall = new ArrayList<Double>();
-    listF1 = new ArrayList<Double>();
-    factoidMRR = new ArrayList<Double>();
+    yesNoMetric = new ExactMatchMetrics();
+    listMetric = new ExactMatchMetrics();
+    factoidMetric = new ExactMatchMetrics();
   }
 
   @Override
@@ -96,49 +83,13 @@ public class ExactMatchConsumer extends CasConsumer_ImplBase {
     }
     switch (qType) {
       case "FACTOID":
-        factoidTotal += 1;
-        if (answers.isEmpty()) {
-          System.out.println("FACTOID Answer does not exist in the INDEX!!!");
-          factoidMRR.add(0.0);
-        } else if (!goldStandards.isEmpty()) {
-          if (goldStandards.get(0).equals(answers.get(0))) {
-            factoidStrictCorrect += 1;
-          }
-	        List<String> TP = intersection(goldStandards, answers);
-	        if (!TP.isEmpty()) {
-            factoidLenientCorrect += 1;
-	          factoidMRR.add( 1.0 / ( answers.indexOf(goldStandards.get(0)) + 1 ) );
-	        } else {
-	          factoidMRR.add(0.0);
-	        }
-        }
+        factoidMetric.register(answers, goldStandards);
         break;
       case "LIST":
-        List<String> TP = intersection(goldStandards, answers);
-        if (TP.size() == 0) {
-          listPrecision.add(0.0);
-          listRecall.add(0.0);
-        } else {
-          listPrecision.add(((double)TP.size()) / answers.size());
-          listRecall.add(((double)TP.size()) / goldStandards.size());
-        }
-        if (TP.size() == 0) {
-          listF1.add(0.0);
-        } else {
-          Double P = listPrecision.get(listPrecision.size() - 1);
-          Double R = listRecall.get(listRecall.size() - 1);
-          listF1.add(2*P*R / (P+R));
-        }
+        listMetric.register(answers, goldStandards);
         break;
       case "YES_NO":
-        yesNoTotal += 1;
-        if (answers.isEmpty()) {
-          System.out.println("YESNO Answer does not exist in the INDEX!!!");
-        } else if (!goldStandards.isEmpty()) {
-          if (goldStandards.get(0).equals(answers.get(0))) {
-            yesNoCorrect += 1;
-          }
-        }
+        yesNoMetric.register(answers, goldStandards);
         break;
       default:
         System.out.println("UNKNOWN Question Type: " + qType);
@@ -146,33 +97,24 @@ public class ExactMatchConsumer extends CasConsumer_ImplBase {
     }
   }
 
-  public <T> List<T> intersection(List<T> list1, List<T> list2) {
-    List<T> list = new ArrayList<T>();
-
-    for (T t : list1) {
-      if (list2.contains(t)) {
-        list.add(t);
-      }
-    }
-
-    return list;
-  }
-  
-  public double averageList(List<Double> list) {
-    return list.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
-  }
-
   @Override
   public void collectionProcessComplete(ProcessTrace arg0) throws ResourceProcessException,
           IOException {
     System.out.println("================================================================================");
-    System.out.println("FACTOID Strict Accuracy:  " + (((float) factoidStrictCorrect) / factoidTotal) + " (total: " + factoidTotal + ")");
-    System.out.println("FACTOID Lenient Accuracy: " + (((float) factoidLenientCorrect) / factoidTotal));
-    System.out.println("FACTOID MRR: " + averageList(factoidMRR));
-    System.out.println("YESNO Accuracy: " + (((float) yesNoCorrect) / yesNoTotal) + " (total: " + yesNoTotal + ")");
-    System.out.println("LIST Mean P:  " + averageList(listPrecision) + " (total: " + listPrecision.size() + ")");
-    System.out.println("LIST Mean R:  " + averageList(listRecall));
-    System.out.println("LIST Mean F1: " + averageList(listF1));
+    System.out.println("# of FACTOID QUESTIONS: " + factoidMetric.total());
+    System.out.println("FACTOID Strict Accuracy:  " + factoidMetric.strictAccuracy());
+    System.out.println("FACTOID Lenient Accuracy: " + factoidMetric.lenientAccuracy());
+    System.out.println("FACTOID MRR: " + factoidMetric.mrr());
+    System.out.println("");
+    
+    System.out.println("# of YESNO QUESTIONS: " + yesNoMetric.total());
+    System.out.println("YESNO Accuracy: " + yesNoMetric.strictAccuracy());
+    System.out.println("");
+    
+    System.out.println("# of LIST QUESTIONS: " + listMetric.total());
+    System.out.println("LIST Mean P:  " + listMetric.p());
+    System.out.println("LIST Mean R:  " + listMetric.r());
+    System.out.println("LIST Mean F1: " + listMetric.f1());
     System.out.println("================================================================================");
 
   }

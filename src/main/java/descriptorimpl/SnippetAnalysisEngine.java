@@ -32,6 +32,11 @@ import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.retrieval.Document;
 import edu.cmu.lti.oaqa.type.retrieval.Passage;
 
+/**
+ * Analysis engine for snippet extraction.
+ * @author dix
+ *
+ */
 public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
 
   KrovetzStemmer stemmer;
