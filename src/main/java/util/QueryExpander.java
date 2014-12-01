@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,8 +66,12 @@ public class QueryExpander {
     }
     String[] temp = finalQuery.trim().split("\\s");
     for (int i = 0; i < temp.length - 1; i++) {
-      if (Ngram.getUnigram(temp[i]) <= Ngram.QECutoff && Ngram.getUnigram(temp[i + 1]) <= Ngram.QECutoff) {
-        biGramQuery += temp[i] + " AND " + temp[i + 1];
+      if (!temp.equals("") && Ngram.getUnigram(temp[i]) <= 0.0001 && Ngram.getUnigram(temp[i + 1]) <= 0.0001) {
+        if(i > 0){
+          biGramQuery += "OR (" + temp[i] + " AND " + temp[i + 1] + ")";
+        } else {
+          biGramQuery += "(" + temp[i] + " AND " + temp[i + 1] + ")";
+        }
         if (i != temp.length - 2)
           biGramQuery += " ";
       }

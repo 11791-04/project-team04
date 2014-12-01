@@ -11,6 +11,8 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import concept.prf.FindingPseudoRelevanceFeedback;
+import concept.prf.PseudoRelevanceFeedbackFactory;
 import util.TypeFactory;
 import util.webservice.WebAPIServiceProxy;
 import util.webservice.WebAPIServiceProxyFactory;
@@ -28,13 +30,13 @@ import edu.cmu.lti.oaqa.type.retrieval.ConceptSearchResult;
 public class ConceptAnalysisEngine extends JCasAnnotator_ImplBase {
 
   private WebAPIServiceProxy service;
-  //private FindingPseudoRelevanceFeedback prf;
+  private FindingPseudoRelevanceFeedback prf;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     this.service = WebAPIServiceProxyFactory.getInstance();
-    //this.prf = PseudoRelevanceFeedbackFactory.getFindingPseudoRelevanceFeedback();
+    this.prf = PseudoRelevanceFeedbackFactory.getFindingPseudoRelevanceFeedback();
   }
 
   @Override
@@ -47,7 +49,7 @@ public class ConceptAnalysisEngine extends JCasAnnotator_ImplBase {
       /* TODO */
       //query = new QueryThingy().playWithQuery(query);
       List<Finding> findings = service.getFindingsFromQuery(query);
-      //findings = prf.getPRF(findings);
+      findings = prf.getPRF(findings);
       Collections.sort(findings, new Comparator<Finding>() {
         public int compare(Finding o1, Finding o2) {
           if (o1.getScore() < o2.getScore())

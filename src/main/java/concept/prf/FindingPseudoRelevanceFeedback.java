@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import document.stemmer.KrovetzStemmer;
+import util.QueryExpander;
 import util.text.counter.FrequencyCounter;
 import util.text.counter.FrequencyCounterFactory;
 import util.webservice.WebAPIServiceProxy;
@@ -14,7 +16,7 @@ public class FindingPseudoRelevanceFeedback {
 
   private WebAPIServiceProxy service;
 
-  private int numRecursion = 3;
+  private int numRecursion = 2;
 
   public FindingPseudoRelevanceFeedback() {
     this.service = WebAPIServiceProxyFactory.getInstance();
@@ -46,8 +48,15 @@ public class FindingPseudoRelevanceFeedback {
               .getNewFrequencyCounter(FrequencyCounterFactory.stemStopWord);
       fc.tokenizeAndPutAll(document.toString().trim(), " ");
       String query = String.join(" ", fc.keySet()).trim();
+      query = QueryExpander.expandQuery(query, new KrovetzStemmer());
       List<Finding> newFindings = service.getFindingsFromQuery(query);
-      return getPRFHelper(newFindings, recursion);
+      if(newFindings.isEmpty()) {
+        return initialResults;
+      } else if (newFindings.size() <= initialResults.size()) {
+        return initialResults;
+      } else {
+        return getPRFHelper(newFindings, recursion);
+      }
     } else {
       return initialResults;
     }

@@ -31,8 +31,8 @@
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
-        <!--<node>ConceptAEDescriptor</node>-->
-        <!--<node>TriplesExtractionDescriptor</node>-->
+        <node>ConceptAEDescriptor</node>
+        <node>TriplesExtractionDescriptor</node>
         <node>DocumentRetrieval_AE</node>
         <!--<node>SnippetAEDescriptor</node>-->
         <node>ListQuestionEntityExtractor_AE</node>
