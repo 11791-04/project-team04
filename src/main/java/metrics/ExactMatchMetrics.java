@@ -7,11 +7,8 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.uima.resource.ResourceInitializationException;
 
 public class ExactMatchMetrics {
-  private int yesNoTotal = 0;
 
-  private int yesNoCorrect = 0;
-
-  private int factoidTotal = 0;
+  private int numberOfQuestions = 0;
 
   private int factoidStrictCorrect = 0;
 
@@ -33,16 +30,15 @@ public class ExactMatchMetrics {
   }
 
   public void register(ArrayList<String> answers, ArrayList<String> goldStandards) {
+    List<String> TP = intersection(goldStandards, answers);
 
-    factoidTotal += 1;
+    numberOfQuestions += 1;
     if (answers.isEmpty()) {
-      System.out.println("FACTOID Answer does not exist in the INDEX!!!");
       factoidMRR.add(0.0);
     } else if (!goldStandards.isEmpty()) {
       if (goldStandards.get(0).equals(answers.get(0))) {
         factoidStrictCorrect += 1;
       }
-      List<String> TP = intersection(goldStandards, answers);
       if (!TP.isEmpty()) {
         factoidLenientCorrect += 1;
         factoidMRR.add(1.0 / (answers.indexOf(goldStandards.get(0)) + 1));
@@ -51,46 +47,30 @@ public class ExactMatchMetrics {
       }
     }
 
-    List<String> TP = intersection(goldStandards, answers);
-    if (TP.size() == 0) {
+    if (TP.isEmpty()) {
       listPrecision.add(0.0);
       listRecall.add(0.0);
+      listF1.add(0.0);
     } else {
       listPrecision.add(((double) TP.size()) / answers.size());
       listRecall.add(((double) TP.size()) / goldStandards.size());
-    }
-    if (TP.size() == 0) {
-      listF1.add(0.0);
-    } else {
       Double P = listPrecision.get(listPrecision.size() - 1);
       Double R = listRecall.get(listRecall.size() - 1);
       listF1.add(2 * P * R / (P + R));
     }
-
-    yesNoTotal += 1;
-    if (answers.isEmpty()) {
-      System.out.println("YESNO Answer does not exist in the INDEX!!!");
-    } else if (!goldStandards.isEmpty()) {
-      if (goldStandards.get(0).equals(answers.get(0))) {
-        yesNoCorrect += 1;
-      }
-    }
+    
   }
 
   public float strictAccuracy() {
-    return ((float) factoidStrictCorrect) / factoidTotal;
+    return ((float) factoidStrictCorrect) / numberOfQuestions;
   }
 
   public float lenientAccuracy() {
-    return ((float) factoidLenientCorrect) / factoidTotal;
+    return ((float) factoidLenientCorrect) / numberOfQuestions;
   }
 
   public float mrr() {
     return (float) averageList(factoidMRR);
-  }
-
-  public float accuracy() {
-    return ((float) yesNoCorrect) / yesNoTotal;
   }
 
   public float p() {
@@ -106,7 +86,7 @@ public class ExactMatchMetrics {
   }
 
   public int total() {
-    return factoidTotal;
+    return numberOfQuestions;
   }
 
   private double averageList(List<Double> list) {
