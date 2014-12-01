@@ -1,7 +1,7 @@
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
 
 import metrics.ExactMatchMetrics;
 
@@ -17,11 +17,6 @@ import org.apache.uima.util.ProcessTrace;
 import util.TypeConstants;
 import edu.cmu.lti.oaqa.type.answer.Answer;
 import edu.cmu.lti.oaqa.type.input.Question;
-import edu.cmu.lti.oaqa.type.retrieval.ConceptSearchResult;
-import edu.cmu.lti.oaqa.type.retrieval.Document;
-import edu.cmu.lti.oaqa.type.retrieval.Passage;
-import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
-import edu.cmu.lti.oaqa.type.kb.Triple;
 
 public class ExactMatchConsumer extends CasConsumer_ImplBase {
 
@@ -115,6 +110,10 @@ public class ExactMatchConsumer extends CasConsumer_ImplBase {
     System.out.println("LIST Mean P:  " + listMetric.p());
     System.out.println("LIST Mean R:  " + listMetric.r());
     System.out.println("LIST Mean F1: " + listMetric.f1());
+    System.out.println("");
+    System.out.println("LIST Mean Soft P:  " + listMetric.softP());
+    System.out.println("LIST Mean Soft R:  " + listMetric.softR());
+    System.out.println("LIST Mean Soft F1: " + listMetric.softF1());
     System.out.println("================================================================================");
 
   }
