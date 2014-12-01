@@ -124,7 +124,7 @@ public class ListQuestionEntityExtractor_AE extends JCasAnnotator_ImplBase {
     
     
     int rank = 1;
-    List<Entry<String, Double>>  result = anl.getNEList(20);
+    List<Entry<String, Double>>  result = anl.getNEList(100);
     for(Entry<String, Double> e: result) {
       System.out.printf("ADD **** %s\t%f\n", e.getKey(), e.getValue());
       TypeFactory.createAnswer(aJCas, e.getKey(), new ArrayList<String>(), rank++).addToIndexes(aJCas);

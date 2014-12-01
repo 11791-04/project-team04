@@ -125,6 +125,21 @@ public class BioNER {
     return unigramSet;
   }
   
+  public static Set<String> getBigramBioTags(String content){
+    Set<String> rawSet = getBioTags(content);
+    Set<String> uniBigramSet = new HashSet<String>();
+
+    for(String tag: rawSet) {
+      if(tag.split("[ ]+").length>2) {
+        String[] tagSplit = tag.split("[ ]+");
+        uniBigramSet.addAll(new HashSet<String>(Arrays.asList(tagSplit)));
+      }else {
+        uniBigramSet.add(tag);
+      }
+    }
+    return uniBigramSet;
+  }
+  
   public static Set<GeneMentionTag> getAbnerNER(String content){
 
     Set<GeneMentionTag> ret = new HashSet<GeneMentionTag>();

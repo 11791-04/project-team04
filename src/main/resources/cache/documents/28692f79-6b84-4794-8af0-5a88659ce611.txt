@@ -1,0 +1,2 @@
+thyroid AND tissues tissues AND thyrotropin thyrotropin AND (tsh)
+null

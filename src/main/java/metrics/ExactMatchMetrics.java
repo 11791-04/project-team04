@@ -148,7 +148,7 @@ public class ExactMatchMetrics {
       for(String s2 : list2) {
         List<String> tokens2 = Arrays.asList(s2.toLowerCase().split("\\s+"));
         int overlap = intersection(tokens1, tokens2);
-        maxScore = Math.max(maxScore, ((double)overlap) / tokens1.size());
+        maxScore = Math.max(maxScore, ((double)2*overlap) / (tokens1.size()+tokens2.size()));
       }
       total += maxScore;
     }
