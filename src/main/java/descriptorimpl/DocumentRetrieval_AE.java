@@ -111,7 +111,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       String questionText = question.getText().replace('?', ' ');
       questionText = QueryExpander.expandQuery(questionText, stemmer);
       //questionText = qeWithConcept(questionText);
-      System.out.println("###: " + questionText);
+      //System.out.println("###: " + questionText);
       outQuestions.println(questionText);
 
       List<PubMedSearchServiceResponse.Document> list = service
@@ -123,7 +123,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
         String abstractText = d.getDocumentAbstract();
         String year = d.getYear();
         String pmid = d.getPmid();
-        System.out.println("PMID2:" + d.getPmid());
+        //System.out.println("PMID:" + d.getPmid());
 
         Map<String, String> fieldTextMap = new HashMap<String, String>();
         fieldTextMap.put("title", title);

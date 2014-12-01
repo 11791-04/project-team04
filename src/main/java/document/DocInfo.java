@@ -42,9 +42,9 @@ public class DocInfo {
       String fieldRawText = e.getValue();
       
       String rawFiledText= String.copyValueOf(fieldRawText.toCharArray());
-      String[] titleTermArray = TextProcessingTools.getFormattedTermArray(rawFiledText, stemmer);
-      fieldLenMap.put(fieldName, titleTermArray.length);
-      fieldTFMap.put(fieldName, TextProcessingTools.getTFMap(titleTermArray));
+      String[] fieldTermArray = TextProcessingTools.getFormattedTermArray(rawFiledText, stemmer);
+      fieldLenMap.put(fieldName, fieldTermArray.length);
+      fieldTFMap.put(fieldName, TextProcessingTools.getTFMap(fieldTermArray));
     }
     
     length = 0;

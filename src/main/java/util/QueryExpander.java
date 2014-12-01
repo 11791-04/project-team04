@@ -65,7 +65,7 @@ public class QueryExpander {
     }
     String[] temp = finalQuery.trim().split("\\s");
     for (int i = 0; i < temp.length - 1; i++) {
-      if (Ngram.getUnigram(temp[i]) <= 0.0001 && Ngram.getUnigram(temp[i + 1]) <= 0.0001) {
+      if (Ngram.getUnigram(temp[i]) <= Ngram.QECutoff && Ngram.getUnigram(temp[i + 1]) <= Ngram.QECutoff) {
         biGramQuery += temp[i] + " AND " + temp[i + 1];
         if (i != temp.length - 2)
           biGramQuery += " ";

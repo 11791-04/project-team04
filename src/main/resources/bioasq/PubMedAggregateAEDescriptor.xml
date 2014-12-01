@@ -18,6 +18,9 @@
     <delegateAnalysisEngine key="TriplesExtractionDescriptor">
       <import name="bioasq.triple.TriplesExtractionDescriptor"/>
     </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="ListQuestionEntityExtractor_AE">
+      <import name="bioasq.listQuestion.ListQuestionEntityExtractor_AE"/>
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>PubMedAggregateAEDescriptor</name>
@@ -32,7 +35,8 @@
         <!--<node>TriplesExtractionDescriptor</node>-->
         <node>DocumentRetrieval_AE</node>
         <!--<node>SnippetAEDescriptor</node>-->
-        <node>BasicConsumerDescriptor</node>
+        <node>ListQuestionEntityExtractor_AE</node>
+      <node>BasicConsumerDescriptor</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>

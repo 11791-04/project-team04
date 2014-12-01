@@ -14,6 +14,9 @@ import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory;
 
 public class Ngram {
 
+  public static final double QECutoff = 1E-4;
+  public static final double ListNECutoff = 1E-6;
+  
   public static Map<String, Double> unigramModel = new HashMap<String, Double>();
   static {
 
