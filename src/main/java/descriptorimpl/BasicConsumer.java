@@ -1,4 +1,5 @@
 package descriptorimpl;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,12 +29,13 @@ import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
 
 /**
  * 
- * Cas consumer for the pipeline
+ * Evaluation consumer for Documents, Tripples, Snippets, and Concepts
+ * 
  * @author josephc1
  *
  */
 public class BasicConsumer extends CasConsumer_ImplBase {
-  
+
   MetricDTC documentMetric;
 
   MetricDTC conceptMetric;
@@ -41,7 +43,10 @@ public class BasicConsumer extends CasConsumer_ImplBase {
   MetricTriples tripleMetric;
 
   MetricSnippet snippetMetric;
-  
+
+  /**
+   * The initializer
+   */
   public void initialize() throws ResourceInitializationException {
     documentMetric = new MetricDTC("document");
     conceptMetric = new MetricDTC("concept");
@@ -51,15 +56,20 @@ public class BasicConsumer extends CasConsumer_ImplBase {
 
   private String triple2String(TripleSearchResult tsr) {
     Triple triple = tsr.getTriple();
-    return triple.getSubject() + ":delim:" + triple.getObject() + ":delim:"
-            + triple.getPredicate();
-  }
-  
-  private SentenceInfo passage2sentence(Passage passage) {
-    return new SentenceInfo(passage.getText(), passage.getBeginSection(), passage.getOffsetInBeginSection(), passage.getOffsetInEndSection(), 
-            new DocInfo(passage.getUri(), passage.getDocId(), new HashMap<String, String>(), null, null), passage.getScore());
+    return triple.getSubject() + ":delim:" + triple.getObject() + ":delim:" + triple.getPredicate();
   }
 
+  private SentenceInfo passage2sentence(Passage passage) {
+    return new SentenceInfo(passage.getText(), passage.getBeginSection(),
+            passage.getOffsetInBeginSection(), passage.getOffsetInEndSection(),
+            new DocInfo(passage.getUri(), passage.getDocId(), new HashMap<String, String>(), null,
+                    null), passage.getScore());
+  }
+
+  /**
+   * Process 1 Cas: Read both gold standard answers and retrieved answers for documents, concepts,
+   * tripples, snippets from the index and run evaluation.
+   */
   @Override
   public void processCas(CAS aCas) throws ResourceProcessException {
     JCas aJCas;
@@ -69,7 +79,7 @@ public class BasicConsumer extends CasConsumer_ImplBase {
       throw new ResourceProcessException(e);
     }
 
-    //System.out.println(aJCas);
+    // System.out.println(aJCas);
 
     FSIterator<?> qit = aJCas.getAnnotationIndex(Question.type).iterator();
     Question question = null;
@@ -106,7 +116,6 @@ public class BasicConsumer extends CasConsumer_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-
 
     try {
       FSIterator<?> it;
@@ -146,7 +155,6 @@ public class BasicConsumer extends CasConsumer_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    
 
     try {
       FSIterator<?> it;
@@ -167,39 +175,48 @@ public class BasicConsumer extends CasConsumer_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    
-//    System.out.println("gs snippet:\n" + gsSnippets);
-//    System.out.println("snippet:\n" + snippets);
 
-//    documents.sort((p, o) -> p.getRank().compareTo(o.getRank()));
-    
+    // System.out.println("gs snippet:\n" + gsSnippets);
+    // System.out.println("snippet:\n" + snippets);
+
+    // documents.sort((p, o) -> p.getRank().compareTo(o.getRank()));
+
     documentMetric.registerAnswerAndGoldStandard(documents, gsDocuments);
     conceptMetric.registerAnswerAndGoldStandard(concepts, gsConcepts);
     tripleMetric.registerAnswerAndGoldStandard(triples, gsTriples);
     snippetMetric.registerAnswerAndGoldStandard(snippets, gsSnippets);
-    
-// TODO
-//    snippetMetric.registerAnswerAndGoldStandard(snippets, gsSnippets);
+
+    // TODO
+    // snippetMetric.registerAnswerAndGoldStandard(snippets, gsSnippets);
 
   }
 
+  /**
+   * Print out the global evaluation statistics when the consumer finishes running.
+   */
   @Override
   public void collectionProcessComplete(ProcessTrace arg0) throws ResourceProcessException,
           IOException {
 
     System.out.println("----------------------------->>> MAP <<<-----------------------------");
-    System.out.println("=======>>> RESULTS doc MAP <<<======= \n" + documentMetric.getCurrentMAP() + "\n");
-    System.out.println("=======>>> RESULTS concept MAP <<<======= \n" + conceptMetric.getCurrentMAP() + "\n");
-    System.out.println("=======>>> RESULTS triples MAP <<<======= \n" + tripleMetric.getMAPForTriples() + "\n");
+    System.out.println("=======>>> RESULTS doc MAP <<<======= \n" + documentMetric.getCurrentMAP()
+            + "\n");
+    System.out.println("=======>>> RESULTS concept MAP <<<======= \n"
+            + conceptMetric.getCurrentMAP() + "\n");
+    System.out.println("=======>>> RESULTS triples MAP <<<======= \n"
+            + tripleMetric.getMAPForTriples() + "\n");
     System.out.println("----------------------------->>> END MAP <<<-----------------------------");
- 
+
     System.out.println("----------------------------->>> GMAP <<<-----------------------------");
-    System.out.println("=======>>> RESULTS doc GMAP <<<======= \n" + documentMetric.getCurrentGMAP(0.01) + "\n");
-    System.out.println("=======>>> RESULTS concept GMAP <<<======= \n" + conceptMetric.getCurrentGMAP(0.01) + "\n");
-    System.out.println("=======>>> RESULTS triples GMAP <<<======= \n" + tripleMetric.getCurrentGMAPForTriples(0.01) + "\n");
-    System.out.println("----------------------------->>> END GMAP <<<-----------------------------");
-    
-    
+    System.out.println("=======>>> RESULTS doc GMAP <<<======= \n"
+            + documentMetric.getCurrentGMAP(0.01) + "\n");
+    System.out.println("=======>>> RESULTS concept GMAP <<<======= \n"
+            + conceptMetric.getCurrentGMAP(0.01) + "\n");
+    System.out.println("=======>>> RESULTS triples GMAP <<<======= \n"
+            + tripleMetric.getCurrentGMAPForTriples(0.01) + "\n");
+    System.out
+            .println("----------------------------->>> END GMAP <<<-----------------------------");
+
     System.out.println(snippetMetric.list_rankList.size());
     System.out.println("=======>>> RESULT SNIPPETS: <<<=======");
     System.out.println(snippetMetric.getCurrentF1());
