@@ -43,24 +43,44 @@ import edu.cmu.lti.oaqa.type.retrieval.Document;
  */
 public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
 
+  /**
+   * The Cache. It reads the cache if the results for the query has been stored.
+   * Otherwise it just use the normal web service
+   */
   WebAPIServiceProxy service;
 
+  /**
+   * The stemmer necessary for query and document processing
+   */
   KrovetzStemmer stemmer;
 
+  /**
+   * Auxiliary: to track the questions that have been processed.
+   */
   private PrintWriter outQuestions;
 
+  /**
+   * if we will use the baseline scoring method: simply using the scores provided
+   * by PubMed
+   */
   boolean baseline = false;
 
+  /**
+   * It collects a set of [mesh] concepts. Used during query expansion
+   */
   Set<String> conceptSet;
+
+
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     System.out.println("DocumentRetrieval_AE - initialize()");
-    service = WebAPIServiceProxyFactory.getInstance();
+    service = WebAPIServiceProxyFactory.getInstance();  // This is the cached web service
 
-    // service = new WebAPIServiceProxy();
+    // service = new WebAPIServiceProxy(); // This is the non-cached web service
     stemmer = new KrovetzStemmer();
 
+    // The following records the questions 
     try {
       outQuestions = new PrintWriter(new FileOutputStream(new File("questions.txt"), false));
     } catch (FileNotFoundException e) {
@@ -68,6 +88,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       e.printStackTrace();
     }
 
+    // In the following we gather a set of [mesh] concepts
     conceptSet = new HashSet<String>();
 
     try {
@@ -102,6 +123,20 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
   /**
    * @param aJcas
    *          Assumed to contain questions provided by QuestionReader
+   *          
+   * reads the question in raw String from the Question Reader;
+   * 
+   * use a unigram model to wipeout some common terms that 
+   * 
+   * are not meaningful queries the PubMed API to obtain candidate documents;
+   * 
+   * process each document (title and abstract) and query by removing punctuation, stoppers and perform Krovetz Stemming;
+   * 
+   * rank documents based on their similarity to the query.;
+   * 
+   * Several rankers are tried, including Okapi BM25, Indri, Dirichlet and XQL.;
+   * 
+   * The results are written to jcas by Document.
    */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
@@ -114,14 +149,20 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       Question question = (Question) iter.get();
       QueryInfo query = new QueryInfo(question.getText(), stemmer);
       String questionText = question.getText().replace('?', ' ');
+      
+      // Possible QEs
       questionText = QueryExpander.expandQuery(questionText, stemmer);
       //questionText = qeWithConcept(questionText);
+      
       //System.out.println("###: " + questionText);
       outQuestions.println(questionText);
 
+      // Obtain relevant documents from web service
       List<PubMedSearchServiceResponse.Document> list = service
               .getPubMedDocumentsFromQuery(questionText);
 
+      // Write document information into instances of class DocInfo
+      // Also accumulates the collection statistics
       for (PubMedSearchServiceResponse.Document d : list) {
 
         String title = d.getTitle();
@@ -144,6 +185,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
       // At this point, we have finished collecting all candidate documents
       // and constructed the collection statistics
 
+      // The following performs scoring for all documents
       List<Pair<DocInfo, Double>> docScoreList = new ArrayList<Pair<DocInfo, Double>>();
       int defaultRank = 1;
       for (DocInfo doc : cStat.docList) {
@@ -157,6 +199,8 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
 
       Collections.sort(docScoreList, new DocScoreComparator());
 
+      
+      // Writing the ranked document list to UIMA types and add them to index
       int rank = 1;
       for (Pair<DocInfo, Double> p : docScoreList) {
         // System.out.println(p.getValue());
@@ -167,12 +211,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
         d.addToIndexes();
         rank++;
       }
-      // Document docRetr = new Document(aJCas);
-      // docRetr.setUri("KKK");
-      // docRetr.setRank(-1);
-      // docRetr.addToIndexes();
-      //
-      // aJCas.addFsToIndexes(docRetr);
+
     }
   }
 
