@@ -81,9 +81,9 @@ public class CollectionStatistics {
       
     }
     
-    System.out.println(V);
+    /*System.out.println(V);
     System.out.println(size);
-    System.out.println(numDocs);
+    System.out.println(numDocs);*/
     
   }
   
