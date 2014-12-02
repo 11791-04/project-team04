@@ -7,7 +7,11 @@ import java.util.Map.Entry;
 import util.text.TextProcessingTools;
 import document.stemmer.KrovetzStemmer;
 
-
+/**
+ * 
+ * @author Di
+ * This class store the document information from its UIMA type.
+ */
 public class DocInfo {
 
   
@@ -18,7 +22,10 @@ public class DocInfo {
   
   public String year;
 
-  public Integer length; // Overall length. Collapse field-level lengths
+  /**
+   * Overall length. Collapse field-level lengths
+   */
+  public Integer length; 
   
   /**
    * Map<field name, <term string, tf>>
@@ -27,6 +34,16 @@ public class DocInfo {
   public Map<String, Integer> fieldLenMap;
 
   
+  /**
+   * 
+   * @param uri from PubMed
+   * @param pmid from PubMed
+   * @param fieldTextMap The actual content of the document in raw texts
+   * @param year from PubMed
+   * @param stemmer user specified
+   * 
+   * Populates all fields.
+   */
   public DocInfo(String uri, String pmid, Map<String, String> fieldTextMap, String year, KrovetzStemmer stemmer) {
     super();
     this.pmid = pmid;
