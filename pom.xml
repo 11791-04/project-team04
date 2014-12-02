@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.cmu.lti.11791.f14.project</groupId>
 	<artifactId>project-team791-04</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>DEIIS-project</name>
 	<build>
 		<extensions>
@@ -218,7 +218,7 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:git:git@github.com:DIXLTICMU/project-team04.git</connection>
+		<connection>scm:git:git@github.com:oaqa/DEIIS-project-archetype.git</connection>
 		<developerConnection>scm:git:git@github.com:oaqa/DEIIS-project-archetype.git</developerConnection>
 		<tag>project-team791-04-0.0.1</tag>
 	</scm>
