@@ -37,14 +37,14 @@ public class TriplesExtractor extends JCasAnnotator_ImplBase {
   }
 
   private void processInstance(JCas aJCas) throws AnalysisEngineProcessException {
-    System.out.println("In Triples extractor!");
+    //System.out.println("In Triples extractor!");
     FSIterator<?> qit = aJCas.getAnnotationIndex(Question.type).iterator();
 
     Question question = null;
     while (qit.hasNext()) {
       question = (Question) qit.next();
-      System.out.println(question.getId());
-      System.out.println(question.getQuestionType());
+      //System.out.println(question.getId());
+      //System.out.println(question.getQuestionType());
       try {
         ArrayList<HashMap<String, String>> triplesList = fetchTriples(question.getText());
         int rank = 1;

@@ -18,9 +18,9 @@ public class EchoAnalysisEngine extends JCasAnnotator_ImplBase {
     Question question = null;
     if(qit.hasNext()) {
       question = (Question) qit.next();
-      System.out.println(question.getText());
+      /*System.out.println(question.getText());
       System.out.println(question.getId());
-      System.out.println(question.getQuestionType());
+      System.out.println(question.getQuestionType());*/
     }
 //    
 //    try {
@@ -54,7 +54,7 @@ public class EchoAnalysisEngine extends JCasAnnotator_ImplBase {
 
       while (it.hasNext()) {
         TripleSearchResult triple = (TripleSearchResult) it.next();
-        System.out.println(triple);
+        //System.out.println(triple);
       }
     } catch (CASException e) {
       // TODO Auto-generated catch block
