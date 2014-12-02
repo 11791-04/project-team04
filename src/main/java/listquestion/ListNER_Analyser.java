@@ -15,15 +15,41 @@ import util.text.ner.BioNER;
 
 public class ListNER_Analyser {
 
+  /**
+   * The smoothing constant when scoring Bio Entities
+   */
   public static final double smoothing = 0.001;
   
+  /**
+   * A set telling us which terms are in the query that are supposed to be ignored
+   */
   Set<String> queryTermSet;
+  
+  /**
+   * A String[] representation of the query
+   */
   String[] query;
+  /**
+   * It maps a document ID to its abstract text in String[]
+   */
   Map<String, String[]> absMap; //<docID, Abstract in String[]>
+  
+  /**
+   * It counts the term frequency of a term across all documents
+   */
   Map<String, Integer> termDFMap; //<term, df>
+  
+  /**
+   * Maps a term to its locations (a list) in a document.
+   */
   Map<String, Map<String, List<Integer>>> termDocLocMap;  //<docID, <term, [list of locations]>>
   
   
+  /**
+   * It will process the query, assuming it is just a bag of pivot terms
+   * @param queryStr
+   * @param absMap
+   */
   public ListNER_Analyser(String queryStr, Map<String, String[]> absMap) {
     super();
     this.query = queryStr.trim().split("[ ]+");
@@ -53,7 +79,11 @@ public class ListNER_Analyser {
     
   }
   
-  
+  /**
+   * This returns a sorted list of Bio tags
+   * @param W the window size
+   * @return
+   */
   public List<Entry<String, Double>> getNEList(int W){
     
     Map<String, Double> scoreBoard = new HashMap<String, Double>();
@@ -78,6 +108,12 @@ public class ListNER_Analyser {
     return sorted;
   }
   
+  /**
+   * Get the nearby entities in a particular document according to the query
+   * @param docID
+   * @param W window size
+   * @return
+   */
   public Map<String, Integer> getNearbyNEs(String docID, int W) {
     // The freq in the window
     Map<String, Integer> nerFreqMap = new HashMap<String, Integer>();
@@ -105,6 +141,14 @@ public class ListNER_Analyser {
     return nerFreqMap;
   }
   
+  /**
+   * Get the nearby entities in a particular document for a particular term 
+   * according to the query
+   * @param docID
+   * @param term
+   * @param W window size
+   * @return
+   */
   public Set<String> getNearbyNEs(String docID, String term, int W) {
    //System.out.printf(">> getNearbyNEs: %s, %s\n", docID, term);
 
