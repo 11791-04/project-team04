@@ -84,10 +84,16 @@ public class ExactMatchMetrics {
   }
 
   public float strictAccuracy() {
+    if (numberOfQuestions == 0) {
+      return (float) 0.0;
+    }
     return ((float) factoidStrictCorrect) / numberOfQuestions;
   }
 
   public float lenientAccuracy() {
+    if (numberOfQuestions == 0) {
+      return (float) 0.0;
+    }
     return ((float) factoidLenientCorrect) / numberOfQuestions;
   }
 
@@ -125,6 +131,9 @@ public class ExactMatchMetrics {
   }
 
   private double averageList(List<Double> list) {
+    if(list.isEmpty()) {
+      return 0.0;
+    }
     return list.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
   }
 

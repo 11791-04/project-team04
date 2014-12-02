@@ -56,8 +56,8 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
     if (qit.hasNext()) {
       question = (Question) qit.next();
       //System.out.println(question.getText());
-      System.out.println(question.getId());
-      System.out.println(question.getQuestionType());
+      //System.out.println(question.getId());
+      //System.out.println(question.getQuestionType());
     }
     CollectionStatistics cStat = new CollectionStatistics();
     ArrayList<SentenceInfo> allSentences = new ArrayList<SentenceInfo>();
