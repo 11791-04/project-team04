@@ -12,7 +12,6 @@ import org.apache.uima.jcas.JCas;
 
 import util.TypeConstants;
 import util.TypeFactory;
-import util.webservice.CachedWebAPIServiceProxy;
 import util.webservice.WebAPIServiceProxy;
 import util.webservice.WebAPIServiceProxyFactory;
 import edu.cmu.lti.oaqa.bio.bioasq.services.LinkedLifeDataServiceResponse;

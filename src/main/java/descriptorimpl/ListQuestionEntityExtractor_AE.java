@@ -1,18 +1,9 @@
 package descriptorimpl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
 import java.util.Map.Entry;
 
 import listquestion.ListNER_Analyser;
@@ -31,14 +22,7 @@ import util.TypeConstants;
 import util.TypeFactory;
 import util.datastructure.Pair;
 import util.text.TextProcessingTools;
-import util.webservice.WebAPIServiceProxy;
-import util.webservice.WebAPIServiceProxyFactory;
-import document.DocInfo;
-import document.QueryInfo;
-import document.scoring.CollectionStatistics;
-import document.scoring.Ranker;
 import document.stemmer.KrovetzStemmer;
-import edu.cmu.lti.oaqa.bio.bioasq.services.PubMedSearchServiceResponse;
 import edu.cmu.lti.oaqa.type.input.Question;
 import edu.cmu.lti.oaqa.type.retrieval.Document;
 

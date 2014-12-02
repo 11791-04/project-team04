@@ -1,11 +1,10 @@
 package concept.prf;
 
 import java.util.Collections;
+
 import java.util.Comparator;
 import java.util.List;
 
-import document.stemmer.KrovetzStemmer;
-import util.QueryExpander;
 import util.text.counter.FrequencyCounter;
 import util.text.counter.FrequencyCounterFactory;
 import util.webservice.WebAPIServiceProxy;

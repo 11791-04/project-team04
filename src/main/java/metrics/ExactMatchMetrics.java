@@ -1,11 +1,10 @@
 package metrics;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.uima.resource.ResourceInitializationException;
 
 /**
  * Evaluation Logic for the "exact_match" answers
