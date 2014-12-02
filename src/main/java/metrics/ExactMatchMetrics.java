@@ -7,6 +7,12 @@ import java.util.List;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.uima.resource.ResourceInitializationException;
 
+/**
+ * Evaluation Logic for the "exact_match" answers
+ * 
+ * @author josephcc
+ *
+ */
 public class ExactMatchMetrics {
 
   private int numberOfQuestions = 0;
@@ -20,7 +26,7 @@ public class ExactMatchMetrics {
   private ArrayList<Double> listRecall;
 
   private ArrayList<Double> listF1;
-  
+
   private ArrayList<Double> listSoftPrecision;
 
   private ArrayList<Double> listSoftRecall;
@@ -29,6 +35,9 @@ public class ExactMatchMetrics {
 
   private ArrayList<Double> factoidMRR;
 
+  /**
+   * initializer
+   */
   public ExactMatchMetrics() {
     listPrecision = new ArrayList<Double>();
     listRecall = new ArrayList<Double>();
@@ -39,6 +48,13 @@ public class ExactMatchMetrics {
     factoidMRR = new ArrayList<Double>();
   }
 
+  /**
+   * Register the gold standard and results for one question. For simplicity, the class will assume
+   * it can be any question type, and calculate all metrics.
+   * 
+   * @param answers the retrieved and ranked answers.
+   * @param goldStandards the gold standard answers.
+   */
   public void register(ArrayList<String> answers, ArrayList<String> goldStandards) {
     int overlap = intersection(goldStandards, answers);
     double softOverlap = softIntersection(goldStandards, answers);
@@ -69,12 +85,12 @@ public class ExactMatchMetrics {
       Double R = listRecall.get(listRecall.size() - 1);
       listF1.add(2 * P * R / (P + R));
     }
-    
+
     if (softOverlap == 0.0) {
       listSoftPrecision.add(0.0);
       listSoftRecall.add(0.0);
       listSoftF1.add(0.0);
-    } else {      
+    } else {
       listSoftPrecision.add(((double) softOverlap) / answers.size());
       listSoftRecall.add(((double) softOverlap) / goldStandards.size());
       Double softP = listSoftPrecision.get(listSoftPrecision.size() - 1);
@@ -83,6 +99,10 @@ public class ExactMatchMetrics {
     }
   }
 
+  /**
+   * The strict accuracy metric that only looks at the top 1 answer
+   * @return accuracy
+   */
   public float strictAccuracy() {
     if (numberOfQuestions == 0) {
       return (float) 0.0;
@@ -90,6 +110,10 @@ public class ExactMatchMetrics {
     return ((float) factoidStrictCorrect) / numberOfQuestions;
   }
 
+  /**
+   * the lenient accuracy metric that matches gold standard answer against top 5 candidates.
+   * @return accuracy
+   */
   public float lenientAccuracy() {
     if (numberOfQuestions == 0) {
       return (float) 0.0;
@@ -97,41 +121,72 @@ public class ExactMatchMetrics {
     return ((float) factoidLenientCorrect) / numberOfQuestions;
   }
 
+  /**
+   * The MRR score for factoid questions
+   * @return MRR score
+   */
   public float mrr() {
     return (float) averageList(factoidMRR);
   }
 
+  /**
+   * precision metric for LIST questions
+   * @return precision
+   */
   public float p() {
     return (float) averageList(listPrecision);
   }
 
+  /**
+   * recall metric for LIST questions
+   * @return recall
+   */
   public float r() {
     return (float) averageList(listRecall);
   }
 
+  /**
+   * f1 metric for LIST questions
+   * @return f1 score
+   */
   public float f1() {
     return (float) averageList(listF1);
   }
-  
 
+  /**
+   * precision metric for LIST questions, partial matches gets partial scores
+   * @return precision
+   */
   public float softP() {
     return (float) averageList(listSoftPrecision);
   }
 
+  /**
+   * recall metric for LIST questions, partial matches gets partial scores
+   * @return recall
+   */
   public float softR() {
     return (float) averageList(listSoftRecall);
   }
 
+  /**
+   * f1 metric for LIST questions, partial matches gets partial scores
+   * @return f1 score
+   */
   public float softF1() {
     return (float) averageList(listSoftF1);
   }
 
+  /**
+   * total number of questions registered so far
+   * @return
+   */
   public int total() {
     return numberOfQuestions;
   }
 
   private double averageList(List<Double> list) {
-    if(list.isEmpty()) {
+    if (list.isEmpty()) {
       return 0.0;
     }
     return list.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
@@ -148,16 +203,16 @@ public class ExactMatchMetrics {
 
     return list.size();
   }
-  
+
   private double softIntersection(List<String> list1, List<String> list2) {
     double total = 0.0;
-    for(String s1 : list1) {
+    for (String s1 : list1) {
       double maxScore = 0.0;
       List<String> tokens1 = Arrays.asList(s1.toLowerCase().split("\\s+"));
-      for(String s2 : list2) {
+      for (String s2 : list2) {
         List<String> tokens2 = Arrays.asList(s2.toLowerCase().split("\\s+"));
         int overlap = intersection(tokens1, tokens2);
-        maxScore = Math.max(maxScore, ((double)2*overlap) / (tokens1.size()+tokens2.size()));
+        maxScore = Math.max(maxScore, ((double) 2 * overlap) / (tokens1.size() + tokens2.size()));
       }
       total += maxScore;
     }
