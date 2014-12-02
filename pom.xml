@@ -27,7 +27,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>2.5</version>
 				<executions>
 					<execution>
 						<id>default</id>
@@ -35,7 +35,7 @@
 							<goal>perform</goal>
 						</goals>
 						<configuration>
-							<pomFileName>project-team04/pom.xml</pomFileName>
+							<pomFileName>pom.xml</pomFileName>
 						</configuration>
 					</execution>
 				</executions>
@@ -55,7 +55,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.2</version>
+				<version>3.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -211,7 +211,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:oaqa/DEIIS-project-archetype.git</connection>
 		<developerConnection>scm:git:git@github.com:oaqa/DEIIS-project-archetype.git</developerConnection>
-		<tag>project-team04-0.0.1</tag>
+		<tag>project-team791-04-0.0.1</tag>
 	</scm>
 	<repositories>
 		<repository>
