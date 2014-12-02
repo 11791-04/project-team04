@@ -100,7 +100,7 @@ public class DocumentRetrieval_AE extends JCasAnnotator_ImplBase {
           continue;
         }
         conceptSet.add(l);
-        System.out.println("===" + l);
+        //System.out.println("===" + l);
       }
 
       in.close();
