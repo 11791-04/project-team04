@@ -13,15 +13,28 @@ public class Ranker {
   public static final int RANKER_DIRICHLET = 2;
   public static final int RANKER_NQG = 3;
 
+  /** BM25 parameter */
   public static double k1 = -0.5;
+  /** BM25 parameter */
   public static double b = 0.8;
+  /** BM25 parameter */
   public static double k3 = 0;
 
+  /** JM, Indri, MAG, parameter */
   public static double lambda = 0.9;  //JM, Indri, MAG
+  /** Dirichlet, NQF parameter */
   public static double mu=10; // Dirichlet, NQG
+  /** NQG parameter */
   public static double delta = 0.00001; // NQG
 
-
+  /**
+   * 
+   * @param rankerType speifies which ranker to be used
+   * @param stat supplies the collection statistics
+   * @param doc document to be scored
+   * @param query 
+   * @return the score
+   */
   public static double scoreDoc(int rankerType, CollectionStatistics stat, DocInfo doc, QueryInfo query) {
 
     double score = 0;
@@ -49,7 +62,14 @@ public class Ranker {
     return score;
   }
 
-
+  /**
+   * Implements BM25 scoring
+   * @param stat
+   * @param length
+   * @param termFreqVec
+   * @param query
+   * @return
+   */
   public static double scoreOkapi(CollectionStatistics stat, int length, Map<String, Integer> termFreqVec, QueryInfo query) {
     double doclen = length;
     double score = 0;
@@ -81,7 +101,14 @@ public class Ranker {
   }
 
 
-
+  /**
+   * Dirichlet smoothing technique
+   * @param stat
+   * @param length
+   * @param termFeqVec
+   * @param query
+   * @return
+   */
   public static double scoreDirichlet(CollectionStatistics stat, int length, Map<String, Integer> termFeqVec, QueryInfo query) {
 
 
@@ -101,6 +128,14 @@ public class Ranker {
     return docScore;
   }
 
+  /**
+   * Two stage Indri smoothing technique
+   * @param stat
+   * @param length
+   * @param termFeqVec
+   * @param query
+   * @return
+   */
   public static double scoreIndri(CollectionStatistics stat, int length, Map<String, Integer> termFeqVec, QueryInfo query) {
 
     double doclen = length;
@@ -126,12 +161,17 @@ public class Ranker {
     return docScore;
   }
 
+  /**
+   * Zhai's XQL
+   * @param stat
+   * @param length
+   * @param termFeqVec
+   * @param query
+   * @return
+   */
   public static double scoreNQG(CollectionStatistics stat, int length, Map<String, Integer> termFeqVec, QueryInfo query) {
 
-
-
     double doclen = length;
-
     double score = 0;
 
     for(String term: query.termFreqVec.keySet()) {
