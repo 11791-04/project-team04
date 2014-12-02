@@ -223,7 +223,7 @@ scm:git:git@github.com:11791-04/project-team04.git
 		<developerConnection>
 scm:git:git@github.com:11791-04/project-team04.git
 </developerConnection>
-		<tag>project-team791-04-0.0.1</tag>
+		<tag>project-team791-04-0.0.2</tag>
 	</scm>
 	<repositories>
 		<repository>
