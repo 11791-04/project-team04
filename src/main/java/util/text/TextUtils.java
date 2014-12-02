@@ -19,7 +19,7 @@ import snippet.SentenceInfo;
 
 /**
  * A class with a private constructor and only static public functions that stores the different
- * components
+ * components. Including: Stanford NLP for tokenization and sentence splitting.
  * 
  * @author josephcc
  * 
@@ -53,6 +53,11 @@ public class TextUtils {
     stemmer = new EnglishMinimalStemmer();
   }
 
+  /**
+   * A simple tokenizer based on spaces
+   * @param doc document string
+   * @return a list of string tokens
+   */
   public static List<String> spaceTokenizer(String doc) {
     List<String> res = new ArrayList<String>();
 
@@ -62,12 +67,22 @@ public class TextUtils {
     return res;
   }
 
+  /**
+   * the minimal stemmer from lucene that normalizes plural form
+   * @param word input word
+   * @return stemmed version of the input word
+   */
   public static String minimalStem(String word) {
     char[] _word = word.toCharArray();
     int _length = stemmer.stem(_word, word.length());
     return new String(_word, 0, _length);
   }
 
+  /**
+   * Porter stemmer from the snowball package
+   * @param word werrrrrd
+   * @return the stemmed version of the input word
+   */
   public static String porterStem(String word) {
 
     PorterStemmer obj = new PorterStemmer();
@@ -77,6 +92,11 @@ public class TextUtils {
     return out;
   }
 
+  /**
+   * Tokenization from the stanford core nlp package
+   * @param doc a string of a document
+   * @return a list of string tokens
+   */
   public static List<String> stanfordTokenizer(String doc) {
     List<String> res = new ArrayList<String>();
 
@@ -90,6 +110,11 @@ public class TextUtils {
     return res;
   }
   
+  /**
+   * The sentence segmentor from the stanford nlp package.
+   * @param doc a string of a document
+   * @return a list of SentenceInfo that includes the text and the span of the sentence.
+   */
   public static List<SentenceInfo> stanfordSentenceTokenizer(String doc) {
     List<SentenceInfo> res = new ArrayList<SentenceInfo>();
 

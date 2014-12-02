@@ -17,10 +17,19 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
+/**
+ * A wrapper for StanfordCoreNLP logics, include: sentence splitter, tokenization and POS tagging.
+ * @author josephcc
+ *
+ */
 public class PosTagNamedEntityRecognizer {
 
   private StanfordCoreNLP pipeline;
 
+  /**
+   * The initializaer initializes the Stanford NLP pipeline.
+   * @throws ResourceInitializationException
+   */
   public PosTagNamedEntityRecognizer() throws ResourceInitializationException {
     // this is your print stream, store the reference
     PrintStream err = System.err;
@@ -38,7 +47,6 @@ public class PosTagNamedEntityRecognizer {
     System.setErr(err);  
   }
   
-
   public Map<Integer, Integer> getGeneSpans(String text) {
     Map<Integer, Integer> begin2end = new HashMap<Integer, Integer>();
     Annotation document = new Annotation(text);
