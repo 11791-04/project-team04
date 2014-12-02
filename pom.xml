@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.cmu.lti.11791.f14.project</groupId>
-	<artifactId>project-team04</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>project-team791-04</artifactId>
+	<version>0.0.1</version>
 	<name>DEIIS-project</name>
 	<build>
 		<extensions>
@@ -36,7 +36,7 @@
 							<goal>perform</goal>
 						</goals>
 						<configuration>
-							<pomFileName>project-team04/pom.xml</pomFileName>
+							<pomFileName>pom.xml</pomFileName>
 						</configuration>
 					</execution>
 				</executions>
@@ -56,6 +56,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -220,7 +221,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:oaqa/DEIIS-project-archetype.git</connection>
 		<developerConnection>scm:git:git@github.com:oaqa/DEIIS-project-archetype.git</developerConnection>
-		<tag>project-team04-0.0.1</tag>
+		<tag>project-team791-04-0.0.1</tag>
 	</scm>
 	<repositories>
 		<repository>
