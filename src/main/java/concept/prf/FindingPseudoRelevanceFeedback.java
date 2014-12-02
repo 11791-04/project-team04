@@ -16,7 +16,7 @@ public class FindingPseudoRelevanceFeedback {
 
   private WebAPIServiceProxy service;
 
-  private int numRecursion = 0                                                                                  ;
+  private int numRecursion = 0;                                                                                 ;
 
   public FindingPseudoRelevanceFeedback() {
     this.service = WebAPIServiceProxyFactory.getInstance();
