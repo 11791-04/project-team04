@@ -34,7 +34,7 @@
         <node>ConceptAEDescriptor</node>
         <node>TriplesExtractionDescriptor</node>
         <node>DocumentRetrieval_AE</node>
-        <!--<node>SnippetAEDescriptor</node>-->
+        <node>SnippetAEDescriptor</node>
         <node>ListQuestionEntityExtractor_AE</node>
       <node>BasicConsumerDescriptor</node>
       </fixedFlow>
