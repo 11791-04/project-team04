@@ -34,14 +34,23 @@ import edu.cmu.lti.oaqa.type.retrieval.Passage;
 
 /**
  * Analysis engine for snippet extraction.
- * @author dix
+ * @author Di
  *
  */
 public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
 
+  /**
+   * The stemmer needed to process raw texts
+   */
   KrovetzStemmer stemmer;
+  /**
+   * Cached web service
+   */
   private WebAPIServiceProxy service;
 
+  /**
+   * Initialize the stemmer and the service
+   */
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
@@ -49,6 +58,11 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
     stemmer = new KrovetzStemmer();
   }
 
+  /**
+   * This will segment the full text and look for sentences.
+   * Then rank the sentences
+   * Write the sentences as snippets in to the index
+   */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     FSIterator<?> qit = aJCas.getAnnotationIndex(Question.type).iterator();
@@ -59,8 +73,13 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
       //System.out.println(question.getId());
       //System.out.println(question.getQuestionType());
     }
+    
     CollectionStatistics cStat = new CollectionStatistics();
+    
+    // Stores all sentences
     ArrayList<SentenceInfo> allSentences = new ArrayList<SentenceInfo>();
+    
+    // Iterate over all relevant documents to get their gull text if available
     try {
       FSIterator<?> it;
       it = aJCas.getFSIndexRepository().getAllIndexedFS(
@@ -105,16 +124,22 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    
+    // Also store queries as sentences for generality
     SentenceInfo questionInfo = new SentenceInfo(question.getText(), null, -1, -1, null);
+    
+    // The scoring is implmented by Nik
     snippet.scoring.factory.Question query = new snippet.scoring.factory.QuestionAdapter(questionInfo);
     Similarity similarity = SimilarityFactory.getNewSimilarity(SimilarityFactory.weighted);
 
+    // Score each sentence
     for (SentenceInfo sentence : allSentences) {
       CandidateAnswer answer = new CandidateAnswerAdapter(sentence);
       sentence.score = similarity.computeSimilarity(query, answer);
     }
     
-    //TODO try different similarity functions
+    
+    // Sorted the scored sentences
     allSentences = (ArrayList<SentenceInfo>) allSentences.stream()
             .filter(e -> e.score >= 0.0001)
             .sorted((e1, e2) -> Double.compare(e2.score, e1.score))
@@ -127,6 +152,7 @@ public class SnippetAnalysisEngine extends JCasAnnotator_ImplBase {
             String beginSection, String endSection, String aspects);
             */
     
+    // Add sentences to index
     String _query = question.getText();
     allSentences.stream()
 					.map(snippet -> TypeFactory.createPassage(aJCas, snippet.hostDoc.uri, snippet.score.doubleValue(), snippet.content, -1,
