@@ -27,8 +27,18 @@ import com.aliasi.util.AbstractExternalizable;
 
 import abner.Tagger;
 
+/**
+ * 
+ * @author Di
+ *
+ */
 public class BioNER {
 
+  /**
+   * Stores infroamtion about a tag
+   * @author Di
+   *
+   */
   private static class GeneMentionTag{
     public int begin;
     public int end;
@@ -43,7 +53,9 @@ public class BioNER {
 
   }
 
-
+  /**
+   * The Stanford POS tagger to 
+   */
   private static PosTagNamedEntityRecognizer posTagger = null;
   static {
     try {
@@ -54,7 +66,9 @@ public class BioNER {
     }
   }
 
-
+  /**
+   * The abner Bio tagger
+   */
   private static Tagger abnerTager = new Tagger(Tagger.BIOCREATIVE);
   private static Chunker  chunker = null;
   static {
@@ -65,6 +79,10 @@ public class BioNER {
       System.err.println("LingPipe failed to initialize!");
     }  
   }
+  
+  /**
+   * The Abner Exact Dictionary tagger
+   */
   private static ExactDictionaryChunker dictionaryChunkerTF;
   static {
     MapDictionary<String> dictionary = new MapDictionary<String>();
@@ -89,7 +107,11 @@ public class BioNER {
             true,false);
   }
 
-
+  /**
+   * Get bio tags from an aggregatino of all sources
+   * @param content
+   * @return set of bio tags
+   */
   public static Set<String> getBioTags(String content){
     Set<String> ret = new HashSet<String>();
 
@@ -110,6 +132,11 @@ public class BioNER {
     return ret;
   }
 
+  /**
+   * Get bio tags that are unigrams
+   * @param content
+   * @return
+   */
   public static Set<String> getUnigramBioTags(String content){
     Set<String> rawSet = getBioTags(content);
     Set<String> unigramSet = new HashSet<String>();
@@ -124,7 +151,11 @@ public class BioNER {
     }
     return unigramSet;
   }
-  
+  /**
+   * Get bio tags that are unigrams or bigrams
+   * @param content
+   * @return
+   */
   public static Set<String> getBigramBioTags(String content){
     Set<String> rawSet = getBioTags(content);
     Set<String> uniBigramSet = new HashSet<String>();
@@ -140,6 +171,12 @@ public class BioNER {
     return uniBigramSet;
   }
   
+  
+  /**
+   * The implementation of Abner tagger
+   * @param content
+   * @return
+   */
   public static Set<GeneMentionTag> getAbnerNER(String content){
 
     Set<GeneMentionTag> ret = new HashSet<GeneMentionTag>();
@@ -216,6 +253,11 @@ public class BioNER {
     return ret;
   }
 
+  /**
+   * The implementation of LingPipe statistical modeling tagger
+   * @param content
+   * @return
+   */
   public static Set<GeneMentionTag> getLingPipeStatNER(String content){
     Set<GeneMentionTag> ret = new HashSet<GeneMentionTag>();
     Chunking chunking = chunker.chunk(content);
@@ -231,6 +273,11 @@ public class BioNER {
     return ret;
   }
 
+  /**
+   * The implementation of LingPipe Dictionary Tagger
+   * @param content
+   * @return
+   */
   public static Set<GeneMentionTag> getLingPipeDictNER(String content){
     Chunking chunking = dictionaryChunkerTF.chunk(content);
     Set<GeneMentionTag> ret = new HashSet<GeneMentionTag>();
@@ -247,6 +294,11 @@ public class BioNER {
   }
 
 
+  /**
+   * The implementation of POS tagger
+   * @param content
+   * @return
+   */
   public static Set<GeneMentionTag> getPOSNER(String content){
     Set<GeneMentionTag> ret = new HashSet<GeneMentionTag>();
 

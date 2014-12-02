@@ -14,9 +14,19 @@ import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory;
 
 public class Ngram {
 
+  /**
+   * The cutoff for query expansion
+   */
   public static final double QECutoff = 1E-4;
+  
+  /**
+   * The cutoff for List Entity
+   */
   public static final double ListNECutoff = 1E-6;
   
+  /**
+   *  The unigram model will be read from a file
+   */
   public static Map<String, Double> unigramModel = new HashMap<String, Double>();
   static {
 
@@ -39,6 +49,11 @@ public class Ngram {
 
   }
   
+  /**
+   * 
+   * @param term
+   * @return the uniram probability of the term
+   */
   public static double getUnigram(String term) {
     if(unigramModel.containsKey(term)) {
       return unigramModel.get(term);
